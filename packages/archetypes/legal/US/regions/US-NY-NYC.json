@@ -1,0 +1,124 @@
+{
+  "_note": "TASLAK. Hiçbir madde doğrulanmadı; sourceUrl, typicalDays ve typicalCost resmi kaynaktan doldurulmadan production'a çıkamaz (SPEC-legal §4).",
+  "country": "US",
+  "scope": "region",
+  "items": [
+    {
+      "id": "us.nyc.food_service_permit",
+      "title": {
+        "tr": "Gıda servis işletmesi izni",
+        "en": "Food Service Establishment Permit"
+      },
+      "what": {
+        "tr": "Yemek veya içecek hazırlayıp sunan işletmeler için şehir izni.",
+        "en": "City permit for businesses preparing and serving food or drinks."
+      },
+      "authority": {
+        "tr": "NYC Department of Health and Mental Hygiene",
+        "en": "NYC Department of Health and Mental Hygiene"
+      },
+      "sourceUrl": "",
+      "appliesTo": {
+        "sectors": ["coffee"],
+        "condition": "servesFood"
+      },
+      "stage": "before_opening",
+      "critical": true,
+      "typicalDays": null,
+      "typicalCost": null,
+      "dependsOn": [],
+      "verification": {
+        "status": "draft",
+        "lastReviewed": "2026-11-02"
+      }
+    },
+    {
+      "id": "us.nyc.food_protection",
+      "title": {
+        "tr": "Gıda koruma sertifikası",
+        "en": "Food Protection Certificate"
+      },
+      "what": {
+        "tr": "Faaliyet sırasında sertifikalı bir sorumlu bulunmalı.",
+        "en": "A certified supervisor must be on site during operation."
+      },
+      "authority": {
+        "tr": "NYC Department of Health and Mental Hygiene",
+        "en": "NYC Department of Health and Mental Hygiene"
+      },
+      "sourceUrl": "",
+      "appliesTo": {
+        "sectors": ["coffee"],
+        "condition": "servesFood"
+      },
+      "stage": "before_opening",
+      "critical": true,
+      "typicalDays": null,
+      "typicalCost": null,
+      "dependsOn": [],
+      "verification": {
+        "status": "draft",
+        "lastReviewed": "2026-11-02"
+      }
+    },
+    {
+      "id": "us.nyc.sidewalk_cafe",
+      "title": {
+        "tr": "Kaldırım / açık alan izni",
+        "en": "Outdoor dining / sidewalk permit"
+      },
+      "what": {
+        "tr": "Kaldırıma masa koymak için şehir programı kapsamında izin.",
+        "en": "Permit under the city program to place seating on the sidewalk."
+      },
+      "authority": {
+        "tr": "NYC şehir yönetimi (açık alan yemek programı)",
+        "en": "NYC outdoor dining program"
+      },
+      "sourceUrl": "",
+      "appliesTo": {
+        "sectors": ["coffee"],
+        "condition": "outdoorSeating"
+      },
+      "stage": "after_opening",
+      "critical": false,
+      "typicalDays": null,
+      "typicalCost": null,
+      "dependsOn": [],
+      "verification": {
+        "status": "draft",
+        "lastReviewed": "2026-11-02"
+      }
+    },
+    {
+      "id": "us.nyc.barber_license",
+      "title": {
+        "tr": "Berber lisansı",
+        "en": "Barber license"
+      },
+      "what": {
+        "tr": "Berberlik yapan kişiler için eyalet lisansı; dükkân için ayrıca işletme lisansı gerekebilir.",
+        "en": "State license for individuals; the shop may need a separate area license."
+      },
+      "authority": {
+        "tr": "New York State Department of State",
+        "en": "New York State Department of State"
+      },
+      "sourceUrl": "",
+      "appliesTo": {
+        "sectors": ["barber"],
+        "condition": "always"
+      },
+      "stage": "before_opening",
+      "critical": true,
+      "typicalDays": null,
+      "typicalCost": null,
+      "dependsOn": [],
+      "verification": {
+        "status": "draft",
+        "lastReviewed": "2026-11-02"
+      }
+    }
+  ],
+  "region": "US-NY-NYC"
+}

@@ -1,0 +1,21 @@
+{
+  "app": {
+    "name": "Bu İş Tutar mı?",
+    "tagline": "Dükkân açmadan önce, kendi adresin ve rakamlarınla: bu iş tutar mı, tutmaz mı?",
+    "disclaimer": "Bu analiz bir karar destek aracıdır, yatırım tavsiyesi değildir. Rakamlar senin girdiğin ve örnek verilere dayanır; karar vermeden önce mali müşavirine danış."
+  },
+  "home": {
+    "sampleTitle": "Örnek analiz: {sector}, {area}",
+    "sampleNote": "Bu sonuç videodaki örnek rakamlarla hesaplandı. Kendi rakamlarınla analiz yakında.",
+    "breakEven": "Başabaş",
+    "investment": "Toplam yatırım",
+    "payback": "Geri dönüş",
+    "months": "{count} ay",
+    "never": "60 ayda dönmüyor",
+    "verdict": {
+      "GO": "TUTAR",
+      "MID": "ŞARTLI",
+      "NO": "TUTMAZ"
+    }
+  }
+}

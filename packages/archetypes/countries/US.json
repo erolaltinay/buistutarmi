@@ -1,0 +1,41 @@
+{
+  "code": "US",
+  "currency": "USD",
+  "locale": "en-US",
+  "supportLevel": "full",
+  "launched": false,
+  "priceRounding": 0.25,
+  "pricing": {
+    "detailedReport": null,
+    "currency": "USD"
+  },
+  "legal": "legal/US",
+  "fin": {
+    "rampStart": 50,
+    "rampMonths": 6,
+    "priceInc": 3,
+    "inflCost": 3,
+    "rentInc": 3,
+    "wageInc": 4,
+    "ownerSalary": 0,
+    "cardShare": 90,
+    "cardFee": 2.9,
+    "platFee": 20,
+    "stopaj": 0,
+    "employer": 10,
+    "profitTax": 25,
+    "loanRate": 10,
+    "loanTerm": 60,
+    "depYears": 5
+  },
+  "taxNote": {
+    "tr": "Oranlar sık değişir; muhasebecine teyit ettir.",
+    "en": "Rates change often; confirm with your accountant."
+  },
+  "dataSources": {
+    "demographics": "CENSUS_ACS",
+    "income": "CENSUS_ACS",
+    "elections": null
+  },
+  "lastReviewed": "2026-10-25"
+}

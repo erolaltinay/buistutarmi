@@ -1,0 +1,94 @@
+{
+  "_note": "TASLAK. Hiçbir madde doğrulanmadı; sourceUrl, typicalDays ve typicalCost resmi kaynaktan doldurulmadan production'a çıkamaz (SPEC-legal §4).",
+  "country": "TR",
+  "scope": "coffee",
+  "items": [
+    {
+      "id": "tr.coffee.food_business_registration",
+      "title": {
+        "tr": "Gıda işletmesi kaydı",
+        "en": "Food business registration"
+      },
+      "what": {
+        "tr": "Gıda satan veya hazırlayan işletmeler kayıt veya onay alır.",
+        "en": "Businesses that prepare or sell food must be registered or approved."
+      },
+      "authority": {
+        "tr": "Tarım ve Orman Bakanlığı il / ilçe müdürlüğü",
+        "en": "Ministry of Agriculture and Forestry, provincial office"
+      },
+      "sourceUrl": "",
+      "appliesTo": {
+        "sectors": ["coffee"],
+        "condition": "servesFood"
+      },
+      "stage": "before_opening",
+      "critical": true,
+      "typicalDays": null,
+      "typicalCost": null,
+      "dependsOn": [],
+      "verification": {
+        "status": "draft",
+        "lastReviewed": "2026-11-02"
+      }
+    },
+    {
+      "id": "tr.coffee.hygiene_training",
+      "title": {
+        "tr": "Personel hijyen eğitimi",
+        "en": "Staff hygiene training"
+      },
+      "what": {
+        "tr": "Gıda ile çalışan personel için hijyen eğitimi belgesi.",
+        "en": "Hygiene training certificate for staff handling food."
+      },
+      "authority": {
+        "tr": "Yetkili eğitim kurumları / halk eğitim merkezleri",
+        "en": "Authorized training providers"
+      },
+      "sourceUrl": "",
+      "appliesTo": {
+        "sectors": ["coffee"],
+        "condition": "servesFood"
+      },
+      "stage": "before_opening",
+      "critical": false,
+      "typicalDays": null,
+      "typicalCost": null,
+      "dependsOn": [],
+      "verification": {
+        "status": "draft",
+        "lastReviewed": "2026-11-02"
+      }
+    },
+    {
+      "id": "tr.coffee.sidewalk",
+      "title": {
+        "tr": "Kaldırıma masa (işgaliye) izni",
+        "en": "Sidewalk seating permit"
+      },
+      "what": {
+        "tr": "Dışarıya masa veya sandalye koymak için belediyeden izin ve işgaliye harcı.",
+        "en": "Municipal permit and fee to place tables or chairs outside."
+      },
+      "authority": {
+        "tr": "Belediye zabıta / imar",
+        "en": "Municipality"
+      },
+      "sourceUrl": "",
+      "appliesTo": {
+        "sectors": ["coffee"],
+        "condition": "outdoorSeating"
+      },
+      "stage": "after_opening",
+      "critical": false,
+      "typicalDays": null,
+      "typicalCost": null,
+      "dependsOn": [],
+      "verification": {
+        "status": "draft",
+        "lastReviewed": "2026-11-02"
+      }
+    }
+  ]
+}

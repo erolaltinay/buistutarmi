@@ -1,0 +1,169 @@
+{
+  "groups": [
+    {
+      "label": {
+        "tr": "Mikro lokasyon",
+        "en": "Micro location"
+      },
+      "items": [
+        {
+          "k": "commuteSide",
+          "critical": false,
+          "blocker": false,
+          "label": {
+            "tr": "Yaya akışının yoğun olduğu kaldırımda (kahvede sabah işe gidiş yönü)",
+            "en": "On the busy side of the street (for coffee: the morning commute side)"
+          },
+          "sampleAnswer": 1
+        },
+        {
+          "k": "anchor",
+          "critical": false,
+          "blocker": false,
+          "label": {
+            "tr": "300 m içinde durak, okul, ofis gibi bir çekim noktası var",
+            "en": "A traffic anchor within 300 m (transit stop, school, offices)"
+          },
+          "sampleAnswer": 1
+        },
+        {
+          "k": "visible",
+          "critical": false,
+          "blocker": false,
+          "label": {
+            "tr": "Tabela 50 m'den görünüyor; köşe veya geniş cephe",
+            "en": "Sign visible from 50 m; corner or wide frontage"
+          },
+          "sampleAnswer": 1
+        },
+        {
+          "k": "access",
+          "critical": false,
+          "blocker": false,
+          "label": {
+            "tr": "Kısa süreli park veya durma imkânı ve engelli erişimi var",
+            "en": "Short-stop parking and step-free access"
+          },
+          "sampleAnswer": 0
+        }
+      ]
+    },
+    {
+      "label": {
+        "tr": "Bölgenin gidişatı",
+        "en": "Where the area is heading"
+      },
+      "items": [
+        {
+          "k": "futurePlus",
+          "critical": false,
+          "blocker": false,
+          "label": {
+            "tr": "Yakında olumlu bir proje var (metro, konut, ofis)",
+            "en": "A positive project is coming (transit, housing, offices)"
+          },
+          "sampleAnswer": null
+        },
+        {
+          "k": "noDisrupt",
+          "critical": true,
+          "blocker": false,
+          "label": {
+            "tr": "Önümüzdeki 2 yılda yıkım, kentsel dönüşüm veya uzun yol çalışması yok",
+            "en": "No demolition, redevelopment or long roadworks in the next 2 years"
+          },
+          "flag": {
+            "tr": "yakında yıkım veya uzun yol çalışması var",
+            "en": "demolition or long roadworks are coming"
+          },
+          "sampleAnswer": 1
+        }
+      ]
+    },
+    {
+      "label": {
+        "tr": "Zaman profili",
+        "en": "Time profile"
+      },
+      "items": [
+        {
+          "k": "lowSeason",
+          "critical": false,
+          "blocker": false,
+          "label": {
+            "tr": "En zayıf ay, ortalama ayın %70'inden iyi",
+            "en": "The weakest month is above 70% of an average month"
+          },
+          "sampleAnswer": 1
+        },
+        {
+          "k": "weekBalance",
+          "critical": false,
+          "blocker": false,
+          "label": {
+            "tr": "Hafta sonu ile hafta içi arasında büyük çöküş yok",
+            "en": "No big drop between weekdays and weekends"
+          },
+          "sampleAnswer": 1
+        }
+      ]
+    },
+    {
+      "label": {
+        "tr": "Mevzuat ve imar",
+        "en": "Permits and zoning"
+      },
+      "items": [
+        {
+          "k": "permitOk",
+          "critical": true,
+          "blocker": true,
+          "label": {
+            "tr": "Belediye bu adreste bu işe ruhsat veriyor",
+            "en": "The city permits this business at this address"
+          },
+          "flag": {
+            "tr": "bu adreste bu işe ruhsat çıkmıyor",
+            "en": "the city will not permit this business here"
+          },
+          "sampleAnswer": null
+        },
+        {
+          "k": "outdoor",
+          "critical": false,
+          "blocker": false,
+          "label": {
+            "tr": "Dış alan (masa, tabela) izni alınabiliyor",
+            "en": "Outdoor seating or signage can be permitted"
+          },
+          "sampleAnswer": null
+        }
+      ]
+    },
+    {
+      "label": {
+        "tr": "Personel",
+        "en": "Staffing"
+      },
+      "items": [
+        {
+          "k": "staffAvail",
+          "critical": false,
+          "blocker": false,
+          "label": null,
+          "sampleAnswer": 1
+        },
+        {
+          "k": "wageOk",
+          "critical": false,
+          "blocker": false,
+          "label": {
+            "tr": "Maaş planı asgari ücret artışlarına göre yapıldı",
+            "en": "Wage plan accounts for minimum-wage increases"
+          },
+          "sampleAnswer": null
+        }
+      ]
+    }
+  ]
+}

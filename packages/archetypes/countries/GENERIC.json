@@ -1,0 +1,37 @@
+{
+  "code": "GENERIC",
+  "currency": null,
+  "locale": null,
+  "supportLevel": "generic",
+  "launched": true,
+  "priceRounding": null,
+  "pricing": null,
+  "legal": null,
+  "fin": {
+    "rampStart": 50,
+    "rampMonths": 6,
+    "priceInc": null,
+    "inflCost": null,
+    "rentInc": null,
+    "wageInc": null,
+    "ownerSalary": 0,
+    "kdv": 0,
+    "cardShare": null,
+    "cardFee": null,
+    "platShare": null,
+    "platFee": null,
+    "waste": null,
+    "stopaj": 0,
+    "employer": 0,
+    "profitTax": 0,
+    "loanRate": null,
+    "loanTerm": null,
+    "depYears": 5
+  },
+  "taxNote": {
+    "tr": "Bu ülke için yerel veri ve mevzuat desteği henüz yok. Rakamları kendin gir; hesap yöntemi aynıdır.",
+    "en": "Local data and permit guidance are not available for this country yet. Enter your own numbers; the method is the same."
+  },
+  "dataSources": {},
+  "lastReviewed": "2026-11-02"
+}

@@ -1,0 +1,239 @@
+{
+  "_note": "TASLAK. Hiçbir madde doğrulanmadı; sourceUrl, typicalDays ve typicalCost resmi kaynaktan doldurulmadan production'a çıkamaz (SPEC-legal §4).",
+  "country": "TR",
+  "scope": "common",
+  "items": [
+    {
+      "id": "tr.common.tax_registration",
+      "title": {
+        "tr": "Vergi mükellefiyeti kaydı",
+        "en": "Tax registration"
+      },
+      "what": {
+        "tr": "İşe başlamadan önce vergi dairesine mükellefiyet kaydı yapılır.",
+        "en": "Register as a taxpayer with the tax office before starting."
+      },
+      "authority": {
+        "tr": "Gelir İdaresi Başkanlığı / vergi dairesi",
+        "en": "Revenue Administration (GİB) / tax office"
+      },
+      "sourceUrl": "",
+      "appliesTo": {
+        "sectors": "all",
+        "condition": "always"
+      },
+      "stage": "before_opening",
+      "critical": true,
+      "typicalDays": null,
+      "typicalCost": null,
+      "dependsOn": [],
+      "verification": {
+        "status": "draft",
+        "lastReviewed": "2026-11-02"
+      }
+    },
+    {
+      "id": "tr.common.trade_registry",
+      "title": {
+        "tr": "Esnaf sicili veya ticaret sicili kaydı",
+        "en": "Tradesmen or trade registry"
+      },
+      "what": {
+        "tr": "İşletme türüne göre esnaf ve sanatkârlar odası ile esnaf siciline ya da ticaret sicili ve ticaret odasına kayıt.",
+        "en": "Depending on business type, register with the tradesmen chamber or the trade registry and chamber of commerce."
+      },
+      "authority": {
+        "tr": "Esnaf ve sanatkârlar odası / ticaret sicili müdürlüğü",
+        "en": "Tradesmen chamber / trade registry office"
+      },
+      "sourceUrl": "",
+      "appliesTo": {
+        "sectors": "all",
+        "condition": "always"
+      },
+      "stage": "before_opening",
+      "critical": true,
+      "typicalDays": null,
+      "typicalCost": null,
+      "dependsOn": ["tr.common.tax_registration"],
+      "verification": {
+        "status": "draft",
+        "lastReviewed": "2026-11-02"
+      }
+    },
+    {
+      "id": "tr.common.workplace_license",
+      "title": {
+        "tr": "İşyeri açma ve çalışma ruhsatı",
+        "en": "Business opening and operating license"
+      },
+      "what": {
+        "tr": "Belediyeden işyeri açma ve çalışma ruhsatı alınır; dükkânın imar ve kullanım durumu bu işe uygun olmalıdır.",
+        "en": "A business opening and operating license from the municipality; the premises must be zoned and permitted for this use."
+      },
+      "authority": {
+        "tr": "Belediye (ilçe/büyükşehir)",
+        "en": "Municipality"
+      },
+      "sourceUrl": "",
+      "appliesTo": {
+        "sectors": "all",
+        "condition": "always"
+      },
+      "stage": "before_lease",
+      "critical": true,
+      "typicalDays": null,
+      "typicalCost": null,
+      "dependsOn": [],
+      "verification": {
+        "status": "draft",
+        "lastReviewed": "2026-11-02"
+      }
+    },
+    {
+      "id": "tr.common.fire_compliance",
+      "title": {
+        "tr": "Yangın uygunluğu",
+        "en": "Fire safety compliance"
+      },
+      "what": {
+        "tr": "İşyeri türüne ve büyüklüğüne göre itfaiye uygunluk raporu istenebilir.",
+        "en": "Depending on type and size, a fire department compliance report may be required."
+      },
+      "authority": {
+        "tr": "Belediye itfaiye müdürlüğü",
+        "en": "Municipal fire department"
+      },
+      "sourceUrl": "",
+      "appliesTo": {
+        "sectors": "all",
+        "condition": "always"
+      },
+      "stage": "before_opening",
+      "critical": false,
+      "typicalDays": null,
+      "typicalCost": null,
+      "dependsOn": [],
+      "verification": {
+        "status": "draft",
+        "lastReviewed": "2026-11-02"
+      }
+    },
+    {
+      "id": "tr.common.sgk_workplace",
+      "title": {
+        "tr": "SGK işyeri tescili",
+        "en": "Social security workplace registration"
+      },
+      "what": {
+        "tr": "Çalışan varsa işyeri SGK'ya tescil edilir ve çalışanlar işe başlamadan önce bildirilir.",
+        "en": "If you have employees, register the workplace with social security and declare staff before they start."
+      },
+      "authority": {
+        "tr": "Sosyal Güvenlik Kurumu",
+        "en": "Social Security Institution (SGK)"
+      },
+      "sourceUrl": "",
+      "appliesTo": {
+        "sectors": "all",
+        "condition": "hasEmployees"
+      },
+      "stage": "before_opening",
+      "critical": true,
+      "typicalDays": null,
+      "typicalCost": null,
+      "dependsOn": [],
+      "verification": {
+        "status": "draft",
+        "lastReviewed": "2026-11-02"
+      }
+    },
+    {
+      "id": "tr.common.signage",
+      "title": {
+        "tr": "Tabela izni ve ilan-reklam vergisi",
+        "en": "Sign permit and advertising tax"
+      },
+      "what": {
+        "tr": "Dış tabela için belediye izni ve ilan-reklam vergisi beyanı.",
+        "en": "Municipal permit for exterior signage and advertising tax declaration."
+      },
+      "authority": {
+        "tr": "Belediye",
+        "en": "Municipality"
+      },
+      "sourceUrl": "",
+      "appliesTo": {
+        "sectors": "all",
+        "condition": "hasSign"
+      },
+      "stage": "before_opening",
+      "critical": false,
+      "typicalDays": null,
+      "typicalCost": null,
+      "dependsOn": [],
+      "verification": {
+        "status": "draft",
+        "lastReviewed": "2026-11-02"
+      }
+    },
+    {
+      "id": "tr.common.payment_device",
+      "title": {
+        "tr": "Ödeme kaydedici cihaz / POS",
+        "en": "Registered cash register / POS"
+      },
+      "what": {
+        "tr": "Satış belgesi düzenlemek için onaylı ödeme kaydedici cihaz veya uygun POS çözümü.",
+        "en": "An approved cash register or compliant POS to issue sales receipts."
+      },
+      "authority": {
+        "tr": "Gelir İdaresi Başkanlığı onaylı cihaz sağlayıcıları",
+        "en": "Approved device providers (GİB)"
+      },
+      "sourceUrl": "",
+      "appliesTo": {
+        "sectors": "all",
+        "condition": "always"
+      },
+      "stage": "before_opening",
+      "critical": true,
+      "typicalDays": null,
+      "typicalCost": null,
+      "dependsOn": ["tr.common.tax_registration"],
+      "verification": {
+        "status": "draft",
+        "lastReviewed": "2026-11-02"
+      }
+    },
+    {
+      "id": "tr.common.lease_withholding",
+      "title": {
+        "tr": "Kira sözleşmesi ve kira stopajı",
+        "en": "Lease agreement and rent withholding"
+      },
+      "what": {
+        "tr": "İşyeri kirasında stopaj kesilir ve beyan edilir; sözleşmede artış ve süre maddeleri netleştirilir.",
+        "en": "Withholding tax applies to commercial rent and is declared; clarify increase and term clauses in the lease."
+      },
+      "authority": {
+        "tr": "Mali müşavir / vergi dairesi",
+        "en": "Accountant / tax office"
+      },
+      "sourceUrl": "",
+      "appliesTo": {
+        "sectors": "all",
+        "condition": "always"
+      },
+      "stage": "before_lease",
+      "critical": false,
+      "typicalDays": null,
+      "typicalCost": null,
+      "dependsOn": [],
+      "verification": {
+        "status": "draft",
+        "lastReviewed": "2026-11-02"
+      }
+    }
+  ]
+}

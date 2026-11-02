@@ -1,0 +1,16 @@
+node_modules/
+.next/
+out/
+dist/
+coverage/
+*.tsbuildinfo
+.env
+.env.*
+!.env.example
+.vercel/
+playwright-report/
+test-results/
+.DS_Store
+# Teslim paketi (içeriği repoya açıldı)
+bu-is-tutar-mi-claude-code.zip
+next-env.d.ts

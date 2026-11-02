@@ -1,0 +1,95 @@
+{
+  "_note": "TASLAK. Hiçbir madde doğrulanmadı; sourceUrl, typicalDays ve typicalCost resmi kaynaktan doldurulmadan production'a çıkamaz (SPEC-legal §4).",
+  "country": "US",
+  "scope": "region",
+  "items": [
+    {
+      "id": "us.austin.food_permit",
+      "title": {
+        "tr": "Gıda işletmesi izni",
+        "en": "Food enterprise permit"
+      },
+      "what": {
+        "tr": "Şehirde gıda hazırlayan ve satan işletmeler için izin.",
+        "en": "City permit for businesses preparing and selling food."
+      },
+      "authority": {
+        "tr": "Austin Public Health",
+        "en": "Austin Public Health"
+      },
+      "sourceUrl": "",
+      "appliesTo": {
+        "sectors": ["coffee"],
+        "condition": "servesFood"
+      },
+      "stage": "before_opening",
+      "critical": true,
+      "typicalDays": null,
+      "typicalCost": null,
+      "dependsOn": [],
+      "verification": {
+        "status": "draft",
+        "lastReviewed": "2026-11-02"
+      }
+    },
+    {
+      "id": "us.austin.food_certification",
+      "title": {
+        "tr": "Gıda yöneticisi ve çalışanı sertifikası",
+        "en": "Food manager and food handler certification"
+      },
+      "what": {
+        "tr": "Sertifikalı gıda yöneticisi ve çalışanların gıda güvenliği sertifikası.",
+        "en": "Certified food manager and food handler certificates for staff."
+      },
+      "authority": {
+        "tr": "Texas Department of State Health Services",
+        "en": "Texas Department of State Health Services"
+      },
+      "sourceUrl": "",
+      "appliesTo": {
+        "sectors": ["coffee"],
+        "condition": "servesFood"
+      },
+      "stage": "before_opening",
+      "critical": true,
+      "typicalDays": null,
+      "typicalCost": null,
+      "dependsOn": [],
+      "verification": {
+        "status": "draft",
+        "lastReviewed": "2026-11-02"
+      }
+    },
+    {
+      "id": "us.tx.barber_license",
+      "title": {
+        "tr": "Berber lisansı ve berber dükkânı izni",
+        "en": "Barber license and barbershop permit"
+      },
+      "what": {
+        "tr": "Berberler için eyalet lisansı ve dükkân için ayrı izin.",
+        "en": "State license for barbers and a separate permit for the shop."
+      },
+      "authority": {
+        "tr": "Texas Department of Licensing and Regulation",
+        "en": "Texas Department of Licensing and Regulation"
+      },
+      "sourceUrl": "",
+      "appliesTo": {
+        "sectors": ["barber"],
+        "condition": "always"
+      },
+      "stage": "before_opening",
+      "critical": true,
+      "typicalDays": null,
+      "typicalCost": null,
+      "dependsOn": [],
+      "verification": {
+        "status": "draft",
+        "lastReviewed": "2026-11-02"
+      }
+    }
+  ],
+  "region": "US-TX-AUSTIN"
+}

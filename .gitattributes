@@ -1,0 +1,3 @@
+# Prettier LF bekliyor; Windows checkout’unda CRLF’ye çevrilmesin.
+* text=auto eol=lf
+*.zip binary

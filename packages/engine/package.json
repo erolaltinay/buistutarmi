@@ -1,0 +1,13 @@
+{
+  "name": "@bitm/engine",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Saf ve deterministik hesap motoru (docs/SPEC-calc-engine.md).",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json && tsc -p tsconfig.test.json"
+  }
+}

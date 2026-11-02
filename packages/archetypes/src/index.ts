@@ -1,0 +1,155 @@
+// Sektör ve ülke ayarlarının kaydı; motora giden yapıların üretimi.
+// Ülkeye göre davranış sadece ülke dosyasındaki alanlardan gelir (CLAUDE.md kural 13).
+import type { AnalysisInput, EngineArchetype, EngineCountry, FinParams } from '@bitm/engine';
+import analysisDefaultsJson from '../analysis-defaults.json';
+import checklistJson from '../checklist.json';
+import genericJson from '../countries/GENERIC.json';
+import trJson from '../countries/TR.json';
+import usJson from '../countries/US.json';
+import barberJson from '../sectors/barber.json';
+import coffeeJson from '../sectors/coffee.json';
+import {
+  AnalysisDefaultsSchema,
+  ChecklistSchema,
+  CountrySchema,
+  FinSchema,
+  SectorSchema,
+  type Country,
+  type Fin,
+  type Sector,
+} from './schema';
+
+export * from './schema';
+export * from './legal';
+
+export const sectors: Readonly<Record<string, Sector>> = {
+  coffee: SectorSchema.parse(coffeeJson),
+  barber: SectorSchema.parse(barberJson),
+};
+
+export const countries: Readonly<Record<string, Country>> = {
+  TR: CountrySchema.parse(trJson),
+  US: CountrySchema.parse(usJson),
+};
+
+export const genericCountry: Country = CountrySchema.parse(genericJson);
+export const checklist = ChecklistSchema.parse(checklistJson);
+export const analysisDefaults = AnalysisDefaultsSchema.parse(analysisDefaultsJson);
+
+export function getSector(id: string): Sector {
+  const s = sectors[id];
+  if (!s) throw new Error(`Bilinmeyen sektör: ${id}`);
+  return s;
+}
+
+/** Listede olmayan her ülke GENERIC şablonunu kullanır. */
+export function getCountry(code: string): Country {
+  return countries[code] ?? genericCountry;
+}
+
+/** Para biriminin ondalık hanesi yoksa 1, varsa 0,25 (generic ülkeler için). */
+export function priceRoundingForCurrency(currency: string): number {
+  const digits = new Intl.NumberFormat('en', { style: 'currency', currency }).resolvedOptions()
+    .maximumFractionDigits;
+  return digits === 0 ? 1 : 0.25;
+}
+
+export function engineCountry(code: string, currency?: string): EngineCountry {
+  const c = getCountry(code);
+  const cur = currency ?? c.currency;
+  const priceRounding = c.priceRounding ?? (cur ? priceRoundingForCurrency(cur) : 1);
+  return { code: c.code, priceRounding };
+}
+
+export function engineArchetype(id: string): EngineArchetype {
+  const s = getSector(id);
+  return {
+    id: s.id,
+    model: s.model,
+    competition: {
+      saturationPeoplePerBusiness: s.competition.saturationPeoplePerBusiness,
+      qualityWeaknessKeys: s.competition.qualityWeaknessKeys,
+      overpricedWeaknessKey: s.competition.overpricedWeaknessKey,
+    },
+    demandFit: { features: s.demandFit.features },
+    location: { captureRatePct: s.location.captureRatePct, rentToSalesPct: s.location.rentToSalesPct },
+    checklist: checklist.groups.flatMap((g) =>
+      g.items.map((it) => ({ k: it.k, critical: it.critical, blocker: it.blocker })),
+    ),
+  };
+}
+
+/** Birleştirme sırası: ülke.fin → sektör.defaults[ülke].fin → kullanıcı girdisi (SPEC-archetypes §3). */
+export function mergeFin(countryCode: string, sectorId: string, user: Partial<Fin> = {}): Fin {
+  const c = getCountry(countryCode);
+  const sectorFin = getSector(sectorId).defaults[c.code]?.fin ?? {};
+  return FinSchema.parse({ ...c.fin, ...sectorFin, ...user });
+}
+
+/** Kullanıcı doldurana kadar eksik kalan fin alanları ("eksik veri" uyarısı için). */
+export function missingFinFields(fin: Fin): (keyof Fin)[] {
+  return (Object.keys(fin) as (keyof Fin)[]).filter((k) => fin[k] === null);
+}
+
+/**
+ * Sektörün örnek verisinden ("Videodaki örneği yükle") tam analiz girdisi kurar.
+ * Satırlar şablondaki açık `type` / `depreciable` alanlarını taşır.
+ */
+export function buildSampleInput(sectorId: string, sampleId: string): AnalysisInput {
+  const s = getSector(sectorId);
+  const sample = s.samples[sampleId];
+  if (!sample) throw new Error(`${sectorId}: örnek yok: ${sampleId}`);
+  const d = analysisDefaults;
+  const fin: FinParams = mergeFin(sample.country, sectorId);
+  const chk = Object.fromEntries(
+    checklist.groups.flatMap((g) => g.items.map((it) => [it.k, it.sampleAnswer])),
+  );
+  return {
+    biz: s.id,
+    city: sampleId,
+    cur: sample.currency,
+    fin,
+    contPct: d.contPct,
+    wcMonths: d.wcMonths,
+    days: sample.days,
+    scen: [...sample.scen],
+    cap: sample.cap ? [...sample.cap] : null,
+    capex: s.capexTemplate.map((t) => ({
+      k: t.k,
+      n: null,
+      v: sample.capex[t.k] ?? 0,
+      ...(t.depreciable !== undefined ? { depreciable: t.depreciable } : {}),
+    })),
+    fixed: s.fixedTemplate.map((t) => ({ k: t.k, n: null, v: sample.fixed[t.k] ?? 0, type: t.type })),
+    items: s.itemTemplate.map((t) => ({
+      k: t.k,
+      n: null,
+      ...(sample.items[t.k] ?? { price: 0, cost: 0, mix: 0 }),
+    })),
+    area: sample.area,
+    pop: sample.pop,
+    demo: { ...sample.demo, turnout: '', elec: '' },
+    loc: {
+      foot: { wd: [...sample.loc.foot.wd], we: [...sample.loc.foot.we] },
+      countMin: d.countMin,
+      openH: sample.loc.openH,
+      hist: { ...sample.loc.hist, talked: false },
+      founder: {
+        role: d.founder.role,
+        mgr: sample.loc.mgr,
+        years: d.founder.years,
+        runway: d.founder.runway,
+        equity: d.founder.equity,
+      },
+      chk,
+    },
+    comp: sample.comp.map((c) => ({ ...c, n: null, s: [...c.s], w: [...c.w], note: '' })),
+  };
+}
+
+/** Örnek kimliğinden ülke kodu (golden fixture'daki `city` alanı için). */
+export function sampleCountry(sectorId: string, sampleId: string): string {
+  const sample = getSector(sectorId).samples[sampleId];
+  if (!sample) throw new Error(`${sectorId}: örnek yok: ${sampleId}`);
+  return sample.country;
+}

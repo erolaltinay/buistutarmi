@@ -1,0 +1,9 @@
+packages:
+  - apps/*
+  - packages/*
+
+allowBuilds:
+  esbuild: true
+  # Önceden derlenmiş ikili dosyalarla çalışıyorlar; kurulum betiklerine gerek yok.
+  '@parcel/watcher': false
+  '@swc/core': false

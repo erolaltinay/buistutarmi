@@ -1,0 +1,152 @@
+{
+  "_note": "TASLAK. Hiçbir madde doğrulanmadı; sourceUrl, typicalDays ve typicalCost resmi kaynaktan doldurulmadan production'a çıkamaz (SPEC-legal §4).",
+  "country": "US",
+  "scope": "common",
+  "items": [
+    {
+      "id": "us.common.ein",
+      "title": {
+        "tr": "İşveren kimlik numarası (EIN)",
+        "en": "Employer Identification Number (EIN)"
+      },
+      "what": {
+        "tr": "Federal vergi kimlik numarası; çalışanı olan veya LLC kuran işletmeler için gerekir.",
+        "en": "Federal tax ID, needed if you have employees or form an LLC."
+      },
+      "authority": {
+        "tr": "IRS",
+        "en": "IRS"
+      },
+      "sourceUrl": "",
+      "appliesTo": {
+        "sectors": "all",
+        "condition": "always"
+      },
+      "stage": "before_opening",
+      "critical": true,
+      "typicalDays": null,
+      "typicalCost": null,
+      "dependsOn": [],
+      "verification": {
+        "status": "draft",
+        "lastReviewed": "2026-11-02"
+      }
+    },
+    {
+      "id": "us.common.entity",
+      "title": {
+        "tr": "İşletme kaydı (LLC / DBA)",
+        "en": "Business registration (LLC / DBA)"
+      },
+      "what": {
+        "tr": "Eyalette şirket kurulumu veya ticari unvan (DBA) kaydı.",
+        "en": "Form an entity in the state or register an assumed name (DBA)."
+      },
+      "authority": {
+        "tr": "Eyalet / ilçe kayıt ofisi",
+        "en": "State / county filing office"
+      },
+      "sourceUrl": "",
+      "appliesTo": {
+        "sectors": "all",
+        "condition": "always"
+      },
+      "stage": "before_lease",
+      "critical": true,
+      "typicalDays": null,
+      "typicalCost": null,
+      "dependsOn": [],
+      "verification": {
+        "status": "draft",
+        "lastReviewed": "2026-11-02"
+      }
+    },
+    {
+      "id": "us.common.sales_tax",
+      "title": {
+        "tr": "Eyalet satış vergisi izni",
+        "en": "State sales tax permit"
+      },
+      "what": {
+        "tr": "Vergiye tabi satış yapan işletmeler eyaletten satış vergisi izni alır.",
+        "en": "Businesses making taxable sales get a sales tax permit from the state."
+      },
+      "authority": {
+        "tr": "Eyalet vergi idaresi",
+        "en": "State tax agency"
+      },
+      "sourceUrl": "",
+      "appliesTo": {
+        "sectors": "all",
+        "condition": "always"
+      },
+      "stage": "before_opening",
+      "critical": true,
+      "typicalDays": null,
+      "typicalCost": null,
+      "dependsOn": ["us.common.entity"],
+      "verification": {
+        "status": "draft",
+        "lastReviewed": "2026-11-02"
+      }
+    },
+    {
+      "id": "us.common.occupancy",
+      "title": {
+        "tr": "Yapı kullanım belgesi",
+        "en": "Certificate of occupancy"
+      },
+      "what": {
+        "tr": "Mekânın bu kullanım için uygun olduğunu gösteren belge; tadilat varsa yeniden gerekebilir.",
+        "en": "Shows the space is approved for this use; may be required again after a build-out."
+      },
+      "authority": {
+        "tr": "Şehir yapı / imar dairesi",
+        "en": "City building / zoning department"
+      },
+      "sourceUrl": "",
+      "appliesTo": {
+        "sectors": "all",
+        "condition": "always"
+      },
+      "stage": "before_lease",
+      "critical": true,
+      "typicalDays": null,
+      "typicalCost": null,
+      "dependsOn": [],
+      "verification": {
+        "status": "draft",
+        "lastReviewed": "2026-11-02"
+      }
+    },
+    {
+      "id": "us.common.signage",
+      "title": {
+        "tr": "Tabela izni",
+        "en": "Sign permit"
+      },
+      "what": {
+        "tr": "Dış tabela için şehirden izin.",
+        "en": "City permit for exterior signage."
+      },
+      "authority": {
+        "tr": "Şehir yapı dairesi",
+        "en": "City building department"
+      },
+      "sourceUrl": "",
+      "appliesTo": {
+        "sectors": "all",
+        "condition": "hasSign"
+      },
+      "stage": "before_opening",
+      "critical": false,
+      "typicalDays": null,
+      "typicalCost": null,
+      "dependsOn": [],
+      "verification": {
+        "status": "draft",
+        "lastReviewed": "2026-11-02"
+      }
+    }
+  ]
+}

@@ -1,0 +1,679 @@
+{
+  "id": "coffee",
+  "version": 1,
+  "model": "product",
+  "name": {
+    "tr": "Kahve dükkânı",
+    "en": "Coffee shop"
+  },
+  "unit": {
+    "tr": ["satış", "satış / gün"],
+    "en": ["sales", "sales / day"]
+  },
+  "googlePlaceTypes": ["coffee_shop", "cafe"],
+  "osmTags": [
+    {
+      "amenity": "cafe"
+    }
+  ],
+  "siteRequirements": {
+    "minM2": 25,
+    "maxM2": null,
+    "groundFloor": true,
+    "hood": false,
+    "water": true
+  },
+  "requiresCertificate": null,
+  "capexTemplate": [
+    {
+      "k": "espresso",
+      "type": "equipment",
+      "label": {
+        "tr": "Espresso makinesi",
+        "en": "Espresso machine"
+      }
+    },
+    {
+      "k": "grinder",
+      "type": "equipment",
+      "label": {
+        "tr": "Kahve değirmeni",
+        "en": "Grinder"
+      }
+    },
+    {
+      "k": "fridge",
+      "type": "equipment",
+      "label": {
+        "tr": "Buzdolabı / teşhir",
+        "en": "Refrigeration / display"
+      }
+    },
+    {
+      "k": "furniture",
+      "type": "furniture",
+      "label": {
+        "tr": "Mobilya + dekorasyon",
+        "en": "Furniture + decor"
+      }
+    },
+    {
+      "k": "buildout",
+      "type": "buildout",
+      "label": {
+        "tr": "Tadilat",
+        "en": "Build-out"
+      }
+    },
+    {
+      "k": "pos",
+      "type": "equipment",
+      "label": {
+        "tr": "POS + küçük ekipman",
+        "en": "POS + smallwares"
+      }
+    },
+    {
+      "k": "stock",
+      "type": "inventory",
+      "depreciable": false,
+      "label": {
+        "tr": "İlk stok",
+        "en": "Opening inventory"
+      }
+    },
+    {
+      "k": "permits",
+      "type": "permit",
+      "depreciable": false,
+      "label": {
+        "tr": "Ruhsat / kuruluş",
+        "en": "Licenses + permits"
+      }
+    }
+  ],
+  "fixedTemplate": [
+    {
+      "k": "rent",
+      "type": "rent",
+      "label": {
+        "tr": "Kira",
+        "en": "Rent"
+      }
+    },
+    {
+      "k": "staff2",
+      "type": "staff",
+      "label": {
+        "tr": "Personel (2 kişi)",
+        "en": "Staff (2 people)"
+      }
+    },
+    {
+      "k": "utilities",
+      "type": "other",
+      "label": {
+        "tr": "Elektrik / su / doğalgaz",
+        "en": "Utilities"
+      }
+    },
+    {
+      "k": "internet",
+      "type": "other",
+      "label": {
+        "tr": "İnternet / telefon",
+        "en": "Internet / phone"
+      }
+    },
+    {
+      "k": "accounting",
+      "type": "other",
+      "label": {
+        "tr": "Muhasebe",
+        "en": "Accounting"
+      }
+    },
+    {
+      "k": "otherFixed",
+      "type": "other",
+      "label": {
+        "tr": "Diğer (temizlik, sigorta…)",
+        "en": "Other (cleaning, insurance…)"
+      }
+    }
+  ],
+  "itemTemplate": [
+    {
+      "k": "espresso_d",
+      "signature": true,
+      "label": {
+        "tr": "Latte / espresso bazlı",
+        "en": "Latte / espresso drink"
+      }
+    },
+    {
+      "k": "filter",
+      "label": {
+        "tr": "Filtre kahve",
+        "en": "Drip coffee"
+      }
+    },
+    {
+      "k": "cold",
+      "label": {
+        "tr": "Soğuk kahve",
+        "en": "Cold brew"
+      }
+    },
+    {
+      "k": "snack",
+      "label": {
+        "tr": "Atıştırmalık",
+        "en": "Pastry / snack"
+      }
+    }
+  ],
+  "capacity": null,
+  "competition": {
+    "saturationPeoplePerBusiness": [1500, 3000],
+    "qualityWeaknessKeys": ["ordinary"],
+    "overpricedWeaknessKey": "expensive",
+    "tags": {
+      "strengths": {
+        "fast": {
+          "tr": "Hızlı servis",
+          "en": "Fast service"
+        },
+        "cheap": {
+          "tr": "Uygun fiyat",
+          "en": "Low prices"
+        },
+        "specialty": {
+          "tr": "Spesiyalite kahve",
+          "en": "Specialty coffee"
+        },
+        "work": {
+          "tr": "Çalışma alanı",
+          "en": "Work-friendly"
+        },
+        "location": {
+          "tr": "Konum",
+          "en": "Prime spot"
+        },
+        "loyalty": {
+          "tr": "Sadakat programı",
+          "en": "Loyalty program"
+        },
+        "early": {
+          "tr": "Erken açılış",
+          "en": "Opens early"
+        },
+        "menu": {
+          "tr": "Geniş menü",
+          "en": "Big menu"
+        }
+      },
+      "weaknesses": {
+        "slow": {
+          "tr": "Yavaş servis",
+          "en": "Slow service",
+          "tactic": {
+            "tr": "Sabah için \"kahven 2 dakikada\" sözü ver, mobil ön sipariş kur.",
+            "en": "Promise \"your coffee in 2 minutes\" for the morning rush and add mobile pre-order."
+          }
+        },
+        "expensive": {
+          "tr": "Pahalı",
+          "en": "Pricey",
+          "tactic": {
+            "tr": "Rakip fiyatının biraz altında bir \"günün kahvesi\" ile kapıdan içeri çek.",
+            "en": "Pull people in with a \"coffee of the day\" priced just under rivals."
+          }
+        },
+        "ordinary": {
+          "tr": "Sıradan kahve",
+          "en": "Average coffee",
+          "tactic": {
+            "tr": "Tek bir imza içecekte gerçek fark yarat, açılışta ücretsiz tadım yap.",
+            "en": "Make one signature drink clearly better and run free tastings at launch."
+          }
+        },
+        "seating": {
+          "tr": "Oturma yeri az",
+          "en": "Little seating",
+          "tactic": {
+            "tr": "Prizli, sessiz bir çalışma köşesi ayır; laptop müşterisini al.",
+            "en": "Set aside a quiet corner with outlets and take the laptop crowd."
+          }
+        },
+        "lateOpen": {
+          "tr": "Geç açılıyor",
+          "en": "Opens late",
+          "tactic": {
+            "tr": "Rakiplerden bir saat erken aç; işe gidenler senin olur.",
+            "en": "Open an hour before rivals and own the commuter crowd."
+          }
+        },
+        "digital": {
+          "tr": "Dijitalde zayıf",
+          "en": "Weak online",
+          "tactic": {
+            "tr": "Google Haritalar profilini ilk gün tamamla: fotoğraf, menü, saatler.",
+            "en": "Finish your Google Maps profile on day one: photos, menu, hours."
+          }
+        },
+        "badReviews": {
+          "tr": "Kötü yorumlar",
+          "en": "Poor reviews",
+          "tactic": {
+            "tr": "Her yorumu yanıtla, ilk 50 yoruma odaklan; puan farkı tek başına müşteri çeker.",
+            "en": "Reply to every review and chase your first 50; a better rating alone pulls customers."
+          }
+        },
+        "noisy": {
+          "tr": "Gürültülü",
+          "en": "Noisy",
+          "tactic": {
+            "tr": "Müzik ve akustikle \"sakin yer\" olarak konumlan.",
+            "en": "Use music and acoustics to be \"the calm place\"."
+          }
+        }
+      }
+    },
+    "sampleCompetitorNames": {
+      "c_chain": {
+        "tr": "Zincir kafe (örnek)",
+        "en": "Chain café (example)"
+      },
+      "c_local": {
+        "tr": "Mahalle kahvecisi (örnek)",
+        "en": "Corner deli (example)"
+      },
+      "c_third": {
+        "tr": "Üçüncü dalga kafe (örnek)",
+        "en": "Third-wave café (example)"
+      },
+      "c_bakery": {
+        "tr": "Fırın-kafe (örnek)",
+        "en": "Bakery café (example)"
+      }
+    }
+  },
+  "demandFit": {
+    "features": [
+      {
+        "key": "young",
+        "weight": 40,
+        "expr": "clamp((a1-15)/25)"
+      },
+      {
+        "key": "income",
+        "weight": 35,
+        "expr": "idx==null ? 0.5 : clamp((idx-70)/60)"
+      },
+      {
+        "key": "daytime",
+        "weight": 25,
+        "expr": "clamp(dayR/0.5)"
+      }
+    ]
+  },
+  "location": {
+    "captureRatePct": [2, 4],
+    "rentToSalesPct": [12, 18],
+    "checklistOverrides": {
+      "staffAvail": {
+        "tr": "Bölgede deneyimli barista bulmak kolay",
+        "en": "Experienced baristas are easy to hire here"
+      }
+    }
+  },
+  "defaults": {
+    "TR": {
+      "sample": "ist",
+      "fin": {
+        "kdv": 10,
+        "platShare": 10,
+        "waste": 5
+      }
+    },
+    "US": {
+      "sample": "nyc",
+      "fin": {
+        "kdv": 0,
+        "platShare": 8,
+        "waste": 5
+      }
+    }
+  },
+  "samples": {
+    "ist": {
+      "country": "TR",
+      "currency": "TRY",
+      "area": "Kadıköy, Moda",
+      "pop": 25000,
+      "days": 30,
+      "scen": [70, 130, 190],
+      "cap": null,
+      "demo": {
+        "inc": 95000,
+        "incCity": 70000,
+        "a1": 30,
+        "a2": 32,
+        "a3": 25,
+        "hh": 2.3,
+        "day": 8000
+      },
+      "capex": {
+        "espresso": 150000,
+        "grinder": 30000,
+        "fridge": 40000,
+        "furniture": 200000,
+        "buildout": 150000,
+        "pos": 30000,
+        "stock": 30000,
+        "permits": 20000
+      },
+      "fixed": {
+        "rent": 40000,
+        "staff2": 50000,
+        "utilities": 8000,
+        "internet": 2000,
+        "accounting": 5000,
+        "otherFixed": 5000
+      },
+      "items": {
+        "espresso_d": {
+          "price": 120,
+          "cost": 35,
+          "mix": 50
+        },
+        "filter": {
+          "price": 90,
+          "cost": 25,
+          "mix": 20
+        },
+        "cold": {
+          "price": 140,
+          "cost": 45,
+          "mix": 15
+        },
+        "snack": {
+          "price": 110,
+          "cost": 45,
+          "mix": 15
+        }
+      },
+      "comp": [
+        {
+          "k": "c_chain",
+          "dist": 250,
+          "price": 135,
+          "rating": 4.1,
+          "reviews": 1850,
+          "s": ["location", "fast"],
+          "w": ["expensive", "ordinary"]
+        },
+        {
+          "k": "c_local",
+          "dist": 400,
+          "price": 85,
+          "rating": 4.4,
+          "reviews": 320,
+          "s": ["cheap", "early"],
+          "w": ["seating", "digital"]
+        },
+        {
+          "k": "c_third",
+          "dist": 700,
+          "price": 150,
+          "rating": 4.7,
+          "reviews": 980,
+          "s": ["specialty", "work"],
+          "w": ["expensive", "slow"]
+        },
+        {
+          "k": "c_bakery",
+          "dist": 900,
+          "price": 95,
+          "rating": 4,
+          "reviews": 410,
+          "s": ["early", "cheap", "menu"],
+          "w": ["ordinary", "noisy"]
+        }
+      ],
+      "loc": {
+        "foot": {
+          "wd": [80, 110, 70],
+          "we": [60, 90, 80]
+        },
+        "openH": 13,
+        "mgr": 30000,
+        "hist": {
+          "turnover": 1,
+          "reason": "grew",
+          "closures": 1
+        }
+      }
+    },
+    "nyc": {
+      "country": "US",
+      "currency": "USD",
+      "area": "Brooklyn, Park Slope",
+      "pop": 60000,
+      "days": 30,
+      "scen": [200, 320, 440],
+      "cap": null,
+      "demo": {
+        "inc": 160000,
+        "incCity": 76000,
+        "a1": 28,
+        "a2": 33,
+        "a3": 20,
+        "hh": 2.4,
+        "day": 15000
+      },
+      "capex": {
+        "espresso": 18000,
+        "grinder": 3500,
+        "fridge": 6000,
+        "furniture": 30000,
+        "buildout": 70000,
+        "pos": 3000,
+        "stock": 4000,
+        "permits": 3500
+      },
+      "fixed": {
+        "rent": 9500,
+        "staff2": 15000,
+        "utilities": 1500,
+        "internet": 200,
+        "accounting": 600,
+        "otherFixed": 1200
+      },
+      "items": {
+        "espresso_d": {
+          "price": 5.75,
+          "cost": 1.4,
+          "mix": 50
+        },
+        "filter": {
+          "price": 3.5,
+          "cost": 0.6,
+          "mix": 20
+        },
+        "cold": {
+          "price": 6.25,
+          "cost": 1.5,
+          "mix": 15
+        },
+        "snack": {
+          "price": 4.75,
+          "cost": 1.9,
+          "mix": 15
+        }
+      },
+      "comp": [
+        {
+          "k": "c_chain",
+          "dist": 180,
+          "price": 6.25,
+          "rating": 4,
+          "reviews": 2400,
+          "s": ["location", "fast", "loyalty"],
+          "w": ["ordinary", "noisy"]
+        },
+        {
+          "k": "c_local",
+          "dist": 300,
+          "price": 3.5,
+          "rating": 4.3,
+          "reviews": 610,
+          "s": ["cheap", "early"],
+          "w": ["ordinary", "seating"]
+        },
+        {
+          "k": "c_third",
+          "dist": 550,
+          "price": 6.75,
+          "rating": 4.8,
+          "reviews": 1320,
+          "s": ["specialty", "work"],
+          "w": ["expensive", "slow"]
+        },
+        {
+          "k": "c_bakery",
+          "dist": 850,
+          "price": 4.25,
+          "rating": 4.2,
+          "reviews": 540,
+          "s": ["menu", "early"],
+          "w": ["slow", "digital"]
+        }
+      ],
+      "loc": {
+        "foot": {
+          "wd": [260, 300, 200],
+          "we": [180, 260, 220]
+        },
+        "openH": 13,
+        "mgr": 6000,
+        "hist": {
+          "turnover": 1,
+          "reason": "personal",
+          "closures": 1
+        }
+      }
+    },
+    "aus": {
+      "country": "US",
+      "currency": "USD",
+      "area": "Austin, East Cesar Chavez",
+      "pop": 9000,
+      "days": 30,
+      "scen": [120, 220, 320],
+      "cap": null,
+      "demo": {
+        "inc": 70000,
+        "incCity": 86000,
+        "a1": 42,
+        "a2": 28,
+        "a3": 12,
+        "hh": 2.2,
+        "day": 6000
+      },
+      "capex": {
+        "espresso": 16000,
+        "grinder": 3000,
+        "fridge": 5000,
+        "furniture": 22000,
+        "buildout": 45000,
+        "pos": 2500,
+        "stock": 3500,
+        "permits": 2000
+      },
+      "fixed": {
+        "rent": 5200,
+        "staff2": 11500,
+        "utilities": 1100,
+        "internet": 150,
+        "accounting": 450,
+        "otherFixed": 800
+      },
+      "items": {
+        "espresso_d": {
+          "price": 5.25,
+          "cost": 1.3,
+          "mix": 50
+        },
+        "filter": {
+          "price": 3.25,
+          "cost": 0.55,
+          "mix": 20
+        },
+        "cold": {
+          "price": 5.75,
+          "cost": 1.4,
+          "mix": 15
+        },
+        "snack": {
+          "price": 4.25,
+          "cost": 1.7,
+          "mix": 15
+        }
+      },
+      "comp": [
+        {
+          "k": "c_chain",
+          "dist": 400,
+          "price": 5.75,
+          "rating": 4,
+          "reviews": 1500,
+          "s": ["location", "fast"],
+          "w": ["ordinary"]
+        },
+        {
+          "k": "c_third",
+          "dist": 750,
+          "price": 6,
+          "rating": 4.7,
+          "reviews": 860,
+          "s": ["specialty", "work"],
+          "w": ["expensive", "lateOpen"]
+        },
+        {
+          "k": "c_bakery",
+          "dist": 950,
+          "price": 4,
+          "rating": 4.3,
+          "reviews": 390,
+          "s": ["menu", "cheap"],
+          "w": ["slow", "seating"]
+        }
+      ],
+      "loc": {
+        "foot": {
+          "wd": [90, 120, 80],
+          "we": [100, 140, 120]
+        },
+        "openH": 13,
+        "mgr": 4500,
+        "hist": {
+          "turnover": 2,
+          "reason": "rent",
+          "closures": 1
+        }
+      }
+    }
+  },
+  "ai": {
+    "businessNoun": {
+      "tr": "kahve dükkânı",
+      "en": "coffee shop"
+    },
+    "promptHints": "Morning commute and laptop workers drive demand; signature drink quality and speed matter most."
+  },
+  "storefront": {
+    "sampleName": "Kahve Durağı"
+  }
+}

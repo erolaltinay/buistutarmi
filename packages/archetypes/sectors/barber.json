@@ -1,0 +1,647 @@
+{
+  "id": "barber",
+  "version": 1,
+  "model": "service",
+  "name": {
+    "tr": "Berber",
+    "en": "Barbershop"
+  },
+  "unit": {
+    "tr": ["müşteri", "müşteri / gün"],
+    "en": ["clients", "clients / day"]
+  },
+  "googlePlaceTypes": ["barber_shop"],
+  "osmTags": [
+    {
+      "shop": "hairdresser"
+    }
+  ],
+  "siteRequirements": null,
+  "requiresCertificate": "mastery",
+  "capexTemplate": [
+    {
+      "k": "chairs",
+      "type": "equipment",
+      "label": {
+        "tr": "Berber koltukları",
+        "en": "Barber chairs"
+      }
+    },
+    {
+      "k": "mirrors",
+      "type": "equipment",
+      "label": {
+        "tr": "Ayna + istasyonlar",
+        "en": "Mirrors + stations"
+      }
+    },
+    {
+      "k": "tools",
+      "type": "equipment",
+      "label": {
+        "tr": "Makine, makas, sterilizatör",
+        "en": "Clippers, shears, sterilizer"
+      }
+    },
+    {
+      "k": "furnitureB",
+      "type": "furniture",
+      "label": {
+        "tr": "Bekleme alanı + dekor",
+        "en": "Waiting area + decor"
+      }
+    },
+    {
+      "k": "buildout",
+      "type": "buildout",
+      "label": {
+        "tr": "Tadilat",
+        "en": "Build-out"
+      }
+    },
+    {
+      "k": "pos",
+      "type": "equipment",
+      "label": {
+        "tr": "POS + küçük ekipman",
+        "en": "POS + smallwares"
+      }
+    },
+    {
+      "k": "stockB",
+      "type": "inventory",
+      "depreciable": false,
+      "label": {
+        "tr": "İlk ürün stoğu",
+        "en": "Opening retail stock"
+      }
+    },
+    {
+      "k": "permits",
+      "type": "permit",
+      "depreciable": false,
+      "label": {
+        "tr": "Ruhsat / kuruluş",
+        "en": "Licenses + permits"
+      }
+    }
+  ],
+  "fixedTemplate": [
+    {
+      "k": "rent",
+      "type": "rent",
+      "label": {
+        "tr": "Kira",
+        "en": "Rent"
+      }
+    },
+    {
+      "k": "staff3b",
+      "type": "staff",
+      "label": {
+        "tr": "Personel (3 berber)",
+        "en": "Staff (3 barbers)"
+      }
+    },
+    {
+      "k": "utilities",
+      "type": "other",
+      "label": {
+        "tr": "Elektrik / su / doğalgaz",
+        "en": "Utilities"
+      }
+    },
+    {
+      "k": "internet",
+      "type": "other",
+      "label": {
+        "tr": "İnternet / telefon",
+        "en": "Internet / phone"
+      }
+    },
+    {
+      "k": "accounting",
+      "type": "other",
+      "label": {
+        "tr": "Muhasebe",
+        "en": "Accounting"
+      }
+    },
+    {
+      "k": "otherFixed",
+      "type": "other",
+      "label": {
+        "tr": "Diğer (temizlik, sigorta…)",
+        "en": "Other (cleaning, insurance…)"
+      }
+    }
+  ],
+  "itemTemplate": [
+    {
+      "k": "cut",
+      "signature": true,
+      "label": {
+        "tr": "Saç kesimi",
+        "en": "Haircut"
+      }
+    },
+    {
+      "k": "beard",
+      "label": {
+        "tr": "Sakal",
+        "en": "Beard trim"
+      }
+    },
+    {
+      "k": "combo",
+      "label": {
+        "tr": "Saç + sakal",
+        "en": "Cut + beard"
+      }
+    }
+  ],
+  "capacity": {
+    "defaults": {
+      "stations": 3,
+      "hours": 10,
+      "serviceMin": 40
+    }
+  },
+  "competition": {
+    "saturationPeoplePerBusiness": [1200, 2500],
+    "qualityWeaknessKeys": ["inconsistent", "shabby"],
+    "overpricedWeaknessKey": "expensive",
+    "tags": {
+      "strengths": {
+        "cheap": {
+          "tr": "Uygun fiyat",
+          "en": "Low prices"
+        },
+        "masters": {
+          "tr": "Usta kadro",
+          "en": "Skilled barbers"
+        },
+        "booking": {
+          "tr": "Online randevu",
+          "en": "Online booking"
+        },
+        "premium": {
+          "tr": "Premium deneyim",
+          "en": "Premium feel"
+        },
+        "location": {
+          "tr": "Konum",
+          "en": "Prime spot"
+        },
+        "fast": {
+          "tr": "Hızlı",
+          "en": "Quick"
+        },
+        "loyalty": {
+          "tr": "Abonelik",
+          "en": "Membership"
+        },
+        "kids": {
+          "tr": "Çocuk kesimi",
+          "en": "Kids’ cuts"
+        }
+      },
+      "weaknesses": {
+        "wait": {
+          "tr": "Uzun bekleme",
+          "en": "Long waits",
+          "tactic": {
+            "tr": "Online randevu ve \"bekleme yok\" sözü ver.",
+            "en": "Offer online booking and a \"no waiting\" promise."
+          }
+        },
+        "expensive": {
+          "tr": "Pahalı",
+          "en": "Pricey",
+          "tactic": {
+            "tr": "Rakip fiyatının biraz altında bir \"günün kahvesi\" ile kapıdan içeri çek.",
+            "en": "Pull people in with a \"coffee of the day\" priced just under rivals."
+          }
+        },
+        "noAppt": {
+          "tr": "Randevu yok",
+          "en": "No booking",
+          "tactic": {
+            "tr": "Online randevuyu ilk günden aç, hatırlatma mesajı gönder.",
+            "en": "Open online booking from day one with reminder texts."
+          }
+        },
+        "shabby": {
+          "tr": "Bakımsız mekan",
+          "en": "Tired interior",
+          "tactic": {
+            "tr": "Temiz, aydınlık ve modern bir mekan ilk bakışta kazanır.",
+            "en": "A clean, bright, modern space wins at first glance."
+          }
+        },
+        "digital": {
+          "tr": "Dijitalde zayıf",
+          "en": "Weak online",
+          "tactic": {
+            "tr": "Google Haritalar profilini ilk gün tamamla: fotoğraf, menü, saatler.",
+            "en": "Finish your Google Maps profile on day one: photos, menu, hours."
+          }
+        },
+        "inconsistent": {
+          "tr": "Tutarsız kalite",
+          "en": "Inconsistent cuts",
+          "tactic": {
+            "tr": "Standart bir kesim menüsü kur, her işi fotoğrafla ve paylaş.",
+            "en": "Build a standard cut menu, photograph every cut and post it."
+          }
+        },
+        "closesEarly": {
+          "tr": "Erken kapanıyor",
+          "en": "Closes early",
+          "tactic": {
+            "tr": "Akşam geç saate kadar açık kal; mesai sonrası müşteri senin olur.",
+            "en": "Stay open late and take the after-work crowd."
+          }
+        },
+        "badReviews": {
+          "tr": "Kötü yorumlar",
+          "en": "Poor reviews",
+          "tactic": {
+            "tr": "Her yorumu yanıtla, ilk 50 yoruma odaklan; puan farkı tek başına müşteri çeker.",
+            "en": "Reply to every review and chase your first 50; a better rating alone pulls customers."
+          }
+        }
+      }
+    },
+    "sampleCompetitorNames": {
+      "b_chain": {
+        "tr": "Zincir kuaför (örnek)",
+        "en": "Chain salon (example)"
+      },
+      "b_local": {
+        "tr": "Mahalle berberi (örnek)",
+        "en": "Old-school barber (example)"
+      },
+      "b_prem": {
+        "tr": "Premium barbershop (örnek)",
+        "en": "Premium barbershop (example)"
+      },
+      "b_unisex": {
+        "tr": "Unisex salon (örnek)",
+        "en": "Unisex salon (example)"
+      }
+    }
+  },
+  "demandFit": {
+    "features": [
+      {
+        "key": "working",
+        "weight": 40,
+        "expr": "clamp((a1+a2-40)/30)"
+      },
+      {
+        "key": "income",
+        "weight": 30,
+        "expr": "idx==null ? 0.5 : clamp((idx-60)/60)"
+      },
+      {
+        "key": "density",
+        "weight": 30,
+        "expr": "clamp(pop/15000)"
+      }
+    ]
+  },
+  "location": {
+    "captureRatePct": [0.6, 1.5],
+    "rentToSalesPct": [15, 22],
+    "checklistOverrides": {
+      "staffAvail": {
+        "tr": "Bölgede iyi usta bulmak kolay",
+        "en": "Skilled barbers are easy to hire here"
+      }
+    }
+  },
+  "defaults": {
+    "TR": {
+      "sample": "ist",
+      "fin": {
+        "kdv": 20,
+        "platShare": 0,
+        "waste": 2
+      }
+    },
+    "US": {
+      "sample": "nyc",
+      "fin": {
+        "kdv": 0,
+        "platShare": 0,
+        "waste": 2
+      }
+    }
+  },
+  "samples": {
+    "ist": {
+      "country": "TR",
+      "currency": "TRY",
+      "area": "Kadıköy, Moda",
+      "pop": 25000,
+      "days": 26,
+      "scen": [12, 22, 32],
+      "cap": [3, 10, 40],
+      "demo": {
+        "inc": 95000,
+        "incCity": 70000,
+        "a1": 30,
+        "a2": 32,
+        "a3": 25,
+        "hh": 2.3,
+        "day": 8000
+      },
+      "capex": {
+        "chairs": 90000,
+        "mirrors": 40000,
+        "tools": 35000,
+        "furnitureB": 80000,
+        "buildout": 100000,
+        "pos": 15000,
+        "stockB": 15000,
+        "permits": 15000
+      },
+      "fixed": {
+        "rent": 35000,
+        "staff3b": 90000,
+        "utilities": 6000,
+        "internet": 2000,
+        "accounting": 4000,
+        "otherFixed": 4000
+      },
+      "items": {
+        "cut": {
+          "price": 600,
+          "cost": 30,
+          "mix": 55
+        },
+        "beard": {
+          "price": 350,
+          "cost": 20,
+          "mix": 20
+        },
+        "combo": {
+          "price": 850,
+          "cost": 40,
+          "mix": 25
+        }
+      },
+      "comp": [
+        {
+          "k": "b_chain",
+          "dist": 300,
+          "price": 650,
+          "rating": 4,
+          "reviews": 640,
+          "s": ["location", "booking"],
+          "w": ["inconsistent", "expensive"]
+        },
+        {
+          "k": "b_local",
+          "dist": 200,
+          "price": 450,
+          "rating": 4.5,
+          "reviews": 210,
+          "s": ["cheap", "masters"],
+          "w": ["noAppt", "shabby", "digital"]
+        },
+        {
+          "k": "b_prem",
+          "dist": 800,
+          "price": 1100,
+          "rating": 4.8,
+          "reviews": 520,
+          "s": ["premium", "masters", "booking"],
+          "w": ["expensive"]
+        },
+        {
+          "k": "b_unisex",
+          "dist": 600,
+          "price": 700,
+          "rating": 4.1,
+          "reviews": 330,
+          "s": ["location", "kids"],
+          "w": ["wait", "inconsistent"]
+        }
+      ],
+      "loc": {
+        "foot": {
+          "wd": [60, 80, 70],
+          "we": [80, 100, 80]
+        },
+        "openH": 10,
+        "mgr": 35000,
+        "hist": {
+          "turnover": 1,
+          "reason": "grew",
+          "closures": 1
+        }
+      }
+    },
+    "nyc": {
+      "country": "US",
+      "currency": "USD",
+      "area": "Brooklyn, Park Slope",
+      "pop": 60000,
+      "days": 26,
+      "scen": [15, 28, 40],
+      "cap": [3, 10, 40],
+      "demo": {
+        "inc": 160000,
+        "incCity": 76000,
+        "a1": 28,
+        "a2": 33,
+        "a3": 20,
+        "hh": 2.4,
+        "day": 15000
+      },
+      "capex": {
+        "chairs": 9000,
+        "mirrors": 4000,
+        "tools": 3500,
+        "furnitureB": 10000,
+        "buildout": 40000,
+        "pos": 1500,
+        "stockB": 1500,
+        "permits": 2000
+      },
+      "fixed": {
+        "rent": 6500,
+        "staff3b": 10500,
+        "utilities": 700,
+        "internet": 150,
+        "accounting": 500,
+        "otherFixed": 600
+      },
+      "items": {
+        "cut": {
+          "price": 45,
+          "cost": 3,
+          "mix": 55
+        },
+        "beard": {
+          "price": 25,
+          "cost": 2,
+          "mix": 20
+        },
+        "combo": {
+          "price": 65,
+          "cost": 4,
+          "mix": 25
+        }
+      },
+      "comp": [
+        {
+          "k": "b_chain",
+          "dist": 350,
+          "price": 35,
+          "rating": 3.9,
+          "reviews": 880,
+          "s": ["location", "booking", "fast"],
+          "w": ["inconsistent"]
+        },
+        {
+          "k": "b_local",
+          "dist": 250,
+          "price": 30,
+          "rating": 4.4,
+          "reviews": 300,
+          "s": ["cheap", "masters"],
+          "w": ["noAppt", "shabby"]
+        },
+        {
+          "k": "b_prem",
+          "dist": 700,
+          "price": 70,
+          "rating": 4.9,
+          "reviews": 610,
+          "s": ["premium", "masters", "booking"],
+          "w": ["expensive"]
+        },
+        {
+          "k": "b_unisex",
+          "dist": 900,
+          "price": 55,
+          "rating": 4,
+          "reviews": 280,
+          "s": ["kids", "location"],
+          "w": ["wait", "inconsistent"]
+        }
+      ],
+      "loc": {
+        "foot": {
+          "wd": [180, 220, 200],
+          "we": [160, 200, 180]
+        },
+        "openH": 10,
+        "mgr": 5000,
+        "hist": {
+          "turnover": 1,
+          "reason": "personal",
+          "closures": 1
+        }
+      }
+    },
+    "aus": {
+      "country": "US",
+      "currency": "USD",
+      "area": "Austin, East Cesar Chavez",
+      "pop": 9000,
+      "days": 26,
+      "scen": [14, 26, 38],
+      "cap": [3, 10, 40],
+      "demo": {
+        "inc": 70000,
+        "incCity": 86000,
+        "a1": 42,
+        "a2": 28,
+        "a3": 12,
+        "hh": 2.2,
+        "day": 6000
+      },
+      "capex": {
+        "chairs": 7500,
+        "mirrors": 3000,
+        "tools": 3000,
+        "furnitureB": 7000,
+        "buildout": 25000,
+        "pos": 1200,
+        "stockB": 1200,
+        "permits": 1200
+      },
+      "fixed": {
+        "rent": 3800,
+        "staff3b": 8500,
+        "utilities": 550,
+        "internet": 120,
+        "accounting": 400,
+        "otherFixed": 500
+      },
+      "items": {
+        "cut": {
+          "price": 35,
+          "cost": 2.5,
+          "mix": 55
+        },
+        "beard": {
+          "price": 20,
+          "cost": 1.5,
+          "mix": 20
+        },
+        "combo": {
+          "price": 50,
+          "cost": 3.5,
+          "mix": 25
+        }
+      },
+      "comp": [
+        {
+          "k": "b_chain",
+          "dist": 500,
+          "price": 28,
+          "rating": 3.8,
+          "reviews": 520,
+          "s": ["location", "booking"],
+          "w": ["inconsistent", "wait"]
+        },
+        {
+          "k": "b_prem",
+          "dist": 850,
+          "price": 55,
+          "rating": 4.8,
+          "reviews": 340,
+          "s": ["premium", "masters"],
+          "w": ["expensive", "closesEarly"]
+        }
+      ],
+      "loc": {
+        "foot": {
+          "wd": [40, 60, 50],
+          "we": [50, 70, 60]
+        },
+        "openH": 10,
+        "mgr": 4000,
+        "hist": {
+          "turnover": 1,
+          "reason": "unknown",
+          "closures": 2
+        }
+      }
+    }
+  },
+  "ai": {
+    "businessNoun": {
+      "tr": "berber",
+      "en": "barbershop"
+    }
+  },
+  "storefront": {
+    "sampleName": "Usta Berber"
+  }
+}

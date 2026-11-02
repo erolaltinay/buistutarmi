@@ -1,0 +1,37 @@
+{
+  "name": "bu-is-tutar-mi",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@12.16.1",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "pnpm --filter @bitm/web dev",
+    "build": "pnpm --filter @bitm/web build",
+    "test": "vitest run",
+    "test:engine": "vitest run --project engine",
+    "test:e2e": "pnpm --filter @bitm/web test:e2e",
+    "lint": "eslint .",
+    "typecheck": "pnpm -r --parallel typecheck && tsc -p tests/tsconfig.json --noEmit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "i18n:check": "tsx scripts/i18n-check.ts",
+    "legal:check": "tsx scripts/legal-check.ts",
+    "archetypes:check": "tsx scripts/archetypes-check.ts"
+  },
+  "devDependencies": {
+    "@bitm/archetypes": "workspace:*",
+    "@bitm/engine": "workspace:*",
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^26.6.6",
+    "eslint": "^10.14.0",
+    "globals": "^17.14.0",
+    "prettier": "^3.9.10",
+    "tsx": "^4.23.15",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.72.1",
+    "vitest": "^5.0.5",
+    "zod": "^4.6.7"
+  }
+}

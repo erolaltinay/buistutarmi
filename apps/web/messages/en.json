@@ -1,0 +1,21 @@
+{
+  "app": {
+    "name": "Should You Open This?",
+    "tagline": "Before you sign the lease: your address, your numbers, a clear answer.",
+    "disclaimer": "This analysis is a decision-support tool, not investment advice. The numbers come from your inputs and sample data; talk to your accountant before you decide."
+  },
+  "home": {
+    "sampleTitle": "Sample analysis: {sector}, {area}",
+    "sampleNote": "This result uses the sample numbers from the video. Analysis with your own numbers is coming soon.",
+    "breakEven": "Break-even",
+    "investment": "Total investment",
+    "payback": "Payback",
+    "months": "{count} months",
+    "never": "Not within 60 months",
+    "verdict": {
+      "GO": "GO",
+      "MID": "MAYBE",
+      "NO": "NO-GO"
+    }
+  }
+}

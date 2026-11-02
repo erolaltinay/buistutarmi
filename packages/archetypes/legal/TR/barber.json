@@ -1,0 +1,65 @@
+{
+  "_note": "TASLAK. Hiçbir madde doğrulanmadı; sourceUrl, typicalDays ve typicalCost resmi kaynaktan doldurulmadan production'a çıkamaz (SPEC-legal §4).",
+  "country": "TR",
+  "scope": "barber",
+  "items": [
+    {
+      "id": "tr.barber.mastery_certificate",
+      "title": {
+        "tr": "Ustalık belgesi",
+        "en": "Master craftsman certificate"
+      },
+      "what": {
+        "tr": "Berber dükkânı açacak kişi veya işletmede sorumlu kişi için ustalık belgesi aranır.",
+        "en": "A master craftsman certificate is required for the person opening or running the barbershop."
+      },
+      "authority": {
+        "tr": "Milli Eğitim Bakanlığı (mesleki eğitim merkezleri)",
+        "en": "Ministry of National Education (vocational training)"
+      },
+      "sourceUrl": "",
+      "appliesTo": {
+        "sectors": ["barber"],
+        "condition": "always"
+      },
+      "stage": "before_lease",
+      "critical": true,
+      "typicalDays": null,
+      "typicalCost": null,
+      "dependsOn": [],
+      "verification": {
+        "status": "draft",
+        "lastReviewed": "2026-11-02"
+      }
+    },
+    {
+      "id": "tr.barber.hygiene",
+      "title": {
+        "tr": "Hijyen ve sterilizasyon şartları",
+        "en": "Hygiene and sterilization rules"
+      },
+      "what": {
+        "tr": "Alet sterilizasyonu, tek kullanımlık malzeme ve temizlik şartları; denetimlerde kontrol edilir.",
+        "en": "Tool sterilization, single-use materials and cleaning requirements checked during inspections."
+      },
+      "authority": {
+        "tr": "Belediye / il sağlık müdürlüğü",
+        "en": "Municipality / provincial health directorate"
+      },
+      "sourceUrl": "",
+      "appliesTo": {
+        "sectors": ["barber"],
+        "condition": "always"
+      },
+      "stage": "before_opening",
+      "critical": false,
+      "typicalDays": null,
+      "typicalCost": null,
+      "dependsOn": [],
+      "verification": {
+        "status": "draft",
+        "lastReviewed": "2026-11-02"
+      }
+    }
+  ]
+}

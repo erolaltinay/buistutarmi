@@ -1,0 +1,41 @@
+{
+  "code": "TR",
+  "currency": "TRY",
+  "locale": "tr-TR",
+  "supportLevel": "full",
+  "launched": true,
+  "priceRounding": 5,
+  "pricing": {
+    "detailedReport": null,
+    "currency": "TRY"
+  },
+  "legal": "legal/TR",
+  "fin": {
+    "rampStart": 50,
+    "rampMonths": 6,
+    "priceInc": 30,
+    "inflCost": 30,
+    "rentInc": 30,
+    "wageInc": 30,
+    "ownerSalary": 0,
+    "cardShare": 80,
+    "cardFee": 2.5,
+    "platFee": 25,
+    "stopaj": 20,
+    "employer": 20,
+    "profitTax": 25,
+    "loanRate": 45,
+    "loanTerm": 36,
+    "depYears": 5
+  },
+  "taxNote": {
+    "tr": "Oranlar sık değişir; muhasebecine teyit ettir.",
+    "en": "Rates change often; confirm with your accountant."
+  },
+  "dataSources": {
+    "demographics": "TUIK_ADNKS",
+    "income": "PROXY",
+    "elections": "YSK"
+  },
+  "lastReviewed": "2026-10-25"
+}
