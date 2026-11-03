@@ -15,8 +15,9 @@ Dükkân açmak isteyen birine, kendi adresi ve rakamlarıyla "bu iş tutar mı?
 ## Kullanıcılar
 
 1. **Girişimci (birincil):** Kahve dükkânı, berber, fırın gibi tek şube açmayı düşünen kişi. Finans bilgisi sınırlı, telefondan kullanıyor.
-2. **Danışman / emlakçı / franchise satıcısı (ikincil, Faz 3):** Müşterisi için rapor hazırlayan profesyonel.
-3. **Banka kredi birimi (Faz 4):** Kredi başvurusuna eklenen standart rapor.
+2. **Düzenlemeli serbest meslek (Faz 3):** Diş hekimi muayenehanesi veya veteriner kliniği açacak hekim. Yatırımı ve ödeme gücü yüksek; ruhsatı meslek lisansına bağlı, reklamı kısıtlı. Motor hazırlığı Faz 1'de (İP-1.12), yayın mevzuat doğrulandıktan sonra (İP-3.1). → `SPEC-archetypes.md` §2.1
+3. **Danışman / emlakçı / franchise satıcısı (ikincil, Faz 3):** Müşterisi için rapor hazırlayan profesyonel.
+4. **Banka kredi birimi (Faz 4):** Kredi başvurusuna eklenen standart rapor.
 
 ## Ürünün çekirdeği (prototipte çalışıyor)
 

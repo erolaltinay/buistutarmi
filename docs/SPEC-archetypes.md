@@ -7,8 +7,8 @@ Hedef: yeni bir sektör eklemek kod değil, bir JSON dosyası işi olsun. Motor 
 | model | Başabaş birimi | Sektöre özel blok | Örnek |
 |---|---|---|---|
 | `product` | satış / gün | Ürünler: fiyat, malzeme maliyeti, satış payı, fire | Kahve, fırın, dondurmacı |
-| `service` | müşteri / gün | Hizmetler + kapasite (istasyon × saat ÷ süre) | Berber, oto yıkama, kuru temizleme |
-| `hybrid` | işlem / gün | İkisi birden; kapasite sadece hizmet kalemlerine uygulanır | Berber + ürün satışı, kafe + atölye |
+| `service` | müşteri / gün | Hizmetler + kapasite (istasyon × saat ÷ süre) | Berber, oto yıkama, kuru temizleme, diş hekimi |
+| `hybrid` | işlem / gün | İkisi birden; kapasite sadece hizmet kalemlerine uygulanır | Berber + ürün satışı, kafe + atölye, veteriner kliniği |
 
 ## 2. Dosya şeması (`packages/archetypes/sectors/<id>.json`)
 
@@ -90,6 +90,47 @@ Berber (`service`) için ek alan:
 
 Prototipteki kahve ve berber ayarlarının tamamı (etiketler, taktikler, örnek veriler) `prototype/bu-is-tutar-mi-mvp.html` içindeki `TAGS`, `TACTIC`, `P`, `LOCP`, `QUALITY_GAP`, `SAT_T`, `CHK` sabitlerinden bu şemaya taşınır.
 
+### 2.1 Düzenlemeli meslekler (diş hekimi, veteriner)
+
+Ruhsatı meslek lisansına bağlı, reklamı kısıtlı ve fiyatı tarifeyle sınırlanabilen meslekler için ek alanlar. İlk iki sektör: `dentist` (diş hekimi muayenehanesi, `service`) ve `vet` (veteriner kliniği, `hybrid`). Hazırlık Faz 1'de (İP-1.12), yayın Faz 3'te (İP-3.1).
+
+```jsonc
+"regulated": {
+  "profession": "dentist",            // meslek lisansı anahtarı; requiresCertificate ile aynı
+  "marketingRestricted": true         // taktikler ve Claude önerileri indirim/kampanya/reklam iddiası içermez (SPEC-ai §1)
+},
+"location": {
+  "footTraffic": "info",              // scored (varsayılan) | info — SPEC-calc-engine §10.1
+  "captureRatePct": [0, 0], "rentToSalesPct": [..]
+},
+"checklist": {                        // ortak kontrol listesine göre fark
+  "remove": ["commuteSide", "outdoor"],
+  "add": [ { "k": "healthUseOk", "critical": true, "blocker": false, "label": {..}, "flag": {..} } ]
+},
+"itemTemplate": [
+  { "k": "exam", "kind": "service", "signature": true, "label": {..} },
+  { "k": "food", "kind": "product", "label": {..} }      // hybrid'de her kalemin kind'ı zorunlu
+],
+"defaults": {
+  "TR": {
+    "sample": "...", "fin": { .. },
+    "priceFloors": {                  // SPEC-calc-engine §12.1; yoksa taban yok
+      "sourceUrl": "https://...",     // meslek kuruluşunun resmi tarifesi
+      "lastReviewed": "YYYY-MM-DD",
+      "reviewedBy": "...",
+      "items": { "exam": 0 }          // kalem anahtarı → taban fiyat (ülke para biriminde)
+    }
+  }
+}
+```
+
+Kurallar:
+
+- **Taban fiyatlar mevzuat gibi ele alınır.** `priceFloors` boş kaynakla veya doğrulanmadan (`reviewedBy` boş) production'a çıkamaz; `legal:check` bunu da denetler (`price-floor-source`, `price-floor-reviewed-by`). Tarife yıllık değişebildiği için `lastReviewed` 12 aydan eskiyse uyarı verir. Hangi meslekte gerçekten bağlayıcı bir taban olduğu İP-3.1'de resmi kaynaktan doğrulanır; doğrulanamazsa `priceFloors` hiç yazılmaz.
+- **Kontrol listesi farkı:** `remove` ortak listedeki anahtarları çıkarır, `add` sektöre özel madde ekler. `blocker` maddeler (ör. `permitOk`) çıkarılamaz; eklenen anahtar ortak listedekiyle çakışamaz; `location.checklistOverrides` yalnız listede kalan etiketsiz maddeleri içerir. Hepsi şemada denetlenir. Eklenen maddeler kullanıcının cevapladığı sorulardır; hukuki hüküm içermez.
+- **Taktik ve etiket metinleri** `marketingRestricted` sektörde indirim, kampanya, "en iyi / en ucuz" gibi karşılaştırmalı iddia içermez; bilgilendirici olur (randevu kolaylığı, şeffaf fiyat listesi, hijyen, erişilebilirlik gibi).
+- **Mağaza görseli** bu sektörlerde tabela ve cephe taslağı olarak kalır; slogan alanı kapalıdır.
+
 ## 3. Ülke ayarları (`packages/archetypes/countries/<code>.json`)
 
 ```jsonc
@@ -126,10 +167,12 @@ Birleştirme sırası: `ülke.fin` → `sektör.defaults[ülke].fin` → kullan�
 5. `googlePlaceTypes`, `osmTags`, `siteRequirements` ve gerekiyorsa `requiresCertificate` dolu.
 6. `full` destekli her ülke için `legal/<ÜLKE>/<id>.json` mevzuat dosyası; maddeler doğrulanmadan sektör o ülkede yayına çıkmaz (`SPEC-legal.md` §4).
 7. Motor testleri: yeni sektör için en az 2 golden vaka eklenir.
-8. Videosu yayımlanınca sektör sayfası açılır (`/[locale]/sektor/<id>`), video gömülür, "Kendi rakamlarınla hesapla" butonu sihirbazı bu arketiple başlatır.
+8. Düzenlemeli meslekte (§2.1): `regulated`, `footTraffic`, kontrol listesi farkı ve (varsa) doğrulanmış `priceFloors`; taktikler reklam kısıtına uygun; mevzuat ve taban fiyat doğrulaması meslek alanını bilen bir uzmanla (sağlık hukukçusu veya bu alanda çalışan mali müşavir) yapılır.
+9. Videosu yayımlanınca sektör sayfası açılır (`/[locale]/sektor/<id>`), video gömülür, "Kendi rakamlarınla hesapla" butonu sihirbazı bu arketiple başlatır.
 
 ## 5. İlk yıl sektör sırası (öneri)
 
 Ürün: kahve, fırın, dondurmacı, çiçekçi, kuruyemiş, kasap.
 Hizmet: berber, kuaför, oto yıkama, kuru temizleme, terzi, evcil hayvan bakımı, spor stüdyosu.
 Karma: berber + ürün, pastane + kafe, bisiklet tamir + satış.
+Düzenlemeli meslekler (öncelikli, İP-3.1'in ilk iki sektörü): diş hekimi (`dentist`, service), veteriner kliniği (`vet`, hybrid).

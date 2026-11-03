@@ -55,6 +55,9 @@ Kabul: `?utm_content=<video-id>` ile gelen kullanıcının hızlı analiz tamaml
 **İP-1.11 TR/EN ve yayın** — `next-intl`, iki dilde tüm metinler; Vercel prod; yatırım ve mevzuat uyarıları her ekranda.
 Kabul: `pnpm i18n:check` geçiyor; Lighthouse mobil performans ≥ 85, erişilebilirlik ≥ 95; KVKK aydınlatma metni ve kullanım şartları avukat görüşüyle yayında.
 
+**İP-1.12 Düzenlemeli meslekler için motor ve şema hazırlığı (diş hekimi, veteriner)** — `SPEC-calc-engine.md` §6 (`svcShare`, hibrit kapasite), §10.1 (yaya trafiği `info` modu), §10.5 (sektöre özel kontrol listesi), §12.1 (taban fiyat); `SPEC-archetypes.md` §2.1 (`regulated`, `footTraffic`, `checklist.remove/add`, `priceFloors`, kalem `kind`); `legal:check`'in `priceFloors` kaynağını da denetlemesi. Yeni sektör bu İP'de yayına çıkmaz; Faz 1 içinde herhangi bir sırada yapılabilir, lansmanı bekletmez.
+Kabul: 30 golden vaka değişmeden geçiyor; SPEC-calc-engine §15'teki yeni birim testleri yazılmış ve geçiyor (`info` modunda yaya bayrağı ve "say" teyidi yok; hiçbir kart taban fiyatın altına düşmüyor, `now` kartı değişmiyor; hibritte kapasite yalnız hizmet payına uygulanıyor); kaynaksız `priceFloors` varken production build kırmızı; `blocker` madde sektör listesinden çıkarılamıyor (şema testi).
+
 ## Faz 2 — Otomatik veri ve saha (≈4–5 hafta)
 
 **İP-2.1 Adres ve rakipler** — Geocoding + Places Nearby; OpenStreetMap yedek kaynak; rakip listesi önerisi; kullanıcı onayı; atıf; önbellek kuralları.
@@ -80,7 +83,8 @@ Kabul: `preOpenMonths = 0` iken 30 golden vaka değişmeden geçiyor; `preOpenMo
 
 ## Faz 3 — Ölçek, gelir ve ikinci pazar (≈7–8 hafta)
 
-- **İP-3.1** Arketip motoru genişletme: +8 sektör (SPEC-archetypes bölüm 5), her biri için golden vaka, `siteRequirements` ve `requiresCertificate` alanları, TR mevzuat dosyası.
+- **İP-3.1** Arketip motoru genişletme: +8 sektör (SPEC-archetypes bölüm 5), her biri için golden vaka, `siteRequirements` ve `requiresCertificate` alanları, TR mevzuat dosyası. **İlk ikisi diş hekimi (`dentist`) ve veteriner kliniği (`vet`)**; İP-1.12'deki alanları kullanır.
+  Kabul (diş hekimi ve veteriner için ek): TR mevzuat dosyası ve (varsa) taban fiyat kaynağı, meslek alanını bilen bir uzmanla (sağlık hukukçusu veya bu alanda çalışan mali müşavir) resmi kaynaktan doğrulandı, doğrulanamayan madde silindi; her sektör için en az 2 golden vaka, temel sayıları motordan bağımsız hesap tablosuyla elle doğrulanarak eklendi; taktik metinleri ve Claude promptları reklam kısıtına uygun (indirim, kampanya, karşılaştırmalı iddia yok); her iki sektörün videosu yayımlanınca sektör sayfası açıldı.
 - **İP-3.2** Ödeme: iyzico + Stripe; freemium sınırları sunucuda; fiyatlar ülke dosyasında.
 - **İP-3.3** Açılış sonrası takip (`actuals`), tahmin/gerçekleşen grafiği, e-posta hatırlatması.
 - **İP-3.4** Kalibrasyon paneli: gerçekleşen verilerden eşiklerin (giriş oranı, kira/ciro, doygunluk) şehir/sektör bazında güncellenmesi önerisi (otomatik değil, insan onayıyla).

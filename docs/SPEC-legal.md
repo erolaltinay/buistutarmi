@@ -109,3 +109,5 @@ Pakette şu dosyalar **taslak** olarak vardır. Hepsinde `verification.status = 
 | `legal/US/regions/US-TX-AUSTIN.json` | Gıda işletmesi izni, gıda yöneticisi / çalışanı sertifikası (kahve), eyalet berber lisansı ve berber dükkânı izni (berber) |
 
 **Doğrulama görevi (ROADMAP İP-1.8):** Her madde resmi kaynağından kontrol edilir, `sourceUrl` ve tahmini süre/maliyet doldurulur, `reviewedBy` yazılır. Türkiye için mali müşavir, ABD için yerel danışman görüşü alınır. Doğrulanmayan madde silinir, tahminle doldurulmaz.
+
+**Diş hekimi ve veteriner (ROADMAP İP-3.1):** `legal/TR/dentist.json` ve `legal/TR/vet.json` için taslak bile yazılmaz; maddeler doğrudan resmi kaynaklardan ve meslek alanını bilen bir uzmanla (sağlık hukukçusu veya bu alanda çalışan mali müşavir) hazırlanır. Araştırılacak başlıklar (hiçbiri doğrulanmadı, sadece çalışma listesi): muayenehane / klinik açılış izni ve bağlı olduğu kurum, meslek odası kaydı, görüntüleme cihazları için lisans gerekip gerekmediği, tıbbi atık yükümlülükleri, binanın sağlık hizmeti için kullanılabilirliği, reklam ve tabela kuralları, varsa meslek kuruluşunun asgari ücret tarifesi (`SPEC-archetypes.md` §2.1 `priceFloors`).

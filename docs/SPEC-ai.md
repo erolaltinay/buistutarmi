@@ -9,6 +9,7 @@ Prototipte Claude çağrıları tarayıcıdan, kullanıcının kendi Claude hesa
 - Claude'a sadece kullanıcının verisi gider. Prompt "sadece verilen veriyi kullan, eksikse söyle" kuralını içerir.
 - **Seçim verisi** sadece "nötr bağlam" olarak gider ve prompt şu kuralı içerir: oy dağılımından bireysel zevk veya harcama çıkarımı yapma, siyasi yorum yapma.
 - AI'ın önerdiği değerler (fiyat, kontrol listesi cevabı, etiket) kullanıcı onayı olmadan kaydedilmez.
+- **Düzenlemeli meslekler** (arketipte `regulated.marketingRestricted`, `SPEC-archetypes.md` §2.1): rakip analizi ve görsel inceleme promptlarına şu kural eklenir: "This profession restricts advertising. Do not suggest discounts, campaigns, free offers or comparative claims (best, cheapest); suggest only informative, compliant actions such as easy booking, a transparent price list, hygiene and accessibility." Fiyat önerisi (`pricing.signaturePrice`) kalemin taban fiyatının (`minPrice`) altındaysa sunucu yanıtı reddetmez ama "Uygula" düğmesi tabana çekilmiş değeri önerir ve kullanıcıya taban gerekçesini gösterir. Mağaza görseli promptunda slogan kullanılmaz.
 - Model seçimi: hızlı/kısa işler (görsel prompt, etiket) düşük maliyetli modelle; rakip analizi ve görsel inceleme orta seviye modelle. Model adları ortam değişkeninde tutulur, kodda yazılmaz.
 - Görseller: yüzleri bulanıklaştırılmış kopya; uzun kenar en fazla 1600 px JPEG.
 - Kullanıcı başına günlük limit (plan bazlı); aşılırsa açık bir mesaj.

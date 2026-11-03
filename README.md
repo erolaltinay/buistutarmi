@@ -40,4 +40,5 @@ Bu klasör, prototip olarak çalışan fizibilite uygulamasını gerçek bir ür
 - Ödeme sağlayıcısı: TR için iyzico, global için Stripe (Faz 3).
 - Ücretli rapor fiyatı: lansman öncesi test (referans: Yapgitsin 999 ₺).
 - Mevzuat maddelerinin doğrulanması için bir mali müşavir (İP-1.8).
+- Diş hekimi ve veteriner mevzuatı ile (varsa) meslek tarifesindeki taban fiyatların doğrulanması için sağlık hukukçusu veya bu alanda çalışan bir mali müşavir (İP-3.1; erken başlanmalı).
 - KVKK aydınlatma metni, kullanım şartları ve "yatırım tavsiyesi değildir" çerçevesi için avukat görüşü, yayına çıkmadan önce.

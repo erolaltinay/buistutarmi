@@ -19,7 +19,9 @@ type AnalysisInput = {
   cap: [stations: number, hours: number, serviceMin: number] | null; // sadece hizmet arketipi
   capex: {k?: string; n?: string; v: number}[];
   fixed: {k?: string; n?: string; v: number; type?: 'rent'|'staff'|'other'}[];
-  items: {k?: string; n?: string; price: number; cost: number; mix: number}[]; // ilk satır imza ürün
+  items: {k?: string; n?: string; price: number; cost: number; mix: number;   // ilk satır imza ürün
+          kind?: 'product'|'service';   // hybrid arketipte zorunlu (§6); yoksa arketip modelinden
+          minPrice?: number}[];         // düzenlemeli meslekte taban fiyat (§12.1); yoksa taban yok
   fin: FinParams;
   area: string; pop: number;
   demo: {inc; incCity; a1; a2; a3; hh; day; turnout; elec};
@@ -143,7 +145,10 @@ beDay   = beMonth / days
 nets[i] = scen[i] · days · cm − fixed       // 1. ay fiyatlarıyla, vergi öncesi aylık nakit
 beDayNoMgr = cm > 0 ? (fixed − mgrL) / cm / days : ∞
 maxDaily (hizmet) = stations · hours · 60 / serviceMin
+svcShare = model 'service' ise 1; 'hybrid' ise Σ mix(kind = 'service') / Σ mix; 'product' ise 0
 ```
+
+Kapasite sadece hizmet işlemlerine uygulanır: hibrit arketipte (ör. veteriner kliniği: muayene + mama/aksesuar satışı) günlük işlemlerin yalnızca `svcShare` kadarı koltuk/oda kapasitesi kullanır. `service` modelinde `svcShare = 1` olduğundan kahve ve berber sonuçları değişmez. Hibritte `kind` yazılmamış kalem hizmet sayılır (kapasite açısından ihtiyatlı); arketip şeması hibritte `kind`'ı zorunlu tuttuğu için bu yalnız eksik kullanıcı verisinde olur.
 
 Geri ödeme (projeksiyon satırları üzerinde): `cum += ni + dep`; `payOpen` = ilk `cum ≥ capexTotal` olan ay; `payAll` = ilk `cum ≥ invest` olan ay. 60 ayda olmuyorsa ∞.
 
@@ -154,7 +159,7 @@ Duyarlılık tablosu: `cm × {1, 0.9, 0.8}` için `fixed / cm' / days`.
 Sırayla, ilk eşleşen döner:
 
 1. `cm ≤ 0` → NO (her satış zarar).
-2. hizmet ve `beDay > maxDaily` → NO (kapasite yetmez).
+2. kapasiteli arketip ve `beDay · svcShare > maxDaily` → NO (kapasite yetmez).
 3. `base < beDay` → NO.
 4. `base < 1.25 · beDay` → MID (ince pay).
 5. `payAll > 36` → MID (geri dönüş uzun).
@@ -204,6 +209,8 @@ durum  = reqCap üzerinden: ≤t0 iyi, ≤t1 dikkat, aksi risk; reqCap null ise 
 eşik   = coffee [2, 4], barber [0.6, 1.5]
 ```
 
+**Yaya trafiği modu** (arketipte `location.footTraffic`, varsayılan `scored`): randevuyla çalışan mesleklerde (diş hekimi, veteriner) müşteri kapının önünden geçenlerden gelmez. `footTraffic = 'info'` iken `daily`, `reqCap` ve `baseCap` hesaplanıp bilgi olarak döner; yaya durumu `null` olur, dolayısıyla puana girmez, kırmızı bayrak üretmez ve teyit listesine "say" eklenmez. Kahve ve berber `scored` modundadır.
+
 ### 10.2 Kira yükü
 ```
 rent   = rent0 (tüm kira satırlarının stopajlı toplamı; kira satırı yoksa null)
@@ -226,7 +233,7 @@ eşik   = coffee [12, 18], barber [15, 22]
 - `equity < 40` risk; `< 60` dikkat.
 
 ### 10.5 Kontrol listesi
-12 madde (anahtarlar arketipte): `commuteSide, anchor, visible, access, futurePlus, noDisrupt*, lowSeason, weekBalance, permitOk*, outdoor, staffAvail, wageOk` (* kritik).
+12 madde (anahtarlar arketipte): `commuteSide, anchor, visible, access, futurePlus, noDisrupt*, lowSeason, weekBalance, permitOk*, outdoor, staffAvail, wageOk` (* kritik). Arketip ortak listeden madde çıkarabilir ve sektöre özel madde ekleyebilir (`SPEC-archetypes.md` §2.1); motor arketipten gelen listeyi olduğu gibi kullanır, madde sayısı sabit değildir.
 ```
 y = evet, n = hayır, u = bilinmiyor
 cs = (y + 0.5u) / (y+n+u) · 100
@@ -237,9 +244,9 @@ durum = kritik bir 'hayır' varsa risk; cs ≥ 70 iyi; ≥ 45 dikkat; aksi risk
 ```
 bayraklar: yaya=risk, kira=risk, geçmiş=risk, her kritik 'hayır' (noDisrupt ve permitOk ayrı ayrı), girişimci=risk.
            Kontrol listesinin 'risk' durumu tek başına bayrak değildir; sadece kritik 'hayır'lar bayraktır.
-blocker  : permitOk == 0
+blocker  : arketipte `blocker` işaretli herhangi bir madde == 0 (bugün yalnız permitOk)
 puan     : bloklar (yaya, kira, geçmiş, girişimci, liste) için iyi=100, dikkat=60, risk=20; veri olmayan blok hariç ortalama
-teyit listesi: sayım yoksa "say", bilinmeyen kritik maddeler, komşu esnafla konuşulmadıysa
+teyit listesi: sayım yoksa "say" (sadece footTraffic = scored), bilinmeyen kritik maddeler, komşu esnafla konuşulmadıysa
 ```
 
 ## 11. Nihai karar
@@ -271,12 +278,26 @@ her kart: oran = price/your; menü = items[0].price = price, diğerleri roundP(p
 qShare = arketipin kalite etiketleri (coffee: ordinary; barber: inconsistent, shabby) içinde EN YÜKSEK TEK etiket payı
 ```
 
+### 12.1 Taban fiyat (düzenlemeli meslekler)
+
+Bazı mesleklerde meslek kuruluşunun asgari ücret tarifesi gibi bir alt sınır olabilir. Kalemin `minPrice` alanı varsa:
+
+```
+floorP(i, v) = minPrice_i varsa max(v, minPrice_i), yoksa v
+kartlar (now hariç): her kalemin fiyatı = floorP(i, roundP(...)); floored = en az bir kalem tabana çekildiyse true
+now kartı: kullanıcının fiyatıdır, değiştirilmez
+belowFloor = kullanıcının fiyatı minPrice_i altında olan kalemlerin anahtarları (uyarı; karar değişmez)
+```
+
+Öneri kuralları değişmez. Taban değerleri ülke × sektör için doğrulanmış kaynaktan gelir (`SPEC-archetypes.md` §2.1); motor kaynağı bilmez, sadece `minPrice` alanını uygular. Kahve ve berberde `minPrice` yoktur, sonuçları değişmez.
+
 ## 13. Bilinen basitleştirmeler (bilinçli)
 
 - Mevsimsellik yok (kontrol listesinde soru olarak var). Faz 3'te aylık mevsim profili eklenebilir; eklenirse golden fixture yeniden üretilir.
 - Vergi aylık hesaplanır, geçmiş zarar mahsubu var; yıllık beyan dönemleri modellenmez.
 - Kredi tek parça annüite; ödemesiz dönem yok.
 - Senaryo kartları ve başabaş 1. ay fiyatlarıyla hesaplanır; projeksiyon artışları içerir.
+- Kapasite tek bir ortalama işlem süresiyle hesaplanır (`serviceMin`); diş hekiminde muayene ile implant gibi süreleri çok farklı işlemler için kullanıcı ağırlıklı ortalama girer.
 
 ## 14. Çıktı şeması (golden `expected` alanları)
 
@@ -295,6 +316,8 @@ qShare = arketipin kalite etiketleri (coffee: ordinary; barber: inconsistent, sh
 | `location.foot / rent / history / founder / checklist` | durumlar: `good/mid/bad`, veri yoksa `null` |
 | `location.redFlagCount / blocker` | §10.6 |
 | `pricing.recommended / reason / cards[]` | §12 (`cards[].k, price, cm, bePerDay, baseNet`) |
+| `pricing.belowFloor / cards[].floored` | §12.1 (golden fixture'da yok; kahve ve berberde `[]` / `false`) |
+| `breakEven.serviceShare`, kapasite gerekçesinde `serviceBePerDay` | §6–7 (golden fixture'da yok; kahve 0, berber 1) |
 | `verdict` | §11: `GO/MID/NO` |
 
 Kurallar: Türkçe etiketler (iyi/dikkat/risk, yüksek/orta/düşük) sadece arayüzdedir; motor kod döner. ∞ ve "yok" JSON'da `null` olarak yazılır.
@@ -307,3 +330,5 @@ Kurallar: Türkçe etiketler (iyi/dikkat/risk, yüksek/orta/düşük) sadece ara
   - Tolerans: göreli 0,005 veya mutlak 0,05 (hangisi gevşekse).
 - Bu şartname, prototipe bakmadan yalnızca bu dokümandan yazılan bağımsız bir motorla test edildi; ilk 18 vakanın tamamı geçti, uç durumlar bu sürümde netleştirildi.
 - Ek birim testleri: `annuity` sınır durumları, `mix` toplamı 0, `cm ≤ 0`, kapasite aşımı, sayım yokken lokasyon puanı, `equity = 100` iken kredi = 0.
+- Düzenlemeli meslek eklemeleri (§6 `svcShare`, §10.1 yaya modu, §10.5 sektöre özel liste, §12.1 taban fiyat) mevcut 30 vakayı değiştirmez; bu, eklemeler yapılırken golden testlerle kanıtlanır. Ek birim testleri: `footTraffic = 'info'` iken yaya bayrağı ve "say" teyidi oluşmaz; hiçbir kart `minPrice` altına düşmez, `now` kartı değişmez; hibrit arketipte kapasite yalnızca hizmet payına uygulanır.
+- Yeni sektörlerin golden vakaları prototipten üretilemez: her vaka için temel sayılar (cm, başabaş, toplam yatırım, karar) motordan bağımsız bir hesap tablosuyla elle doğrulanır ve PR'da gösterilir.
