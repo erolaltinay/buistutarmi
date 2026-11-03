@@ -481,7 +481,6 @@
     "fPrice": "Fiyat",
     "fCost": "Birim maliyet",
     "fEquity": "Öz sermaye (%)",
-    "sampleData": "Bu ilk karar senin 10 cevabına dayanıyor. Rakipler, bölge profili, yaya trafiği ve kontrol listesi henüz videodaki örnekten geliyor; ayrıntılı analizde kendi verini gir.",
     "staffLabel": "Personel"
   },
   "summary": {
@@ -491,6 +490,33 @@
     "sum24": "24 ay toplam net kâr",
     "locScore": "Lokasyon puanı",
     "detail": "Ayrıntılı analize geç",
-    "newQuick": "Yeni hızlı analiz"
+    "newQuick": "Yeni hızlı analiz",
+    "confTitle": "Veri güveni",
+    "confShare": "Örnek veya tahmini veriye dayanan kısım: %{pct}",
+    "confHint": "Bu kalemler videodaki örnekten veya ülke varsayılanlarından geliyor. Kendi rakamını gir; rakam doğruysa \"Doğru\" de.",
+    "confAll": "Bütün kalemler senin verine dayanıyor.",
+    "confirm": "Doğru",
+    "edit": "Düzenle",
+    "preliminary": "Ön değerlendirme",
+    "preliminaryHint": "Analizin yarıdan fazlası örnek veya tahmini veriye dayanıyor; kararı kesin sonuç gibi okuma.",
+    "source": {
+      "sample": "örnek",
+      "estimate": "tahmin"
+    },
+    "group": {
+      "rent": "Kira",
+      "staff": "Personel giderleri",
+      "price": "Fiyatlar ve satış payları",
+      "base": "Günlük satış senaryoları",
+      "cost": "Birim maliyetler",
+      "foot": "Yaya trafiği sayımı",
+      "capex": "Açılış yatırımı",
+      "area": "Bölge ve demografi",
+      "comp": "Rakipler",
+      "otherFixed": "Diğer sabit giderler",
+      "site": "Dükkân geçmişi ve kontrol listesi",
+      "fin": "Vergi, komisyon ve kredi oranları",
+      "founder": "Girişimci profili"
+    }
   }
 }

@@ -1,8 +1,9 @@
 'use client';
 // Prototip "Lokasyon" sekmesi: yaya sayımı, kira yükü, dükkân geçmişi, girişimci, kontrol listesi ve karne.
 import { useTranslations } from 'next-intl';
-import type { ConfirmItem, FounderRole, HistoryReason, Status } from '@bitm/engine';
+import type { FounderRole, HistoryReason, Status } from '@bitm/engine';
 import { commonChecklist, type ChecklistItem, type Sector } from '@bitm/archetypes';
+import { FlagsPanel } from '../../../../../components/flags-panel';
 import { NumberField, NumberInput, Panel, Pill } from '../../../../../components/ui';
 import { useWorkbench } from '../../../../../components/workbench';
 import type { Lang } from '../../../../../lib/labels';
@@ -235,7 +236,7 @@ function RentPanel() {
 
 function LocationSide() {
   const t = useTranslations('location');
-  const { result, fmt, archetype, checklist, lang, sector, flagLabel } = useWorkbench();
+  const { result, fmt, archetype, checklist, lang, sector } = useWorkbench();
   const l = result.location;
   const info = archetype.location.footTraffic === 'info';
   const scoreTone: Status = l.score >= 75 ? 'good' : l.score >= 50 ? 'mid' : 'bad';
@@ -246,8 +247,6 @@ function LocationSide() {
   const pct = (v: number | null) => (v === null ? '—' : fmt.pct(v));
   const status = (s: Status | null) =>
     s === null ? <Pill>{info ? t('infoOnly') : t('noData')}</Pill> : <Pill tone={s}>{t(`status.${s}`)}</Pill>;
-  const confirmText = (c: ConfirmItem) =>
-    c.kind === 'footCount' ? t('countFoot') : c.kind === 'talkToNeighbours' ? t('talk') : label(c.key);
   const footText = l.hasFootCount
     ? t('footDetail', {
         daily: fmt.num(l.dailyPassersby),
@@ -327,30 +326,7 @@ function LocationSide() {
             (l.checklistNo.length ? `: ${l.checklistNo.map(label).join('; ')}.` : ''),
         )}
       </div>
-      <div className="panel">
-        <p className="eyebrow">{t('flagsT')}</p>
-        {l.redFlags.length ? (
-          <ul className="flaglist" data-testid="flags">
-            {l.redFlags.map((f, i) => (
-              <li key={i}>{flagLabel(f)}</li>
-            ))}
-          </ul>
-        ) : (
-          <p className="note">{t('noFlags')}</p>
-        )}
-        {l.confirm.length > 0 && (
-          <>
-            <p className="eyebrow" style={{ marginTop: 14 }}>
-              {t('confirmT')}
-            </p>
-            <ul className="flaglist">
-              {l.confirm.map((c, i) => (
-                <li key={i}>{confirmText(c)}</li>
-              ))}
-            </ul>
-          </>
-        )}
-      </div>
+      <FlagsPanel />
     </aside>
   );
 }

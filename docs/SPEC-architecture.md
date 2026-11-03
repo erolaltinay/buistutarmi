@@ -138,6 +138,26 @@ Motor çıktısı istemcide anlık hesaplanır (motor saf ve hızlı). Sunucu ka
 ## 7. Veri güven göstergesi
 Her girdi alanı bir kaynak etiketi taşır: `sample` (örnek), `estimate` (otomatik tahmin, ör. gelir vekili), `api` (resmi/API verisi), `user` (kullanıcı girdi veya onayladı), `measured` (sayaç, gerçekleşen). Karar ekranında: "Bu analizin %X'i örnek veya tahmini veriye dayanıyor". Ağırlıklar: başabaşı en çok etkileyen alanlar (kira, personel, fiyat, maliyet, baz senaryo, yaya sayımı) daha ağırdır. Güven %50'nin altındaysa karar damgasının yanında "ön değerlendirme" etiketi görünür.
 
+Etiket alan grubu düzeyinde tutulur (`ProjectDoc.sources`); toplam ağırlık 100:
+
+| Grup | Girdi alanları | Ağırlık | Başlangıç |
+|---|---|---|---|
+| `rent` | kira tipindeki sabit gider satırları | 15 | sample |
+| `staff` | personel tipindeki sabit gider satırları | 13 | sample |
+| `price` | ürün/hizmet fiyatları ve satış payları | 12 | sample |
+| `base` | senaryolar, çalışma günü, kapasite | 12 | sample |
+| `cost` | birim maliyetler | 10 | sample |
+| `foot` | yaya sayımı, sayım süresi, açık saat | 10 | sample |
+| `capex` | açılış yatırımı satırları, beklenmedik gider payı, güvenlik yastığı | 7 | sample |
+| `area` | adres, nüfus, demografi | 5 | sample |
+| `comp` | rakipler | 5 | sample |
+| `otherFixed` | diğer sabit giderler | 4 | sample |
+| `site` | dükkân geçmişi, kontrol listesi | 3 | sample |
+| `fin` | vergi, komisyon, rampa, kredi | 2 | estimate (ülke varsayılanı) |
+| `founder` | girişimci profili | 2 | sample |
+
+`güven = Σ ağırlık (user, api, measured) / 100`; ekranda gösterilen oran `100 − güven`. Bir gruptaki herhangi bir değer değiştiğinde grup `user` olur; değeri değiştirmeden "Doğru" diyen kullanıcı da grubu `user` yapar. Hızlı modda cevaplanan gruplar (`area`, `rent`, `staff`, `founder`, `price`, `cost`, `base`, `capex`) `user` olarak başlar. "Örneğe dön" tüm etiketleri başlangıca döndürür.
+
 ## 8. Güvenlik ve KVKK
 - Kişisel veri: e-posta, adres/konum, fotoğraflar (yüz içerebilir), girişimcinin finansal bilgileri.
 - Yüz bulanıklaştırma: yüklemeden önce istemcide yüz algılama (ör. MediaPipe) ile; başarısız olursa sunucuda tekrar. Orijinal bulanıklaştırılmamış dosya saklanmaz.

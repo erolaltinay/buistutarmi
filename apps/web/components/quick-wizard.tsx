@@ -8,7 +8,8 @@ import { countries, getSector, sectors } from '@bitm/archetypes';
 import { useRouter } from '../i18n/navigation';
 import { makeFormat, numberLocale } from '../lib/format';
 import { langOf } from '../lib/labels';
-import { createQuickProject } from '../lib/project';
+import type { Group } from '../lib/confidence';
+import { createQuickProject, QUICK_GROUPS } from '../lib/project';
 import {
   applyQuick,
   isAnswered,
@@ -98,16 +99,17 @@ export function QuickWizard({ locale, paramSector }: { locale: string; paramSect
     setState((s) => s && { ...s, step: Math.max(0, Math.min(QUICK_STEPS.length - 1, s.step + d)) });
   };
 
-  const finish = (answers: QuickAnswers) => {
+  /** `answered`: kullanıcının kendi cevapladığı gruplar (örnek yüklemede yalnız yazdığı semt). */
+  const finish = (answers: QuickAnswers, answered: Group[]) => {
     const { input, sample: sampleId } = applyQuick(answers, { staff: t('staffLabel') });
-    const doc = createQuickProject(answers.sector!, sampleId, input);
+    const doc = createQuickProject(answers.sector!, sampleId, input, answered);
     store(null);
     router.push(`/projects/${doc.id}`);
   };
   const submit = (e: FormEvent) => {
     e.preventDefault();
     if (!isAnswered(step, a)) return;
-    if (last) finish(a);
+    if (last) finish(a, QUICK_GROUPS);
     else go(1);
   };
   const example = (value: string) => <p className="note">{t('example', { value })}</p>;
@@ -125,7 +127,10 @@ export function QuickWizard({ locale, paramSector }: { locale: string; paramSect
             className="ghost"
             data-testid="quick-sample"
             onClick={() =>
-              finish({ ...sampleAnswers(a.sector!, a.country!), area: a.area?.trim() || undefined })
+              finish(
+                { ...sampleAnswers(a.sector!, a.country!), area: a.area?.trim() || undefined },
+                a.area?.trim() ? ['area'] : [],
+              )
             }
           >
             {t('loadSample')}

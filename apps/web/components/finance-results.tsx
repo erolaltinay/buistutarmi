@@ -2,6 +2,7 @@
 // Finans sekmesinin sağ sütunu: karar, başabaş, senaryolar, projeksiyon, yatırım dökümü, duyarlılık.
 import { useTranslations } from 'next-intl';
 import type { FinalReason, FinancialReason, ProjectionRow } from '@bitm/engine';
+import { confidence, PRELIMINARY_BELOW } from '../lib/confidence';
 import { Pill } from './ui';
 import { useWorkbench } from './workbench';
 
@@ -46,8 +47,9 @@ export function useVerdictText() {
 
 export function VerdictCard() {
   const t = useTranslations();
-  const { result } = useWorkbench();
+  const { result, doc } = useWorkbench();
   const why = useVerdictText();
+  const preliminary = confidence(doc.sources) < PRELIMINARY_BELOW;
   const sat = result.competition.saturation;
   const fit = result.demandFit.level;
   const flags = result.location.redFlagCount;
@@ -56,7 +58,18 @@ export function VerdictCard() {
       <div className="stamp" data-testid="verdict">
         {t(`result.label.${result.verdict}`)}
       </div>
-      <p className="eyebrow">{t('result.verdict')}</p>
+      <p className="eyebrow">
+        {t('result.verdict')}
+        {preliminary && (
+          <span
+            className="pill mid preliminary"
+            data-testid="preliminary"
+            title={t('summary.preliminaryHint')}
+          >
+            {t('summary.preliminary')}
+          </span>
+        )}
+      </p>
       <p data-testid="verdict-why">{why(result.verdictReason)}</p>
       <div className="pills">
         {sat && (

@@ -2,6 +2,7 @@
 // (SPEC-architecture §3–4); o zamana kadar proje tarayıcının localStorage'ında durur.
 import type { AnalysisInput } from '@bitm/engine';
 import { buildSampleInput, getSector, sampleCountry } from '@bitm/archetypes';
+import type { Group, Sources } from './confidence';
 
 export interface Shop {
   name: string;
@@ -22,6 +23,8 @@ export interface ProjectDoc {
   shop: Shop;
   /** Hızlı moddan geldiyse karar ekranı hangi verinin örnekten geldiğini söyler. */
   origin?: 'quick';
+  /** Girdi gruplarının kaynak etiketleri; yazılmayan grup başlangıç değerindedir (SPEC-architecture §7). */
+  sources?: Sources;
   updatedAt: string;
 }
 
@@ -46,12 +49,21 @@ export function createProject(sector: string, sample: string): ProjectDoc {
   return doc;
 }
 
+/** Hızlı modda cevaplanan gruplar kullanıcı verisi sayılır (SPEC-architecture §7). */
+export const QUICK_GROUPS: Group[] = ['area', 'rent', 'staff', 'founder', 'price', 'cost', 'base', 'capex'];
+
 /** Hızlı mod sonunda: cevaplarla kurulmuş girdiden proje. */
-export function createQuickProject(sector: string, sample: string, input: AnalysisInput): ProjectDoc {
+export function createQuickProject(
+  sector: string,
+  sample: string,
+  input: AnalysisInput,
+  answered: Group[] = QUICK_GROUPS,
+): ProjectDoc {
   const doc: ProjectDoc = {
     ...projectFromSample(sector, sample, crypto.randomUUID()),
     input,
     origin: 'quick',
+    sources: Object.fromEntries(answered.map((g) => [g, 'user'])),
   };
   saveProject(doc);
   return doc;

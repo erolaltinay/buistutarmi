@@ -23,6 +23,7 @@ import {
   type Sector,
 } from '@bitm/archetypes';
 import { Link, usePathname } from '../i18n/navigation';
+import { changedGroups } from '../lib/confidence';
 import { makeFormat, type Format } from '../lib/format';
 import { langOf, type Lang } from '../lib/labels';
 import { loadProject, projectFromSample, saveProject, type ProjectDoc } from '../lib/project';
@@ -32,8 +33,11 @@ export const TABS = ['summary', 'finance', 'area', 'location', 'pricing', 'store
 
 export interface WorkbenchValue {
   doc: ProjectDoc;
-  /** Taslak üzerinde değişiklik yapar; sonuç anında yeniden hesaplanır. */
-  update: (recipe: (draft: ProjectDoc) => void) => void;
+  /**
+   * Taslak üzerinde değişiklik yapar; sonuç anında yeniden hesaplanır. Değişen girdi grupları
+   * kullanıcı verisi olarak işaretlenir (`track: false` hariç).
+   */
+  update: (recipe: (draft: ProjectDoc) => void, opts?: { track?: boolean }) => void;
   result: AnalysisResult;
   sector: Sector;
   archetype: EngineArchetype;
@@ -76,11 +80,16 @@ export function Workbench({ id, locale, children }: { id: string; locale: string
     return () => clearTimeout(timer);
   }, [doc]);
 
-  const update = useCallback((recipe: (draft: ProjectDoc) => void) => {
+  const update = useCallback<WorkbenchValue['update']>((recipe, opts) => {
     setDoc((cur) => {
       if (!cur) return cur;
       const next = structuredClone(cur);
       recipe(next);
+      if (opts?.track !== false) {
+        const changed = changedGroups(cur.input, next.input);
+        if (changed.length)
+          next.sources = { ...next.sources, ...Object.fromEntries(changed.map((g) => [g, 'user'])) };
+      }
       next.updatedAt = new Date().toISOString();
       dirty.current = true;
       return next;
@@ -110,7 +119,13 @@ export function Workbench({ id, locale, children }: { id: string; locale: string
             onClick={() => {
               if (!window.confirm(t('resetConfirm'))) return;
               const fresh = projectFromSample(doc.sector, doc.sample, doc.id);
-              update((d) => Object.assign(d, fresh));
+              update(
+                (d) => {
+                  for (const k of Object.keys(d)) delete (d as Partial<ProjectDoc>)[k as keyof ProjectDoc];
+                  Object.assign(d, fresh);
+                },
+                { track: false },
+              );
             }}
           >
             {t('reset')}

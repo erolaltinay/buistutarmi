@@ -481,7 +481,6 @@
     "fPrice": "Price",
     "fCost": "Unit cost",
     "fEquity": "Own money (%)",
-    "sampleData": "This first verdict rests on your 10 answers. Competitors, area profile, foot traffic and the checklist still come from the video example; enter your own data in the detailed analysis.",
     "staffLabel": "Staff"
   },
   "summary": {
@@ -491,6 +490,33 @@
     "sum24": "24-month total net profit",
     "locScore": "Location score",
     "detail": "Go to the detailed analysis",
-    "newQuick": "New quick analysis"
+    "newQuick": "New quick analysis",
+    "confTitle": "Data confidence",
+    "confShare": "Share based on example or estimated data: {pct}%",
+    "confHint": "These items come from the video example or country defaults. Enter your own figure, or tap \"Correct\" if the figure is right.",
+    "confAll": "Every item rests on your own data.",
+    "confirm": "Correct",
+    "edit": "Edit",
+    "preliminary": "Preliminary",
+    "preliminaryHint": "More than half of this analysis rests on example or estimated data; do not read the verdict as final.",
+    "source": {
+      "sample": "example",
+      "estimate": "estimate"
+    },
+    "group": {
+      "rent": "Rent",
+      "staff": "Staff costs",
+      "price": "Prices and sales mix",
+      "base": "Daily sales scenarios",
+      "cost": "Unit costs",
+      "foot": "Foot traffic count",
+      "capex": "Startup investment",
+      "area": "Area and demographics",
+      "comp": "Competitors",
+      "otherFixed": "Other fixed costs",
+      "site": "Shop history and checklist",
+      "fin": "Tax, fee and loan rates",
+      "founder": "Founder profile"
+    }
   }
 }

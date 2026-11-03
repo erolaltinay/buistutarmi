@@ -57,7 +57,10 @@ test('kendi rakamlarıyla 10 soru 3 dakikanın altında biter, karar ekranı aç
   await expect(page.getByTestId('verdict')).toHaveText(/^(TUTAR|ŞARTLI|TUTMAZ)$/);
   const verdict = await page.getByTestId('verdict').textContent();
   const invest = await page.getByTestId('invest').textContent();
-  await expect(page.getByText('videodaki örnekten geliyor')).toBeVisible();
+  // 8 cevaplanan grup = %76 kendi veri; yaya, rakip, diğer giderler, geçmiş ve oranlar örnekten.
+  await expect(page.getByTestId('conf-share')).toHaveText('Örnek veya tahmini veriye dayanan kısım: %24');
+  await expect(page.getByTestId('preliminary')).toHaveCount(0);
+  await expect(page.getByTestId('conf-foot')).toBeVisible();
   await expect(page.getByRole('note')).toContainText('yatırım tavsiyesi değildir');
   expect(Date.now() - started).toBeLessThan(180_000);
 
@@ -112,5 +115,8 @@ test('"Videodaki örneği yükle" tek tıkla örneğin kararını gösterir', as
   await page.waitForURL(/\/projects\/(?!new)[^/?]+$/);
   await expect(page.getByTestId('verdict')).toHaveText('TUTAR');
   await expect(page.getByTestId('invest')).toHaveText('₺1.032.413');
+  // Örnek yüklemek kullanıcı verisi sayılmaz.
+  await expect(page.getByTestId('conf-share')).toHaveText('Örnek veya tahmini veriye dayanan kısım: %100');
+  await expect(page.getByTestId('preliminary')).toBeVisible();
   expect(errors).toEqual([]);
 });
