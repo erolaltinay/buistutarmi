@@ -28,7 +28,7 @@ import { langOf, type Lang } from '../lib/labels';
 import { loadProject, projectFromSample, saveProject, type ProjectDoc } from '../lib/project';
 
 export const AUTOSAVE_MS = 1000;
-export const TABS = ['finance', 'area', 'location', 'pricing', 'storefront'] as const;
+export const TABS = ['summary', 'finance', 'area', 'location', 'pricing', 'storefront'] as const;
 
 export interface WorkbenchValue {
   doc: ProjectDoc;
@@ -193,7 +193,7 @@ function Loaded({
         </header>
         <nav className="tabs" aria-label={t('app.name')}>
           {TABS.map((tab) => {
-            const href = `${base}/${tab}`;
+            const href = tab === 'summary' ? base : `${base}/${tab}`;
             return (
               <Link key={tab} href={href} aria-current={pathname === href ? 'page' : undefined}>
                 {t(`wb.tabs.${tab}`)}

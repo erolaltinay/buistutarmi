@@ -22,10 +22,14 @@
     "sector": "İş tipi",
     "sample": "Başlangıç örneği",
     "start": "Analizi başlat",
-    "localNote": "Analizin şimdilik bu cihazda, bu tarayıcıda saklanır. Hesap açınca buluta taşınacak."
+    "localNote": "Analizin şimdilik bu cihazda, bu tarayıcıda saklanır. Hesap açınca buluta taşınacak.",
+    "quickTitle": "3 dakikada ilk karar",
+    "quickHint": "10 soruluk hızlı analizle başla; sonra ayrıntılı moda geçersin.",
+    "quickStart": "Hızlı analize başla"
   },
   "wb": {
     "tabs": {
+      "summary": "Karar",
       "finance": "Finans",
       "area": "Bölge ve rakipler",
       "location": "Lokasyon",
@@ -438,5 +442,55 @@
     "preview": "Cephe taslağı",
     "dlSvg": "SVG indir",
     "dlNote": "İlk görsel: kendi adın ve renklerinle anlık taslak. Thumbnail ve sunum için kullanabilirsin."
+  },
+  "quick": {
+    "title": "Hızlı analiz",
+    "lead": "10 soruda ilk kararın. Bilmediğin yerde videodaki örnek rakamı kullanabilirsin.",
+    "progress": "Adım {step} / {total}",
+    "back": "Geri",
+    "next": "İleri",
+    "finish": "Kararı gör",
+    "loadSample": "Videodaki örneği yükle",
+    "restart": "Baştan başla",
+    "example": "Videodaki örnek: {value}",
+    "resumed": "Kaldığın yerden devam ediyorsun.",
+    "q": {
+      "sector": "Ne açmayı düşünüyorsun?",
+      "country": "Hangi ülkede?",
+      "area": "Dükkân hangi semtte?",
+      "rent": "Aylık kira ne kadar?",
+      "staff": "Aylık toplam personel maaşı ne kadar?",
+      "role": "Dükkânın başında ne kadar olacaksın?",
+      "price": "İmza ürününün fiyatı ve birim maliyeti?",
+      "daily": "Günde kaç {unit} bekliyorsun?",
+      "capex": "Açılış için ne kadar harcayacaksın?",
+      "equity": "Bunun ne kadarı kendi paran?"
+    },
+    "hint": {
+      "sector": "Sektör, hesapta kullanılan eşikleri ve örnek rakamları belirler.",
+      "country": "Vergi, komisyon ve kredi varsayılanları ülkeye göre gelir.",
+      "area": "Adres veya semt adı yeter.",
+      "rent": "Stopaj dahil değil; uygulama ekler.",
+      "staff": "Maaşların toplamı. SGK işveren payını uygulama ekler. Kendin çalışacaksan sadece diğer çalışanları yaz.",
+      "role": "Her gün başında değilsen müdür maaşı gidere eklenir.",
+      "price": "İlk satan ürününü veya hizmetini düşün. Fiyat KDV dahil, maliyet KDV hariç.",
+      "daily": "Normal bir günde. Kötümser ve iyimser senaryoyu uygulama buna göre kurar.",
+      "capex": "Ekipman, tadilat, mobilya, ilk stok, ruhsat. Beklenmedik gider payını uygulama ekler.",
+      "equity": "Kalanı kredi sayılır. Hepsi kendi paransa 100 yaz."
+    },
+    "fPrice": "Fiyat",
+    "fCost": "Birim maliyet",
+    "fEquity": "Öz sermaye (%)",
+    "sampleData": "Bu ilk karar senin 10 cevabına dayanıyor. Rakipler, bölge profili, yaya trafiği ve kontrol listesi henüz videodaki örnekten geliyor; ayrıntılı analizde kendi verini gir.",
+    "staffLabel": "Personel"
+  },
+  "summary": {
+    "tab": "Karar",
+    "title": "İlk karar",
+    "key": "Temel sayılar",
+    "sum24": "24 ay toplam net kâr",
+    "locScore": "Lokasyon puanı",
+    "detail": "Ayrıntılı analize geç",
+    "newQuick": "Yeni hızlı analiz"
   }
 }

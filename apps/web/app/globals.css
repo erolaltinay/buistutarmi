@@ -1211,3 +1211,78 @@ details.pt summary {
   padding-top: 12px;
   margin-top: 8px;
 }
+
+/* hızlı mod ve ilk karar */
+.quick {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.quick h2 {
+  font-size: 1.25rem;
+  margin: 4px 0 0;
+}
+.quick .hint {
+  margin: 0;
+}
+.quick-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.quick-top .eyebrow {
+  margin: 0;
+}
+.quick-meter {
+  background: var(--sunk);
+  margin-top: 0;
+}
+.quick-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.quick-body input {
+  font-size: 1.1rem;
+  padding: 10px 12px;
+}
+.choices {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 8px;
+}
+.choice {
+  font: 600 0.95rem var(--body);
+  color: var(--ink);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 12px 14px;
+  cursor: pointer;
+  text-align: left;
+}
+.choice[aria-pressed='true'] {
+  border-color: var(--amber);
+  box-shadow: 0 0 0 2px var(--amber);
+  background: var(--amber-soft);
+}
+.quick-nav .solid {
+  min-width: 8rem;
+}
+.quick-nav .solid:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.quick-restart {
+  margin-left: auto;
+}
+.summary {
+  max-width: 44rem;
+}
+a.solid,
+a.ghost {
+  text-decoration: none;
+  display: inline-block;
+}

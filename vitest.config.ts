@@ -15,6 +15,12 @@ export default defineConfig({
           include: ['packages/archetypes/test/**/*.test.ts', 'scripts/**/*.test.ts'],
         },
       },
+      {
+        test: {
+          name: 'web',
+          include: ['apps/web/lib/**/*.test.ts'],
+        },
+      },
     ],
   },
 });

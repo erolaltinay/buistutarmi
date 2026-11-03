@@ -9,15 +9,31 @@ import {
   sectors,
 } from '@bitm/archetypes';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { redirect } from 'next/navigation';
 import { NewProject, type SectorOption } from '../../components/new-project';
+import { Link } from '../../i18n/navigation';
 import { Logo } from '../../components/workbench';
 import { makeFormat } from '../../lib/format';
 import { langOf } from '../../lib/labels';
 
 const SAMPLE = { sector: 'coffee', sample: 'ist' } as const;
 
-export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
+export default async function Home({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ locale: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
   const { locale } = await params;
+  const query = await searchParams;
+  // Video linki `?sector=<id>` taşır: sihirbaz o sektörle açılır, UTM parametreleri korunur (STRATEGY §4).
+  if (typeof query.sector === 'string') {
+    const qs = new URLSearchParams(
+      Object.entries(query).flatMap(([k, v]) => (typeof v === 'string' ? [[k, v]] : [])),
+    );
+    redirect(`/${locale}/projects/new?${qs.toString()}`);
+  }
   setRequestLocale(locale);
   const t = await getTranslations('home');
   const tApp = await getTranslations('app');
@@ -48,6 +64,14 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
           <p className="tagline">{tApp('tagline')}</p>
         </div>
       </header>
+
+      <section className="panel">
+        <h2>{t('quickTitle')}</h2>
+        <p className="hint">{t('quickHint')}</p>
+        <Link className="solid" href="/projects/new" data-testid="quick-start">
+          {t('quickStart')}
+        </Link>
+      </section>
 
       <NewProject sectors={options} />
 

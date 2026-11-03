@@ -20,6 +20,8 @@ export interface ProjectDoc {
   country: string;
   input: AnalysisInput;
   shop: Shop;
+  /** Hızlı moddan geldiyse karar ekranı hangi verinin örnekten geldiğini söyler. */
+  origin?: 'quick';
   updatedAt: string;
 }
 
@@ -40,6 +42,17 @@ export function projectFromSample(sector: string, sample: string, id: string): P
 
 export function createProject(sector: string, sample: string): ProjectDoc {
   const doc = projectFromSample(sector, sample, crypto.randomUUID());
+  saveProject(doc);
+  return doc;
+}
+
+/** Hızlı mod sonunda: cevaplarla kurulmuş girdiden proje. */
+export function createQuickProject(sector: string, sample: string, input: AnalysisInput): ProjectDoc {
+  const doc: ProjectDoc = {
+    ...projectFromSample(sector, sample, crypto.randomUUID()),
+    input,
+    origin: 'quick',
+  };
   saveProject(doc);
   return doc;
 }

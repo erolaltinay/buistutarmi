@@ -22,10 +22,14 @@
     "sector": "Business type",
     "sample": "Starting example",
     "start": "Start the analysis",
-    "localNote": "For now your analysis is stored on this device, in this browser. It moves to the cloud once you have an account."
+    "localNote": "For now your analysis is stored on this device, in this browser. It moves to the cloud once you have an account.",
+    "quickTitle": "Your first verdict in 3 minutes",
+    "quickHint": "Start with the 10-question quick analysis, then move to the detailed mode.",
+    "quickStart": "Start the quick analysis"
   },
   "wb": {
     "tabs": {
+      "summary": "Verdict",
       "finance": "Financials",
       "area": "Area and rivals",
       "location": "Location",
@@ -438,5 +442,55 @@
     "preview": "Facade sketch",
     "dlSvg": "Download SVG",
     "dlNote": "First look: an instant sketch with your name and colors. Use it for thumbnails and pitches."
+  },
+  "quick": {
+    "title": "Quick analysis",
+    "lead": "Your first verdict in 10 questions. Where you don't know, use the example figure from the video.",
+    "progress": "Step {step} / {total}",
+    "back": "Back",
+    "next": "Next",
+    "finish": "See the verdict",
+    "loadSample": "Load the video example",
+    "restart": "Start over",
+    "example": "Video example: {value}",
+    "resumed": "You are picking up where you left off.",
+    "q": {
+      "sector": "What are you thinking of opening?",
+      "country": "In which country?",
+      "area": "Which neighborhood is the shop in?",
+      "rent": "What is the monthly rent?",
+      "staff": "What is the total monthly payroll?",
+      "role": "How involved will you be day to day?",
+      "price": "Your signature item: price and unit cost?",
+      "daily": "How many {unit} do you expect a day?",
+      "capex": "How much will you spend to open?",
+      "equity": "How much of that is your own money?"
+    },
+    "hint": {
+      "sector": "The business type sets the thresholds and example figures the math uses.",
+      "country": "Tax, fee and loan defaults come from the country.",
+      "area": "An address or neighborhood name is enough.",
+      "rent": "Before rent withholding; the app adds it.",
+      "staff": "Total wages. The app adds employer payroll taxes. If you will work there yourself, list only the others.",
+      "role": "If you are not there every day, a manager salary is added to costs.",
+      "price": "Think of your best seller. Price as the customer pays it, cost before tax.",
+      "daily": "On a normal day. The app builds the pessimistic and optimistic cases from it.",
+      "capex": "Equipment, build-out, furniture, opening stock, permits. The app adds a contingency buffer.",
+      "equity": "The rest counts as a loan. Enter 100 if it is all your own money."
+    },
+    "fPrice": "Price",
+    "fCost": "Unit cost",
+    "fEquity": "Own money (%)",
+    "sampleData": "This first verdict rests on your 10 answers. Competitors, area profile, foot traffic and the checklist still come from the video example; enter your own data in the detailed analysis.",
+    "staffLabel": "Staff"
+  },
+  "summary": {
+    "tab": "Verdict",
+    "title": "First verdict",
+    "key": "Key numbers",
+    "sum24": "24-month total net profit",
+    "locScore": "Location score",
+    "detail": "Go to the detailed analysis",
+    "newQuick": "New quick analysis"
   }
 }
