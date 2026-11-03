@@ -2,7 +2,7 @@
 import { readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { ESLint } from 'eslint';
-import { describe, expect, it } from 'vitest';
+import { beforeAll, describe, expect, it } from 'vitest';
 
 const root = fileURLToPath(new URL('../..', import.meta.url));
 const eslint = new ESLint({ cwd: root });
@@ -14,6 +14,9 @@ const ruleIds = async (code: string) => {
 };
 
 describe('motor saflığı lint kuralı', () => {
+  // İlk lintText çağrısı yapılandırmayı ve typescript-eslint'i yükler; paralel test yükünde 5 sn'yi aşabiliyor.
+  beforeAll(() => ruleIds(''), 60_000);
+
   it.each([
     ['Date.now()', 'export const t = Date.now();'],
     ['new Date()', 'export const t = new Date();'],

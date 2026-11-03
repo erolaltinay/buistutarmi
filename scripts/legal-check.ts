@@ -3,7 +3,14 @@
 //   pnpm legal:check --production  → production kuralları (taslak = hata)
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { checkLegal, countries, legalFiles, LegalFileSchema, sectors } from '@bitm/archetypes';
+import {
+  checkLegal,
+  checkPriceFloors,
+  countries,
+  legalFiles,
+  LegalFileSchema,
+  sectors,
+} from '@bitm/archetypes';
 import { isProductionRelease, listJson, today } from './lib';
 
 const pkg = fileURLToPath(new URL('../packages/archetypes/', import.meta.url));
@@ -32,7 +39,11 @@ for (const f of Object.keys(legalFiles))
 const fullCountries = Object.values(countries)
   .filter((c) => c.supportLevel === 'full')
   .map((c) => c.code);
-const issues = checkLegal({ production, today: today(), fullCountries, sectors: Object.keys(sectors) });
+const issues = [
+  ...checkLegal({ production, today: today(), fullCountries, sectors: Object.keys(sectors) }),
+  // SPEC-archetypes §2.1: taban fiyatlar da mevzuat gibi kaynaklı ve doğrulanmış olmalı.
+  ...checkPriceFloors(sectors, { production, today: today() }),
+];
 for (const i of issues) {
   const where = [i.file, i.itemId].filter(Boolean).join(' ');
   if (i.level === 'error') errors++;
@@ -47,6 +58,8 @@ console.log(
 );
 if (errors) {
   if (production)
-    console.error('Taslak veya kaynaksız madde varken production derlemesi yapılamaz (SPEC-legal §4).');
+    console.error(
+      'Taslak veya kaynaksız madde ya da taban fiyat varken production derlemesi yapılamaz (SPEC-legal §4).',
+    );
   process.exit(1);
 }

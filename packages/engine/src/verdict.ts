@@ -10,14 +10,20 @@ export interface FinancialContext {
   base: number;
   bePerDay: number;
   maxDaily: number | null;
+  /** §6 svcShare; kapasite yalnız hizmet işlemlerine uygulanır. */
+  serviceShare: number;
   paybackTotal: number;
 }
 
 /** Sırayla, ilk eşleşen döner. */
 export function financialVerdict(c: FinancialContext): { verdict: Verdict; reason: FinancialReason } {
   if (!(c.cm > 0)) return { verdict: 'NO', reason: { code: 'negativeMargin' } };
-  if (c.maxDaily !== null && c.bePerDay > c.maxDaily)
-    return { verdict: 'NO', reason: { code: 'capacity', maxDaily: c.maxDaily, bePerDay: c.bePerDay } };
+  const serviceBePerDay = c.bePerDay * c.serviceShare;
+  if (c.maxDaily !== null && serviceBePerDay > c.maxDaily)
+    return {
+      verdict: 'NO',
+      reason: { code: 'capacity', maxDaily: c.maxDaily, bePerDay: c.bePerDay, serviceBePerDay },
+    };
   if (c.base < c.bePerDay)
     return { verdict: 'NO', reason: { code: 'belowBreakEven', base: c.base, bePerDay: c.bePerDay } };
   if (c.base < c.bePerDay * THIN_MARGIN_FACTOR)

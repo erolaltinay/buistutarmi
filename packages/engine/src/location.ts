@@ -52,8 +52,12 @@ export function location(
       ? (ctx.bePerDay / dailyPassersby) * 100
       : null;
   const captureBasePct = hasFootCount && dailyPassersby > 0 ? (ctx.base / dailyPassersby) * 100 : null;
+  // `info` modunda (randevulu meslekler) sayılar sadece bilgidir: durum yok, bayrak ve "say" teyidi yok.
+  const footScored = archetype.location.footTraffic === 'scored';
   const foot =
-    captureNeededPct === null ? null : byThresholds(captureNeededPct, archetype.location.captureRatePct);
+    !footScored || captureNeededPct === null
+      ? null
+      : byThresholds(captureNeededPct, archetype.location.captureRatePct);
 
   // 10.2 Kira yükü (tüm kira satırlarının stopajlı toplamı)
   const rent = ctx.hasRent ? ctx.rent0 : null;
@@ -157,7 +161,7 @@ export function location(
   if (founder === 'bad') redFlags.push({ kind: 'founder' });
 
   const confirm: ConfirmItem[] = [];
-  if (!hasFootCount) confirm.push({ kind: 'footCount' });
+  if (footScored && !hasFootCount) confirm.push({ kind: 'footCount' });
   for (const key of criticalUnknown) confirm.push({ kind: 'checklist', key });
   if (!loc.hist.talked) confirm.push({ kind: 'talkToNeighbours' });
 

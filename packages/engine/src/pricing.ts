@@ -6,6 +6,7 @@ import type {
   AnalysisInput,
   CompetitionResult,
   EngineArchetype,
+  ItemRow,
   PriceCard,
   PriceCardKey,
   PricingReason,
@@ -17,6 +18,12 @@ export const INCOME_INDEX = { high: 125, low: 85 } as const;
 
 /** Ülkenin yuvarlama adımına göre en yakın kat; en az bir adım. */
 export const roundPrice = (v: number, step: number): number => Math.max(step, Math.round(v / step) * step);
+
+/** §12.1 floorP: kalemin taban fiyatı varsa altına inilmez. */
+export const floorPrice = (v: number, item: Pick<ItemRow, 'minPrice'>): number =>
+  item.minPrice === null || item.minPrice === undefined ? v : Math.max(v, item.minPrice);
+
+const itemKey = (it: ItemRow, i: number): string => it.k ?? it.n ?? String(i);
 
 export interface PricingContext {
   base: number;
@@ -71,12 +78,17 @@ export function pricing(
     reason = 'incLo';
   }
 
-  const cards: PriceCard[] = list.map(([k, price]) => {
-    const ratio = signaturePrice > 0 ? price / signaturePrice : 1;
-    const items = input.items.map((it, i) => ({
-      ...it,
-      price: i === 0 ? price : roundPrice(n(it.price) * ratio, step),
-    }));
+  const cards: PriceCard[] = list.map(([k, cardPrice]) => {
+    const ratio = signaturePrice > 0 ? cardPrice / signaturePrice : 1;
+    // now kartı kullanıcının fiyatıdır; tabana yalnız strateji kartları çekilir.
+    let floored = false;
+    const items = input.items.map((it, i) => {
+      const rounded = i === 0 ? cardPrice : roundPrice(n(it.price) * ratio, step);
+      const p = k === 'now' ? rounded : floorPrice(rounded, it);
+      if (p !== rounded) floored = true;
+      return { ...it, price: p };
+    });
+    const price = items[0]?.price ?? cardPrice;
     const { cm } = unitEconomics(items, input.fin);
     const bePerDay = cm > 0 ? ctx.cashFixed / cm / ctx.days : Infinity;
     const baseNet = ctx.base * ctx.days * cm - ctx.cashFixed;
@@ -88,8 +100,13 @@ export function pricing(
       bePerDay: finiteOrNull(bePerDay),
       baseNet,
       overBase: Number.isFinite(bePerDay) && bePerDay > ctx.base,
+      floored,
     };
   });
 
-  return { signaturePrice, reference, recommended, reason, cards };
+  const belowFloor = input.items.flatMap((it, i) =>
+    floorPrice(n(it.price), it) > n(it.price) ? [itemKey(it, i)] : [],
+  );
+
+  return { signaturePrice, reference, recommended, reason, cards, belowFloor };
 }

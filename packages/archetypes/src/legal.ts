@@ -5,7 +5,7 @@ import trCommon from '../legal/TR/common.json';
 import usCommon from '../legal/US/common.json';
 import usNyc from '../legal/US/regions/US-NY-NYC.json';
 import usAustin from '../legal/US/regions/US-TX-AUSTIN.json';
-import { LegalFileSchema, type LegalFile, type LegalItem } from './schema';
+import { LegalFileSchema, type LegalFile, type LegalItem, type Sector } from './schema';
 
 /** Yol: packages/archetypes/ altına göre. Yeni dosya buraya da eklenir (legal:check denetler). */
 export const legalFiles: Readonly<Record<string, LegalFile>> = {
@@ -181,5 +181,45 @@ export function checkLegal(opts: LegalCheckOptions): LegalIssue[] {
       }
     }
   }
+  return issues;
+}
+
+/**
+ * SPEC-archetypes §2.1: taban fiyatlar mevzuat gibi denetlenir. Kaynaksız veya doğrulayanı
+ * yazılmamış taban production'da hatadır; tarife yıllık değiştiği için 12 aydan eskisi uyarıdır.
+ */
+export function checkPriceFloors(
+  sectorSet: Readonly<Record<string, Sector>>,
+  opts: Pick<LegalCheckOptions, 'production' | 'today'>,
+): LegalIssue[] {
+  const issues: LegalIssue[] = [];
+  const level = opts.production ? 'error' : 'warning';
+  for (const [id, s] of Object.entries(sectorSet))
+    for (const [country, d] of Object.entries(s.defaults)) {
+      const floors = d.priceFloors;
+      if (!floors) continue;
+      const ctx = { file: `sectors/${id}.json`, itemId: `defaults.${country}.priceFloors` };
+      if (floors.sourceUrl === '')
+        issues.push({
+          level,
+          rule: 'price-floor-source',
+          ...ctx,
+          message: 'Taban fiyatın resmi kaynağı yok',
+        });
+      if (!floors.reviewedBy)
+        issues.push({
+          level,
+          rule: 'price-floor-reviewed-by',
+          ...ctx,
+          message: 'Taban fiyat doğrulanmadı (reviewedBy boş)',
+        });
+      if (monthsBetween(floors.lastReviewed, opts.today) >= 12)
+        issues.push({
+          level: 'warning',
+          rule: 'price-floor-stale-12m',
+          ...ctx,
+          message: 'Taban fiyat tarifesi 12 aydan eski',
+        });
+    }
   return issues;
 }

@@ -2,7 +2,6 @@
 // Ülkeye göre davranış sadece ülke dosyasındaki alanlardan gelir (CLAUDE.md kural 13).
 import type { AnalysisInput, EngineArchetype, EngineCountry, FinParams } from '@bitm/engine';
 import analysisDefaultsJson from '../analysis-defaults.json';
-import checklistJson from '../checklist.json';
 import genericJson from '../countries/GENERIC.json';
 import trJson from '../countries/TR.json';
 import usJson from '../countries/US.json';
@@ -10,10 +9,11 @@ import barberJson from '../sectors/barber.json';
 import coffeeJson from '../sectors/coffee.json';
 import {
   AnalysisDefaultsSchema,
-  ChecklistSchema,
+  commonChecklist,
   CountrySchema,
   FinSchema,
   SectorSchema,
+  type ChecklistItem,
   type Country,
   type Fin,
   type Sector,
@@ -33,7 +33,7 @@ export const countries: Readonly<Record<string, Country>> = {
 };
 
 export const genericCountry: Country = CountrySchema.parse(genericJson);
-export const checklist = ChecklistSchema.parse(checklistJson);
+export const checklist = commonChecklist;
 export const analysisDefaults = AnalysisDefaultsSchema.parse(analysisDefaultsJson);
 
 export function getSector(id: string): Sector {
@@ -61,8 +61,25 @@ export function engineCountry(code: string, currency?: string): EngineCountry {
   return { code: c.code, priceRounding };
 }
 
+/** Sektörün son kontrol listesi: ortak liste − `checklist.remove` + `checklist.add` (SPEC-archetypes §2.1). */
+export function sectorChecklist(s: Sector): ChecklistItem[] {
+  const remove = s.checklist?.remove ?? [];
+  return [
+    ...checklist.groups.flatMap((g) => g.items).filter((it) => !remove.includes(it.k)),
+    ...(s.checklist?.add ?? []),
+  ];
+}
+
+/** Ülkenin doğrulanmış taban fiyatları (kalem anahtarı → taban); yoksa boş (SPEC-calc-engine §12.1). */
+export function priceFloors(s: Sector, countryCode: string): Record<string, number> {
+  return s.defaults[getCountry(countryCode).code]?.priceFloors?.items ?? {};
+}
+
 export function engineArchetype(id: string): EngineArchetype {
-  const s = getSector(id);
+  return toEngineArchetype(getSector(id));
+}
+
+export function toEngineArchetype(s: Sector): EngineArchetype {
   return {
     id: s.id,
     model: s.model,
@@ -72,10 +89,12 @@ export function engineArchetype(id: string): EngineArchetype {
       overpricedWeaknessKey: s.competition.overpricedWeaknessKey,
     },
     demandFit: { features: s.demandFit.features },
-    location: { captureRatePct: s.location.captureRatePct, rentToSalesPct: s.location.rentToSalesPct },
-    checklist: checklist.groups.flatMap((g) =>
-      g.items.map((it) => ({ k: it.k, critical: it.critical, blocker: it.blocker })),
-    ),
+    location: {
+      captureRatePct: s.location.captureRatePct,
+      rentToSalesPct: s.location.rentToSalesPct,
+      footTraffic: s.location.footTraffic,
+    },
+    checklist: sectorChecklist(s).map((it) => ({ k: it.k, critical: it.critical, blocker: it.blocker })),
   };
 }
 
@@ -93,7 +112,7 @@ export function missingFinFields(fin: Fin): (keyof Fin)[] {
 
 /**
  * Sektörün örnek verisinden ("Videodaki örneği yükle") tam analiz girdisi kurar.
- * Satırlar şablondaki açık `type` / `depreciable` alanlarını taşır.
+ * Satırlar şablondaki açık `type` / `depreciable` / `kind` alanlarını ve ülkenin taban fiyatlarını taşır.
  */
 export function buildSampleInput(sectorId: string, sampleId: string): AnalysisInput {
   const s = getSector(sectorId);
@@ -101,9 +120,8 @@ export function buildSampleInput(sectorId: string, sampleId: string): AnalysisIn
   if (!sample) throw new Error(`${sectorId}: örnek yok: ${sampleId}`);
   const d = analysisDefaults;
   const fin: FinParams = mergeFin(sample.country, sectorId);
-  const chk = Object.fromEntries(
-    checklist.groups.flatMap((g) => g.items.map((it) => [it.k, it.sampleAnswer])),
-  );
+  const chk = Object.fromEntries(sectorChecklist(s).map((it) => [it.k, it.sampleAnswer]));
+  const floors = priceFloors(s, sample.country);
   return {
     biz: s.id,
     city: sampleId,
@@ -125,6 +143,8 @@ export function buildSampleInput(sectorId: string, sampleId: string): AnalysisIn
       k: t.k,
       n: null,
       ...(sample.items[t.k] ?? { price: 0, cost: 0, mix: 0 }),
+      ...(t.kind !== undefined ? { kind: t.kind } : {}),
+      ...(floors[t.k] !== undefined ? { minPrice: floors[t.k] } : {}),
     })),
     area: sample.area,
     pop: sample.pop,

@@ -7,7 +7,7 @@ import { capex, solveFinancing } from './investment';
 import { location } from './location';
 import { finiteOrNull, n } from './math';
 import { pricing } from './pricing';
-import { unitEconomics } from './unit';
+import { serviceShare, unitEconomics } from './unit';
 import { finalVerdict, financialVerdict } from './verdict';
 import type { AnalysisInput, AnalysisResult, EngineArchetype, EngineCountry } from './types';
 
@@ -48,12 +48,14 @@ export function analyze(
   const pb = payback(proj.rows, cx.capexTotal, financing.invest);
   const capacity = usesCapacity(archetype, input) && input.cap ? input.cap : null;
   const maxDaily = capacity ? maxDailyCapacity(capacity) : null;
+  const svcShare = serviceShare(input.items, archetype.model);
 
   const financial = financialVerdict({
     cm: unit.cm,
     base,
     bePerDay: be.perDay,
     maxDaily,
+    serviceShare: svcShare,
     paybackTotal: pb.total,
   });
 
@@ -89,6 +91,7 @@ export function analyze(
       perMonth: finiteOrNull(be.perMonth),
       perDayWithoutManager: finiteOrNull(be.perDayWithoutManager),
       maxDaily,
+      serviceShare: svcShare,
       sensitivity: be.sensitivity,
     },
     investment: {

@@ -2,6 +2,7 @@
 // Kaynak: docs/SPEC-archetypes.md, docs/SPEC-legal.md §3.
 import { z } from 'zod';
 import { parseExpr } from '@bitm/engine';
+import checklistJson from '../checklist.json';
 
 export const Localized = z.object({ tr: z.string().min(1), en: z.string().min(1) });
 const Pair = z.tuple([z.number(), z.number()]);
@@ -84,6 +85,36 @@ const Sample = z.object({
   }),
 });
 
+const ChecklistItemSchema = z.object({
+  k: Key,
+  critical: z.boolean(),
+  blocker: z.boolean(),
+  /** null: etiket sektöre göre değişir (sector.location.checklistOverrides). */
+  label: Localized.nullable(),
+  flag: Localized.optional(),
+  sampleAnswer: z.union([z.literal(1), z.literal(0), z.null()]),
+});
+export type ChecklistItem = z.infer<typeof ChecklistItemSchema>;
+
+export const ChecklistSchema = z.object({
+  groups: z.array(z.object({ label: Localized, items: z.array(ChecklistItemSchema) })),
+});
+export type Checklist = z.infer<typeof ChecklistSchema>;
+
+/** Ortak kontrol listesi; sektör dosyasının liste farkı (§2.1) buna göre doğrulanır. */
+export const commonChecklist: Checklist = ChecklistSchema.parse(checklistJson);
+const commonItems = commonChecklist.groups.flatMap((g) => g.items);
+
+/** SPEC-archetypes §2.1: taban fiyatlar mevzuat maddesi gibi kaynaklı ve doğrulanmış olur (legal:check). */
+export const PriceFloorsSchema = z.object({
+  sourceUrl: z.url().or(z.literal('')),
+  lastReviewed: z.iso.date(),
+  reviewedBy: z.string().optional(),
+  /** Kalem anahtarı → taban fiyat (ülke para biriminde). */
+  items: z.record(Key, z.number().nonnegative()),
+});
+export type PriceFloors = z.infer<typeof PriceFloorsSchema>;
+
 export const SectorSchema = z
   .object({
     id: Key,
@@ -103,6 +134,8 @@ export const SectorSchema = z
       })
       .nullable(),
     requiresCertificate: z.string().nullable(),
+    /** Ruhsatı meslek lisansına bağlı, reklamı kısıtlı meslekler (§2.1). */
+    regulated: z.object({ profession: Key, marketingRestricted: z.boolean() }).optional(),
     capexTemplate: z.array(
       z.object({
         k: Key,
@@ -112,7 +145,17 @@ export const SectorSchema = z
       }),
     ),
     fixedTemplate: z.array(z.object({ k: Key, type: z.enum(['rent', 'staff', 'other']), label: Localized })),
-    itemTemplate: z.array(z.object({ k: Key, signature: z.boolean().optional(), label: Localized })).min(1),
+    itemTemplate: z
+      .array(
+        z.object({
+          k: Key,
+          signature: z.boolean().optional(),
+          /** hybrid'de zorunlu (SPEC-calc-engine §6 svcShare). */
+          kind: z.enum(['product', 'service']).optional(),
+          label: Localized,
+        }),
+      )
+      .min(1),
     capacity: z
       .object({ defaults: z.object({ stations: z.number(), hours: z.number(), serviceMin: z.number() }) })
       .nullable(),
@@ -132,9 +175,25 @@ export const SectorSchema = z
     location: z.object({
       captureRatePct: IncreasingPair,
       rentToSalesPct: IncreasingPair,
+      /** SPEC-calc-engine §10.1; randevulu mesleklerde `info`. */
+      footTraffic: z.enum(['scored', 'info']).default('scored'),
       checklistOverrides: z.record(z.string(), Localized),
     }),
-    defaults: z.record(z.string(), z.object({ sample: z.string().nullable(), fin: FinSchema.partial() })),
+    /** Ortak kontrol listesine göre fark (§2.1); engel maddeler çıkarılamaz. */
+    checklist: z
+      .object({
+        remove: z.array(Key).default([]),
+        add: z.array(ChecklistItemSchema.extend({ label: Localized })).default([]),
+      })
+      .optional(),
+    defaults: z.record(
+      z.string(),
+      z.object({
+        sample: z.string().nullable(),
+        fin: FinSchema.partial(),
+        priceFloors: PriceFloorsSchema.optional(),
+      }),
+    ),
     samples: z.record(z.string(), Sample),
     ai: z.object({ businessNoun: Localized, promptHints: z.string().optional() }),
     storefront: z.object({ sampleName: z.string() }),
@@ -146,12 +205,46 @@ export const SectorSchema = z
     if (s.model === 'product' && s.capacity) issue('product arketipinde kapasite olmaz');
     if (s.model !== 'product' && !s.capacity) issue('hizmet arketipinde kapasite varsayılanı gerekli');
     if (s.itemTemplate[0]?.signature !== true) issue('ilk ürün/hizmet imza kalemi olmalı');
+    if (s.regulated && s.requiresCertificate !== s.regulated.profession)
+      issue('regulated.profession requiresCertificate ile aynı olmalı');
+
+    // Kalem türü: hybrid'de zorunlu; diğer modellerde modelle çelişemez.
+    if (s.model === 'hybrid') {
+      if (s.itemTemplate.some((t) => !t.kind)) issue('hybrid arketipte her kalemin kind alanı olmalı');
+      if (!s.itemTemplate.some((t) => t.kind === 'service'))
+        issue('hybrid arketipte en az bir hizmet kalemi olmalı');
+    } else if (s.itemTemplate.some((t) => t.kind && t.kind !== s.model))
+      issue(`${s.model} arketipinde kalem türü modelle aynı olmalı`);
+
+    // Kontrol listesi farkı (§2.1) ve sektöre göre değişen etiketler.
+    const remove = s.checklist?.remove ?? [];
+    const add = s.checklist?.add ?? [];
+    for (const k of remove) {
+      const common = commonItems.find((i) => i.k === k);
+      if (!common) issue(`checklist.remove: ortak listede yok: ${k}`);
+      else if (common.blocker) issue(`checklist.remove: engel madde çıkarılamaz: ${k}`);
+    }
+    const addKeys = add.map((i) => i.k);
+    for (const k of addKeys)
+      if (commonItems.some((i) => i.k === k) || addKeys.indexOf(k) !== addKeys.lastIndexOf(k))
+        issue(`checklist.add: anahtar ortak listede veya tekrarlı: ${k}`);
+    const needsLabel = commonItems
+      .filter((i) => i.label === null && !remove.includes(i.k))
+      .map((i) => i.k)
+      .sort()
+      .join(',');
+    if (Object.keys(s.location.checklistOverrides).sort().join(',') !== needsLabel)
+      issue(`location.checklistOverrides tam olarak şu maddeleri içermeli: ${needsLabel || '(yok)'}`);
     const weak = Object.keys(s.competition.tags.weaknesses);
     for (const k of [...s.competition.qualityWeaknessKeys, s.competition.overpricedWeaknessKey])
       if (!weak.includes(k)) issue(`zayıflık etiketi tanımlı değil: ${k}`);
-    for (const [country, d] of Object.entries(s.defaults))
+    const itemKeys = s.itemTemplate.map((t) => t.k);
+    for (const [country, d] of Object.entries(s.defaults)) {
       if (d.sample !== null && s.samples[d.sample]?.country !== country)
         issue(`defaults.${country}.sample bu ülkeye ait bir örnek değil`);
+      for (const k of Object.keys(d.priceFloors?.items ?? {}))
+        if (!itemKeys.includes(k)) issue(`defaults.${country}.priceFloors: şablonda olmayan kalem ${k}`);
+    }
     const keys = (rows: { k: string }[]) =>
       rows
         .map((r) => r.k)
@@ -204,26 +297,6 @@ export const CountrySchema = z
     }
   });
 export type Country = z.infer<typeof CountrySchema>;
-
-export const ChecklistSchema = z.object({
-  groups: z.array(
-    z.object({
-      label: Localized,
-      items: z.array(
-        z.object({
-          k: Key,
-          critical: z.boolean(),
-          blocker: z.boolean(),
-          /** null: etiket sektöre göre değişir (sector.location.checklistOverrides). */
-          label: Localized.nullable(),
-          flag: Localized.optional(),
-          sampleAnswer: z.union([z.literal(1), z.literal(0), z.null()]),
-        }),
-      ),
-    }),
-  ),
-});
-export type Checklist = z.infer<typeof ChecklistSchema>;
 
 export const AnalysisDefaultsSchema = z.object({
   contPct: z.number(),

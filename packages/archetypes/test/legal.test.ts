@@ -1,5 +1,14 @@
 import { describe, expect, it } from 'vitest';
-import { checkLegal, legalFiles, mergeLegal, sectors, type LegalFile, type LegalItem } from '../src';
+import {
+  checkLegal,
+  checkPriceFloors,
+  legalFiles,
+  mergeLegal,
+  sectors,
+  type LegalFile,
+  type LegalItem,
+  type Sector,
+} from '../src';
 
 const base = { today: '2026-11-02', fullCountries: ['TR', 'US'], sectors: Object.keys(sectors) };
 
@@ -120,5 +129,44 @@ describe('kurallar (sentetik dosyalarla)', () => {
     };
     const merged = mergeLegal('XX', 'coffee', 'XX-R', files);
     expect(merged.map((i) => [i.id, i.stage])).toEqual([['xx.common.a', 'after_opening']]);
+  });
+});
+
+describe('taban fiyatlar mevzuat gibi denetlenir (SPEC-archetypes §2.1)', () => {
+  const withFloors = (floors: Partial<NonNullable<Sector['defaults'][string]['priceFloors']>>) => {
+    const s = structuredClone(sectors.barber!);
+    s.defaults.TR!.priceFloors = {
+      sourceUrl: 'https://example.org/tarife',
+      lastReviewed: '2026-10-01',
+      reviewedBy: 'meslek odası tarifesi',
+      items: { [s.itemTemplate[0]!.k]: 100 },
+      ...floors,
+    };
+    return { barber: s };
+  };
+  const check = (production: boolean, set: Record<string, Sector>) =>
+    checkPriceFloors(set, { production, today: '2026-11-02' });
+
+  it('paketteki sektörlerde taban fiyat yok, sorun yok', () => {
+    expect(check(true, sectors)).toEqual([]);
+  });
+
+  it("kaynaksız taban production build'i kırmızı yapar, önizlemede uyarıdır", () => {
+    const set = withFloors({ sourceUrl: '' });
+    expect(rules(check(true, set), 'error')).toContain('price-floor-source');
+    expect(rules(check(false, set), 'error')).toEqual([]);
+    expect(rules(check(false, set), 'warning')).toContain('price-floor-source');
+  });
+
+  it("doğrulayanı yazılmamış taban production'da hatadır", () => {
+    const set = withFloors({ reviewedBy: undefined });
+    expect(rules(check(true, set), 'error')).toContain('price-floor-reviewed-by');
+  });
+
+  it('kaynaklı ve doğrulanmış taban geçer; 12 aydan eskiyse uyarı', () => {
+    expect(check(true, withFloors({}))).toEqual([]);
+    const stale = check(true, withFloors({ lastReviewed: '2025-10-01' }));
+    expect(rules(stale, 'error')).toEqual([]);
+    expect(rules(stale, 'warning')).toContain('price-floor-stale-12m');
   });
 });

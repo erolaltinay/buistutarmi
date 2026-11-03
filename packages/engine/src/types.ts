@@ -7,6 +7,9 @@ export type Verdict = 'GO' | 'MID' | 'NO';
 export type Status = 'good' | 'mid' | 'bad';
 export type Level = 'hi' | 'mid' | 'lo';
 export type ArchetypeModel = 'product' | 'service' | 'hybrid';
+export type ItemKind = 'product' | 'service';
+/** §10.1: `info` modunda yaya sayımı bilgi olarak döner, puana ve bayraklara girmez. */
+export type FootTrafficMode = 'scored' | 'info';
 export type FixedType = 'rent' | 'staff' | 'other';
 export type ChecklistValue = 1 | 0 | null;
 export type MaybeNumber = number | null | undefined;
@@ -55,6 +58,10 @@ export interface ItemRow {
   price: MaybeNumber;
   cost: MaybeNumber;
   mix: MaybeNumber;
+  /** §6: hybrid arketipte hizmet / ürün ayrımı; yoksa arketip modelinden (hybrid'de hizmet sayılır). */
+  kind?: ItemKind;
+  /** §12.1: düzenlemeli meslekte taban fiyat; yoksa taban yok. */
+  minPrice?: number | null;
 }
 
 export interface Demographics {
@@ -128,7 +135,12 @@ export interface EngineArchetype {
     overpricedWeaknessKey: string;
   };
   demandFit: { features: { key: string; weight: number; expr: string }[] };
-  location: { captureRatePct: [number, number]; rentToSalesPct: [number, number] };
+  location: {
+    captureRatePct: [number, number];
+    rentToSalesPct: [number, number];
+    footTraffic: FootTrafficMode;
+  };
+  /** Sektörün son listesi (ortak liste ± sektör farkı, §10.5); madde sayısı sabit değildir. */
   checklist: { k: string; critical: boolean; blocker: boolean }[];
 }
 
@@ -262,6 +274,8 @@ export interface PriceCard {
   bePerDay: number | null;
   baseNet: number;
   overBase: boolean;
+  /** §12.1: en az bir kalem taban fiyata çekildi (now kartında her zaman false). */
+  floored: boolean;
 }
 
 export interface PricingResult {
@@ -270,11 +284,13 @@ export interface PricingResult {
   recommended: PriceCardKey;
   reason: PricingReason;
   cards: PriceCard[];
+  /** §12.1: kullanıcının fiyatı tabanın altında kalan kalemlerin anahtarları (uyarı; karar değişmez). */
+  belowFloor: string[];
 }
 
 export type FinancialReason =
   | { code: 'negativeMargin' }
-  | { code: 'capacity'; maxDaily: number; bePerDay: number }
+  | { code: 'capacity'; maxDaily: number; bePerDay: number; serviceBePerDay: number }
   | { code: 'belowBreakEven'; base: number; bePerDay: number }
   | { code: 'thinMargin'; base: number; bePerDay: number }
   | { code: 'longPayback'; paybackMonths: number | null }
@@ -302,6 +318,8 @@ export interface AnalysisResult {
     perMonth: number | null;
     perDayWithoutManager: number | null;
     maxDaily: number | null;
+    /** §6 svcShare: günlük işlemlerin kapasite kullanan payı. */
+    serviceShare: number;
     /** cm × {1, 0.9, 0.8} için günlük başabaş. */
     sensitivity: (number | null)[];
   };
