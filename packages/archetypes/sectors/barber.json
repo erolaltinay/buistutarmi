@@ -642,6 +642,8 @@
     }
   },
   "storefront": {
-    "sampleName": "Usta Berber"
+    "sampleName": "Usta Berber",
+    "decal": "scissors",
+    "pole": true
   }
 }

@@ -674,6 +674,7 @@
     "promptHints": "Morning commute and laptop workers drive demand; signature drink quality and speed matter most."
   },
   "storefront": {
-    "sampleName": "Kahve Durağı"
+    "sampleName": "Kahve Durağı",
+    "decal": "cup"
   }
 }

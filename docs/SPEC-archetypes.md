@@ -74,6 +74,12 @@ Hedef: yeni bir sektör eklemek kod değil, bir JSON dosyası işi olsun. Motor 
   "ai": {
     "businessNoun": { "tr": "kahve dükkânı", "en": "coffee shop" },
     "promptHints": "Morning commute and laptop workers drive demand; signature drink quality and speed matter most."
+  },
+
+  "storefront": {
+    "sampleName": "Kahve Durağı",       // mağaza görselindeki varsayılan ad
+    "decal": "cup",                     // vitrin simgesi: cup | scissors | none (varsayılan none)
+    "pole": false                       // berber direği (varsayılan false)
   }
 }
 ```

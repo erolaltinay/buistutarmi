@@ -196,7 +196,12 @@ export const SectorSchema = z
     ),
     samples: z.record(z.string(), Sample),
     ai: z.object({ businessNoun: Localized, promptHints: z.string().optional() }),
-    storefront: z.object({ sampleName: z.string() }),
+    storefront: z.object({
+      sampleName: z.string(),
+      /** Cephe taslağında vitrindeki simge ve berber direği (SPEC-archetypes §2). */
+      decal: z.enum(['cup', 'scissors', 'none']).default('none'),
+      pole: z.boolean().default(false),
+    }),
   })
   .superRefine((s, ctx) => {
     const issue = (message: string) => ctx.addIssue({ code: 'custom', message: `${s.id}: ${message}` });
