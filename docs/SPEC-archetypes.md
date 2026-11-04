@@ -174,7 +174,7 @@ Birleştirme sırası: `ülke.fin` → `sektör.defaults[ülke].fin` → kullan�
 6. `full` destekli her ülke için `legal/<ÜLKE>/<id>.json` mevzuat dosyası; maddeler doğrulanmadan sektör o ülkede yayına çıkmaz (`SPEC-legal.md` §4).
 7. Motor testleri: yeni sektör için en az 2 golden vaka eklenir.
 8. Düzenlemeli meslekte (§2.1): `regulated`, `footTraffic`, kontrol listesi farkı ve (varsa) doğrulanmış `priceFloors`; taktikler reklam kısıtına uygun; mevzuat ve taban fiyat doğrulaması meslek alanını bilen bir uzmanla (sağlık hukukçusu veya bu alanda çalışan mali müşavir) yapılır.
-9. Videosu yayımlanınca sektör sayfası açılır (`/[locale]/sektor/<id>`), video gömülür, "Kendi rakamlarınla hesapla" butonu sihirbazı bu arketiple başlatır.
+9. Videosu yayımlanınca sektör sayfası açılır (`/[locale]/sektor/<id>`), video gömülür, "Kendi rakamlarınla hesapla" butonu sihirbazı bu arketiple başlatır. Özet ve YouTube kimliği sektör dosyasındaki `page` alanındadır (`page.summary`, `page.video.{tr,en}`); video boşken sayfa oynatıcısız çalışır.
 
 ## 5. İlk yıl sektör sırası (öneri)
 

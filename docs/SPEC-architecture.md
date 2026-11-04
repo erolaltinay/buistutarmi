@@ -37,6 +37,7 @@ supabase/migrations    şema + RLS
 
 | Rota | İçerik |
 |---|---|
+| `/[locale]/sektor/[id]` | Sektör sayfası: video, kısa özet, "Kendi rakamlarınla hesapla" (STRATEGY §4) |
 | `/projects` | Analiz listesi, "Yeni analiz" |
 | `/projects/new` | Hızlı mod sihirbazı: iş tipi → adres → kira → ekip → fiyat → ilk karar |
 | `/projects/[id]` | Karar özeti (karar, başabaş, yatırım, nakit açığı, bayraklar, veri güveni) |
@@ -171,7 +172,7 @@ Etiket alan grubu düzeyinde tutulur (`ProjectDoc.sources`); toplam ağırlık 1
 - Rate limit: AI ve Places uçlarında kullanıcı + IP bazlı.
 
 ## 9. Analitik olayları
-`project_created`, `quick_mode_completed`, `verdict_shown{verdict}`, `candidate_added`, `compare_viewed`, `pdf_downloaded`, `places_fetched`, `ai_called{kind}`, `foot_count_saved`, `media_uploaded{category}`, `paywall_shown`, `checkout_started`, `subscription_started`, `actuals_entered`. UTM parametreleri (`utm_source=youtube&utm_content=<video>`) ilk oturumda profile yazılır.
+`visit`, `project_created`, `quick_mode_completed`, `verdict_shown{verdict}`, `candidate_added`, `compare_viewed`, `pdf_downloaded`, `places_fetched`, `ai_called{kind}`, `foot_count_saved`, `media_uploaded{category}`, `paywall_shown`, `checkout_started`, `subscription_started`, `actuals_entered`. UTM parametreleri (`utm_source=youtube&utm_content=<video>`) ilk oturumda profile yazılır. İlk kaynak değişmez (first-touch); `visit` oturum başına bir kez o anki videoyla sayılır, diğer olaylar kullanıcının ilk geldiği videoya yazılır. İP-1.1'e kadar ilk kaynak ve olaylar yalnız cihazda (`apps/web/lib/analytics.ts`) tutulur, dışarı gönderilmez; video bazında kullanıcılar arası rapor `attribution` tablosu ve PostHog ile açılır (çerez bildirimiyle birlikte, bölüm 8).
 
 ## 10. Uluslararasılaştırma
 - `next-intl`; rota öneki `/tr`, `/en`.

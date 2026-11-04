@@ -6,6 +6,13 @@
     "tr": "Kahve dükkânı",
     "en": "Coffee shop"
   },
+  "page": {
+    "summary": {
+      "tr": "Kahve dükkânında asıl soru günde kaç satış yapman gerektiği. Kira, personel ve kredi taksitiyle birlikte başabaş noktanı, gereken toplam yatırımı ve kapının önünden geçen kalabalığın buna yetip yetmediğini kendi rakamlarınla hesapla.",
+      "en": "The real question for a coffee shop is how many sales you need each day. Work out your break-even with rent, staff and loan payments, the total investment you need, and whether foot traffic can carry it, using your own numbers."
+    },
+    "video": { "tr": null, "en": null }
+  },
   "unit": {
     "tr": ["satış", "satış / gün"],
     "en": ["sales", "sales / day"]

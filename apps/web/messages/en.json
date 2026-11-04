@@ -29,7 +29,8 @@
     "otherCountry": "Another country (with your own numbers)",
     "country": "Country",
     "currency": "Currency",
-    "choose": "Choose"
+    "choose": "Choose",
+    "sectorsTitle": "Business types"
   },
   "wb": {
     "tabs": {
@@ -751,5 +752,19 @@
         "emp": "Employer costs"
       }
     }
+  },
+  "sectorPage": {
+    "metaTitle": "{sector}: should you open one? Work it out with your own numbers",
+    "heading": "{sector}: should you open one?",
+    "cta": "Calculate with your own numbers",
+    "ctaHint": "Your first verdict in 10 questions. Where you don't know, use the example figure from the video.",
+    "videoTitle": "{sector} video",
+    "play": "Play video",
+    "videoNote": "The video opens from YouTube.",
+    "whatTitle": "What gets calculated?",
+    "beTitle": "Break-even: how many sales a day you need with rent, staff and loan payments",
+    "investTitle": "True investment: how much money you need with opening costs and the early losses",
+    "locTitle": "Location scorecard: foot traffic, rent load and the history of the shop",
+    "priceTitle": "Pricing strategy: how each price against your rivals moves your break-even"
   }
 }

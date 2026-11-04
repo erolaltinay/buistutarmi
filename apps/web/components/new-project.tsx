@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { useRouter } from '../i18n/navigation';
+import { track } from '../lib/analytics';
 import { currencyOptions, otherCountries } from '../lib/generic';
 import { createBlankProject, createProject } from '../lib/project';
 
@@ -31,6 +32,7 @@ export function NewProject({ sectors }: { sectors: SectorOption[] }) {
         e.preventDefault();
         const doc =
           sample === OTHER ? createBlankProject(sector, country, currency) : createProject(sector, sample);
+        track('project_created', { sector, mode: sample === OTHER ? 'generic' : 'sample' });
         router.push(`/projects/${doc.id}/finance`);
       }}
     >

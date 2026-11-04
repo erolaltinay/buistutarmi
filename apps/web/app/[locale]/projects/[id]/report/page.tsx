@@ -5,6 +5,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { StorefrontSvg } from '../../../../../components/storefront-svg';
 import { Panel } from '../../../../../components/ui';
 import { useWorkbench } from '../../../../../components/workbench';
+import { track } from '../../../../../lib/analytics';
 import { rowLabel } from '../../../../../lib/labels';
 
 /** Mağaza çizimini JPEG'e çevirir (prototip); olmazsa rapor görselsiz çıkar. */
@@ -70,6 +71,7 @@ export default function ReportPage() {
       a.download = name ?? 'report.pdf';
       a.click();
       URL.revokeObjectURL(a.href);
+      track('pdf_downloaded', { monthly, cmp, shop });
       setState('ok');
     } catch {
       setState('error');

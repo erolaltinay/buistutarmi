@@ -75,6 +75,17 @@ export default async function Home({
 
       <NewProject sectors={options} />
 
+      <section className="panel">
+        <h2>{t('sectorsTitle')}</h2>
+        <ul className="sector-links">
+          {options.map((o) => (
+            <li key={o.id}>
+              <Link href={`/sektor/${o.id}`}>{o.name}</Link>
+            </li>
+          ))}
+        </ul>
+      </section>
+
       <section className="panel" aria-labelledby="sample-title">
         <h2 id="sample-title">{t('sampleTitle', { sector: sector.name[lang], area: input.area })}</h2>
         <div className={`verdict v-${result.verdict.toLowerCase()}`}>

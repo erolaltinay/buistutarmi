@@ -6,6 +6,7 @@ import { createTranslator, useMessages, useTranslations } from 'next-intl';
 import type { FounderRole } from '@bitm/engine';
 import { countries, getCountry, getSector, sectors } from '@bitm/archetypes';
 import { useRouter } from '../i18n/navigation';
+import { track } from '../lib/analytics';
 import { makeFormat, numberLocale } from '../lib/format';
 import { currencyOptions, isGeneric, otherCountries, withGenericTerms } from '../lib/generic';
 import { langOf } from '../lib/labels';
@@ -121,6 +122,9 @@ export function QuickWizard({ locale, paramSector }: { locale: string; paramSect
     const { input, sample: sampleId, country } = applyQuick(answers, { staff: t('staffLabel') });
     const doc = createQuickProject(answers.sector!, sampleId, input, answered, country);
     store(null);
+    track('project_created', { sector: answers.sector!, mode: 'quick' });
+    // Örneği yükleyen kullanıcı soruları cevaplamadı; tamamlama sayılmaz.
+    if (answered === QUICK_GROUPS) track('quick_mode_completed', { sector: answers.sector! });
     router.push(`/projects/${doc.id}`);
   };
   const submit = (e: FormEvent) => {

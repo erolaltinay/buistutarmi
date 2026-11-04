@@ -19,6 +19,7 @@ import {
   removeCandidate,
   updateCandidate,
 } from '../../../../../lib/compare';
+import { track } from '../../../../../lib/analytics';
 import { incompleteFields } from '../../../../../lib/incomplete';
 import type { Translate } from '../../../../../lib/verdict-text';
 
@@ -32,6 +33,7 @@ export default function ComparePage() {
   const cands = doc.candidates ?? [];
   const [name, setName] = useState(doc.input.area);
   const [msg, setMsg] = useState('');
+  useEffect(() => track('compare_viewed'), []);
 
   const cols = useMemo(
     () => [
@@ -55,6 +57,7 @@ export default function ComparePage() {
     update((d) => void addCandidate(d, clean, crypto.randomUUID(), new Date().toISOString()), {
       track: false,
     });
+    track('candidate_added');
     setMsg(t('saved', { name: clean }));
   };
 

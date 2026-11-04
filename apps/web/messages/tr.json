@@ -29,7 +29,8 @@
     "otherCountry": "Başka ülke (kendi rakamlarınla)",
     "country": "Ülke",
     "currency": "Para birimi",
-    "choose": "Seç"
+    "choose": "Seç",
+    "sectorsTitle": "Sektörler"
   },
   "wb": {
     "tabs": {
@@ -751,5 +752,19 @@
         "emp": "İşveren yükü"
       }
     }
+  },
+  "sectorPage": {
+    "metaTitle": "{sector} açılır mı? Kendi rakamlarınla hesapla",
+    "heading": "{sector} açmayı mı düşünüyorsun?",
+    "cta": "Kendi rakamlarınla hesapla",
+    "ctaHint": "10 soruda ilk kararın. Bilmediğin yerde videodaki örnek rakamı kullanabilirsin.",
+    "videoTitle": "{sector} videosu",
+    "play": "Videoyu oynat",
+    "videoNote": "Video YouTube üzerinden açılır.",
+    "whatTitle": "Ne hesaplanır?",
+    "beTitle": "Başabaş: kira, personel ve kredi taksitiyle günde kaç satış gerekiyor",
+    "investTitle": "Gerçek yatırım: açılış masrafı ve ilk ayların açığıyla toplam ne kadar para lazım",
+    "locTitle": "Lokasyon karnesi: yaya trafiği, kira yükü ve dükkânın geçmişi",
+    "priceTitle": "Fiyat stratejisi: rakiplere göre hangi fiyat başabaşı nasıl değiştiriyor"
   }
 }

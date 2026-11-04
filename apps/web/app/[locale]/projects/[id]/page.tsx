@@ -1,11 +1,13 @@
 'use client';
 // Karar özeti (İP-1.3): karar, temel sayılar, bayraklar ve veri güveni (SPEC-architecture §3, §7).
+import { useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { VerdictCard } from '../../../../components/finance-results';
 import { FlagsPanel } from '../../../../components/flags-panel';
 import { Pill } from '../../../../components/ui';
 import { useWorkbench } from '../../../../components/workbench';
 import { Link } from '../../../../i18n/navigation';
+import { track } from '../../../../lib/analytics';
 import { confidence, GROUP_TAB, GROUPS, sourceOf, untrustedGroups } from '../../../../lib/confidence';
 import { incompleteFields, locationScore } from '../../../../lib/incomplete';
 import { hasLegalList, legalItems, openCritical } from '../../../../lib/permits';
@@ -17,6 +19,10 @@ export default function SummaryPage() {
   const pay = r.projection.paybackTotalMonths;
   const locScore = locationScore(r);
   const empty = incompleteFields(doc.input).length > 0;
+  // Karar ekranı açılışında ve karar değişince bir kez; eksik veride karar yoktur.
+  useEffect(() => {
+    if (!empty) track('verdict_shown', { verdict: r.verdict });
+  }, [empty, r.verdict]);
 
   return (
     <main className="bench">

@@ -6,6 +6,13 @@
     "tr": "Berber",
     "en": "Barbershop"
   },
+  "page": {
+    "summary": {
+      "tr": "Berberde sınırı koltuk sayısı ve gün içindeki saatler koyar. Kira ve ustalarla birlikte günde kaç müşteriye ihtiyacın olduğunu, bunun kapasitene sığıp sığmadığını ve gereken toplam yatırımı kendi rakamlarınla hesapla.",
+      "en": "A barbershop is limited by its chairs and its hours. Work out how many customers you need each day with rent and barbers included, whether that fits your capacity, and the total investment you need, using your own numbers."
+    },
+    "video": { "tr": null, "en": null }
+  },
   "unit": {
     "tr": ["müşteri", "müşteri / gün"],
     "en": ["clients", "clients / day"]

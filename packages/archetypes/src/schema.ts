@@ -196,6 +196,20 @@ export const SectorSchema = z
         priceFloors: PriceFloorsSchema.optional(),
       }),
     ),
+    /** Sektör sayfası (STRATEGY §4). Video, YouTube kimliğidir; yayımlanana kadar boş. */
+    page: z.object({
+      summary: Localized,
+      video: z.object({
+        tr: z
+          .string()
+          .regex(/^[\w-]{11}$/)
+          .nullable(),
+        en: z
+          .string()
+          .regex(/^[\w-]{11}$/)
+          .nullable(),
+      }),
+    }),
     samples: z.record(z.string(), Sample),
     ai: z.object({ businessNoun: Localized, promptHints: z.string().optional() }),
     storefront: z.object({
