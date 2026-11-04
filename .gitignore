@@ -8,6 +8,8 @@ coverage/
 .env.*
 !.env.example
 .vercel/
+# Derlemede node_modules'tan kopyalanır (scripts/copy-mediapipe.mjs)
+apps/web/public/mediapipe/wasm/
 playwright-report/
 test-results/
 .DS_Store

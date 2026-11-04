@@ -24,6 +24,12 @@ export default defineConfig({
       },
       {
         test: {
+          name: 'ai',
+          include: ['packages/ai/test/**/*.test.ts'],
+        },
+      },
+      {
+        test: {
           name: 'pdf',
           testTimeout: 30_000,
           include: ['packages/pdf/test/**/*.test.ts'],

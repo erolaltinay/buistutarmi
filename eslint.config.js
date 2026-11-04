@@ -31,6 +31,7 @@ export const engineForbiddenGlobals = [
 export default defineConfig(
   {
     ignores: [
+      'apps/web/public/mediapipe/**',
       '**/node_modules/**',
       '**/.next/**',
       '**/dist/**',

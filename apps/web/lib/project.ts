@@ -4,6 +4,7 @@ import type { AnalysisInput } from '@bitm/engine';
 import { buildBlankInput, buildSampleInput, getSector, sampleCountry } from '@bitm/archetypes';
 import type { Group, Sources } from './confidence';
 import type { Permits } from './permits';
+import type { SiteCheck } from './site';
 
 export interface Shop {
   name: string;
@@ -28,6 +29,8 @@ export interface ProjectDoc {
   sources?: Sources;
   /** Mevzuat maddelerinin durumu; işaretlenmeyen madde "bilmiyorum"dur (SPEC-legal §5). */
   permits?: Permits;
+  /** Dükkân önü konum okuması ve Claude incelemesi; lokasyona bağlıdır, adayla gezer. */
+  site?: SiteCheck | undefined;
   /**
    * Kaydedilmiş aday lokasyonlar (en fazla 4). Prototip gibi her aday analizin tam kopyasını
    * tutar; İP-1.1'de lokasyona bağlı kısım `candidates` tablosuna ayrılır (SPEC-architecture §3).
@@ -43,6 +46,7 @@ export interface Candidate {
   input: AnalysisInput;
   sources?: Sources;
   permits?: Permits;
+  site?: SiteCheck | undefined;
 }
 
 const KEY = 'bitm:project:';

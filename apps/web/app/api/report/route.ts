@@ -11,6 +11,7 @@ import { messagesFor } from '../../../lib/generic';
 import { IS_RELEASE, PERMIT_STATUSES } from '../../../lib/permits';
 import type { ProjectDoc } from '../../../lib/project';
 import { buildReport, reportFilename } from '../../../lib/report';
+import { SiteCheck } from '../../../lib/site';
 import type { Translate } from '../../../lib/verdict-text';
 
 export const runtime = 'nodejs';
@@ -43,6 +44,7 @@ const Body = z.object({
     country: z.string(),
     input: Input,
     permits: Permits.optional(),
+    site: SiteCheck.optional(),
     candidates: z
       .array(z.looseObject({ name: z.string().max(100), input: Input }))
       .max(MAX_CANDIDATES)

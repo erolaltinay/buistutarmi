@@ -15,7 +15,9 @@ export type EventName =
   | 'verdict_shown'
   | 'candidate_added'
   | 'compare_viewed'
-  | 'pdf_downloaded';
+  | 'pdf_downloaded'
+  | 'ai_called'
+  | 'media_uploaded';
 
 type Props = Record<string, string | number | boolean>;
 

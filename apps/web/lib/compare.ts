@@ -148,6 +148,7 @@ export function addCandidate(d: ProjectDoc, name: string, id: string, now: strin
       input: structuredClone(d.input),
       sources: d.sources,
       permits: d.permits,
+      site: d.site,
     },
   ];
   return true;
@@ -157,7 +158,14 @@ export function addCandidate(d: ProjectDoc, name: string, id: string, now: strin
 export function updateCandidate(d: ProjectDoc, id: string, now: string): void {
   d.candidates = (d.candidates ?? []).map((c) =>
     c.id === id
-      ? { ...c, savedAt: now, input: structuredClone(d.input), sources: d.sources, permits: d.permits }
+      ? {
+          ...c,
+          savedAt: now,
+          input: structuredClone(d.input),
+          sources: d.sources,
+          permits: d.permits,
+          site: d.site,
+        }
       : c,
   );
 }
@@ -169,6 +177,7 @@ export function loadCandidate(d: ProjectDoc, id: string): void {
   d.input = structuredClone(c.input);
   d.sources = c.sources;
   d.permits = c.permits;
+  d.site = c.site;
 }
 
 export function removeCandidate(d: ProjectDoc, id: string): void {

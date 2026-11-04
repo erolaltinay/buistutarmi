@@ -36,6 +36,7 @@ export const TABS = [
   'finance',
   'area',
   'location',
+  'site',
   'pricing',
   'storefront',
   'legal',

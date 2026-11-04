@@ -3,12 +3,13 @@
 // Gerçekçi görsel için Claude promptu (SPEC-ai §4) sunucu tarafı AI ile Faz 2'de gelir.
 import { useRef } from 'react';
 import { useTranslations } from 'next-intl';
+import { STYLE_KEYS } from '@bitm/ai/schema';
 import { PALETTES, StorefrontSvg } from '../../../../../components/storefront-svg';
 import { Panel, Seg, TextField } from '../../../../../components/ui';
 import { useWorkbench } from '../../../../../components/workbench';
 import { rowLabel } from '../../../../../lib/labels';
 
-const STYLES = ['modern', 'wood', 'minimal'] as const;
+const STYLES = STYLE_KEYS;
 
 export default function StorefrontPage() {
   const t = useTranslations('storefront');

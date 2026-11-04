@@ -1477,3 +1477,67 @@ a.ghost {
     width: 100%;
   }
 }
+
+/* dükkân önü */
+.site-frames {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+}
+.site-frame {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+.site-frame img {
+  width: 100%;
+  border-radius: 6px;
+  display: block;
+}
+.site-frame .add {
+  margin-top: auto;
+  text-align: center;
+  cursor: pointer;
+}
+.site-consent {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  margin-top: 10px;
+  font-size: 0.85rem;
+}
+.site-consent input {
+  width: auto;
+  flex: none;
+  margin-top: 2px;
+}
+.site-facts {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 4px 12px;
+  margin: 10px 0;
+  font-size: 0.88rem;
+}
+.site-facts dt {
+  color: var(--muted);
+}
+.site-facts dd {
+  margin: 0;
+  font-weight: 600;
+  text-align: right;
+}
+.site-apply {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+.site-apply li {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.88rem;
+}

@@ -68,6 +68,7 @@ describe('PDF rapor (İP-1.6)', () => {
       'Bölge profili',
       'Rakipler (1 km)',
       'Lokasyon karnesi',
+      'Dükkân önü konumu',
       'Fiyat stratejisi',
       'Mevzuat yol haritası',
       'Aday karşılaştırması',
@@ -162,6 +163,47 @@ describe('PDF rapor (İP-1.6)', () => {
     const d = coffee();
     d.sources = { rent: 'user', staff: 'user', price: 'user', base: 'user', cost: 'user' };
     expect(build(d, NONE).verdict.preliminary).toBeUndefined();
+  });
+
+  it('dükkân önü: konum yoksa açıkça yazar, varsa doğruluğuyla; inceleme Claude yorumu olarak girer', async () => {
+    expect(has((await read(coffee(), NONE)).text, 'Konum teyidi yok.')).toBe(true);
+    const d = coffee();
+    d.site = {
+      checkin: { lat: 40.98765, lng: 29.02468, accuracyM: 12.4, capturedAt: '2026-11-04T10:00:00Z' },
+      inspection: {
+        at: '2026-11-04T10:01:00Z',
+        slots: ['front'],
+        result: {
+          summary: 'Dar ama görünür bir cephe.',
+          visible: true,
+          access: null,
+          anchor: null,
+          corner: null,
+          neighbors: [{ side: 'left', type: 'Fırın', name: null, sameSector: false }],
+          signage: { fascia: 'limited', projecting: null, windowArea: true, obstructions: [], note: '' },
+          facade: {
+            condition: 'fair',
+            ideas: [{ idea: 'Ahşap kaplama', reason: 'Sokaktan ayrışır.' }],
+            style: 'wood',
+            palette: null,
+            awning: null,
+          },
+          strengths: [],
+          fixes: [],
+          notVisible: ['Köşe olup olmadığı'],
+        },
+      },
+    };
+    const { text } = await read(d, NONE);
+    expect(has(text, '±12 m')).toBe(true);
+    expect(has(text, 'Konum teyidi yok.')).toBe(false);
+    expect(has(text, 'Claude yorumu')).toBe(true);
+    expect(has(text, 'Dar ama görünür bir cephe.')).toBe(true);
+    expect(has(text, 'Ahşap kaplama')).toBe(true);
+    expect(has(text, 'Köşe olup olmadığı')).toBe(true);
+    expect(has(text, 'izin durumunu söylemez')).toBe(true);
+    // Koordinat rapora yazılmaz.
+    expect(has(text, '40.98765')).toBe(false);
   });
 
   it('dosya adı Türkçe karakter içermez', () => {

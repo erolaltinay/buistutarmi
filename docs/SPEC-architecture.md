@@ -46,6 +46,7 @@ supabase/migrations    şema + RLS
 | `/projects/[id]/location` | Prototip "Lokasyon" + saha sayacı |
 | `/projects/[id]/media` | Foto & video |
 | `/projects/[id]/pricing` | Fiyat stratejisi |
+| `/projects/[id]/site` | Dükkân önü: konum ve dış cephe incelemesi |
 | `/projects/[id]/storefront` | Mağaza görseli |
 | `/projects/[id]/legal` | Mevzuat yol haritası (SPEC-legal §5) |
 | `/projects/[id]/compare` | Adaylar ve karşılaştırma |
@@ -63,6 +64,7 @@ projects(id uuid pk, owner uuid fk, archetype text, country text, currency text,
          created_at, updated_at)
 candidates(id uuid pk, project_id fk, name text,
            address text, lat double, lng double, geo_source text,
+           site_checkin jsonb,               -- dükkân önü konum teyidi, bölüm 5.8
            inputs jsonb,                     -- kira ve sabit gider farkları, demo, loc, comp
            data_confidence numeric,          -- 0–1, bölüm 7
            result jsonb, result_version int, -- son motor çıktısı (önbellek)
@@ -128,7 +130,7 @@ Motor çıktısı istemcide anlık hesaplanır (motor saf ve hızlı). Sunucu ka
 
 ### 5.6 PDF
 - Sunucuda `@react-pdf/renderer` ile; Türkçe karakterli font (Noto Sans veya DejaVu Sans) gömülür.
-- İçerik ve sıra prototipteki PDF ile aynı: kapak, karar, 6 temel sayı, aylık net grafiği, finans özeti, varsayımlar, 24 ay tablosu (isteğe bağlı), bölge, rakipler, fırsatlar, lokasyon karnesi, bayraklar, teyit listesi, fiyat stratejisi, Claude analizi, aday karşılaştırması (isteğe bağlı), mağaza görseli (isteğe bağlı), her sayfada uyarı metni ve sayfa numarası.
+- İçerik ve sıra prototipteki PDF ile aynı: kapak, karar, 6 temel sayı, aylık net grafiği, finans özeti, varsayımlar, 24 ay tablosu (isteğe bağlı), bölge, rakipler, fırsatlar, lokasyon karnesi, bayraklar, teyit listesi, dükkân önü kaydı, fiyat stratejisi, Claude analizi, aday karşılaştırması (isteğe bağlı), mağaza görseli (isteğe bağlı), her sayfada uyarı metni ve sayfa numarası.
 - Rapor üretildiğinde `reports`'a motor sürümüyle kaydedilir.
 - Font: DejaVu Sans, `packages/pdf/fonts` (lisans dosyası yanında). Bu paket metin üretmez; `apps/web/lib/report.ts` çevrilmiş ve biçimlenmiş rapor modelini kurar.
 - Mevzuat bölümü her raporda vardır ve sabit uyarı ile son kontrol tarihini taşır (listedeki en eski `lastReviewed`). Yayın derlemesinde taslak veya kaynaksız madde rapora girmez; yayın dışında "doğrulanmadı" işaretiyle görünür.
@@ -136,6 +138,14 @@ Motor çıktısı istemcide anlık hesaplanır (motor saf ve hızlı). Sunucu ka
 
 ### 5.7 Ödeme (Faz 3)
 - TR: iyzico; global: Stripe. Webhook'lar `subscriptions` tablosunu günceller. Ücretli özellikler sunucu tarafında kontrol edilir (istemci bayrağına güvenilmez).
+
+### 5.8 Dükkân önü konum teyidi
+- Tek okuma: kullanıcı düğmeye basınca `navigator.geolocation.getCurrentPosition` (`enableHighAccuracy: true`, `maximumAge: 0`, 15 sn zaman aşımı). Sürekli izleme yok, arka planda okuma yok. Fotoğrafın EXIF konumu kullanılmaz; kareler tarayıcıda JPEG'e yeniden kodlanırken EXIF silinir.
+- Kayıt adayda tutulur: `candidates.site_checkin jsonb` → `{lat, lng, accuracyM, capturedAt}`. İP-1.1'e kadar `ProjectDoc.site` içinde cihazda durur; kullanıcı silebilir.
+- Doğruluk 100 m'den kötüyse kullanıcıdan açık alanda yeniden denemesi istenir, kayıt yine de doğruluk değeriyle yapılabilir.
+- Adayın koordinatı varsa (İP-2.1) mesafe hesaplanır: `mesafe ≤ max(50 m, accuracyM)` ise "adresle uyumlu", değilse "adresten X m uzakta" uyarısı. Koordinat yoksa yalnız "konum alındı ±X m" ve haritada aç bağlantısı gösterilir.
+- Arayüz "doğrulandı" demez: konum bilgisi telefonun orada olduğunu gösterir, fotoğraftaki dükkânın adres olduğunu kanıtlamaz ve taklit edilebilir. Rapor "kullanıcı konumu ±X m, tarih" ve kaydın yoksa "konum teyidi yok" yazar.
+- Konum izni verilmezse inceleme yine çalışır. Konum teyidi motora ve puana girmez.
 
 ## 6. Arketip ve ülke ayarları
 `docs/SPEC-archetypes.md`. Sektör = ayar dosyası; ülke vergi/komisyon/faiz varsayılanları = ayrı ayar dosyası. Kodda sabit oran yok.
@@ -165,8 +175,8 @@ Etiket alan grubu düzeyinde tutulur (`ProjectDoc.sources`); toplam ağırlık 1
 
 ## 8. Güvenlik ve KVKK
 - Kişisel veri: e-posta, adres/konum, fotoğraflar (yüz içerebilir), girişimcinin finansal bilgileri.
-- Yüz bulanıklaştırma: yüklemeden önce istemcide yüz algılama (ör. MediaPipe) ile; başarısız olursa sunucuda tekrar. Orijinal bulanıklaştırılmamış dosya saklanmaz.
-- Aydınlatma metni, açık rıza (AI'ya görsel gönderimi dahil), çerez bildirimi, hesap ve tüm veriyi silme akışı (30 gün içinde kalıcı silme).
+- Yüz bulanıklaştırma: yüklemeden önce istemcide yüz algılama (ör. MediaPipe) ile; başarısız olursa sunucuda tekrar. Orijinal bulanıklaştırılmamış dosya saklanmaz. Saklanmayan tek seferlik dış cephe incelemesinde (SPEC-ai §3.1) sunucuda tekrar yoktur: algılama çalışmazsa kare gönderilmez. Algılama: MediaPipe, küçük yüzler için kare örtüşen parçalarda da taranır; bölge geri döndürülemez iri piksele çevrilir. Dosyalar kendi alan adımızdan sunulur.
+- Aydınlatma metni, açık rıza (AI'ya görsel gönderimi ve dükkân önü konum kaydı ayrı ayrı), çerez bildirimi, hesap ve tüm veriyi silme akışı (30 gün içinde kalıcı silme).
 - Veri yurt dışına aktarımı (Supabase/Vercel/Anthropic/Google bölgeleri) için hukuki değerlendirme; Supabase projesi AB bölgesinde açılır.
 - Yayın öncesi avukat görüşü: KVKK, kullanım şartları, "yatırım tavsiyesi değildir" çerçevesi, ödeme ve iade şartları.
 - Rate limit: AI ve Places uçlarında kullanıcı + IP bazlı.

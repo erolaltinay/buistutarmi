@@ -76,6 +76,72 @@ function legalBlocks(items: LegalItem[], args: BuildReportArgs, lang: Lang): Blo
   ];
 }
 
+/** Dükkân önü: konum kaydı yoksa bunu açıkça yazar; inceleme Claude yorumu olarak etiketlenir. */
+function siteBlocks(doc: ProjectDoc, locale: string, t: Translate): Block[] {
+  const { checkin, inspection } = doc.site ?? {};
+  const when = (iso: string) =>
+    new Intl.DateTimeFormat(numberLocale(locale), { dateStyle: 'medium', timeZone: 'UTC' }).format(
+      new Date(iso),
+    );
+  const blocks: Block[] = [
+    { kind: 'h2', text: t('site.locT') },
+    {
+      kind: 'para',
+      text: checkin
+        ? t('site.reportLoc', {
+            accuracy: Math.round(checkin.accuracyM),
+            when: when(checkin.capturedAt),
+          })
+        : t('site.locNoneReport'),
+    },
+  ];
+  if (!inspection) return blocks;
+  const r = inspection.result;
+  const tri = (v: boolean | null) => (v === null ? t('site.unknown') : v ? t('site.yes') : t('site.no'));
+  blocks.push(
+    { kind: 'h3', text: t('site.resT') },
+    { kind: 'para', text: r.summary },
+    {
+      kind: 'kv',
+      rows: [
+        { k: t('site.corner'), v: tri(r.corner) },
+        {
+          k: t('site.fascia'),
+          v: r.signage.fascia ? t(`site.fasciaV.${r.signage.fascia}`) : t('site.unknown'),
+        },
+        { k: t('site.projecting'), v: tri(r.signage.projecting) },
+        { k: t('site.windowArea'), v: tri(r.signage.windowArea) },
+        {
+          k: t('site.condition'),
+          v: r.facade.condition ? t(`site.conditionV.${r.facade.condition}`) : t('site.unknown'),
+        },
+      ],
+    },
+  );
+  if (r.neighbors.length)
+    blocks.push(
+      { kind: 'h3', text: t('site.neighborsT') },
+      {
+        kind: 'bullets',
+        items: r.neighbors.map(
+          (x) => `${t(`site.side.${x.side}`)}: ${x.name ? `${x.name} (${x.type})` : x.type}`,
+        ),
+      },
+    );
+  if (r.facade.ideas.length)
+    blocks.push(
+      { kind: 'h3', text: t('site.facadeT') },
+      { kind: 'bullets', items: r.facade.ideas.map((x) => `${x.idea}: ${x.reason}`) },
+    );
+  if (r.notVisible.length)
+    blocks.push(
+      { kind: 'h3', text: t('site.notVisibleT') },
+      { kind: 'bullets', muted: true, items: r.notVisible },
+    );
+  blocks.push({ kind: 'para', muted: true, text: t('site.signLegal') });
+  return blocks;
+}
+
 export function buildReport(args: BuildReportArgs): ReportModel {
   const { doc, locale, t, options, shopImage, today, release } = args;
   const lang = langOf(locale);
@@ -352,6 +418,8 @@ export function buildReport(args: BuildReportArgs): ReportModel {
 
   // Fiyat
   const p = r.pricing;
+  blocks.push(...siteBlocks(doc, locale, t));
+
   blocks.push({ kind: 'h2', text: t('report.price') });
   if (p.reason) blocks.push({ kind: 'para', text: t(`pricing.recWhy.${p.reason}`) });
   blocks.push({
