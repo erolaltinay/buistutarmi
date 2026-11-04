@@ -2,7 +2,9 @@
 // Finans sekmesinin sağ sütunu: karar, başabaş, senaryolar, projeksiyon, yatırım dökümü, duyarlılık.
 import { useTranslations } from 'next-intl';
 import type { ProjectionRow } from '@bitm/engine';
+import { missingFinFields, type Fin } from '@bitm/archetypes';
 import { confidence, PRELIMINARY_BELOW } from '../lib/confidence';
+import { incompleteFields } from '../lib/incomplete';
 import { makeVerdictText, type Translate } from '../lib/verdict-text';
 import { Pill } from './ui';
 import { useWorkbench } from './workbench';
@@ -23,6 +25,21 @@ export function VerdictCard() {
   const sat = result.competition.saturation;
   const fit = result.demandFit.level;
   const flags = result.location.redFlagCount;
+  const incomplete = incompleteFields(doc.input);
+  const emptyRates = missingFinFields(doc.input.fin as Fin).length;
+  if (incomplete.length)
+    return (
+      <div className="verdict v-mid">
+        <div className="stamp" data-testid="verdict">
+          {t('result.incomplete')}
+        </div>
+        <p data-testid="verdict-why">
+          {t('result.incompleteHint', {
+            fields: incomplete.map((f) => t(`result.incompleteField.${f}`)).join(', '),
+          })}
+        </p>
+      </div>
+    );
   return (
     <div className={`verdict v-${result.verdict.toLowerCase()}`}>
       <div className="stamp" data-testid="verdict">
@@ -41,6 +58,11 @@ export function VerdictCard() {
         )}
       </p>
       <p data-testid="verdict-why">{why(result.verdictReason)}</p>
+      {emptyRates > 0 && (
+        <p className="warn" data-testid="empty-rates">
+          {t('result.emptyRates', { count: emptyRates })}
+        </p>
+      )}
       <div className="pills">
         {sat && (
           <Pill tone={sat === 'lo' ? 'good' : sat === 'mid' ? 'mid' : 'bad'}>
@@ -79,6 +101,13 @@ export function FinanceResults() {
     ['m20', 0.8],
   ] as const;
 
+  // Temel girdiler boşken grafik ve tablolar anlamsız sıfırlar gösterir.
+  if (incompleteFields(doc.input).length)
+    return (
+      <aside className="side" aria-live="polite">
+        <VerdictCard />
+      </aside>
+    );
   return (
     <aside className="side" aria-live="polite">
       <VerdictCard />

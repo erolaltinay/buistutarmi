@@ -1,6 +1,7 @@
 // Aday karşılaştırma (İP-1.5): prototipteki 12 satır ve "en iyi değer" vurgu kuralı.
 import type { AnalysisResult } from '@bitm/engine';
 import type { Format } from './format';
+import { locationScore } from './incomplete';
 import type { ProjectDoc } from './project';
 import type { Translate } from './verdict-text';
 
@@ -68,7 +69,7 @@ export function rowValue(r: AnalysisResult, row: CmpRow): number | null {
     case 'capture':
       return r.location.captureNeededPct;
     case 'locScore':
-      return r.location.score;
+      return locationScore(r);
     case 'flags':
       return r.location.redFlagCount;
   }
@@ -95,6 +96,7 @@ export function bestCells(cols: CmpColumn[]): Record<CmpRow, boolean[]> {
 /** Satırın gösterim metni; ekran ve PDF ortak (karar satırı dahil). */
 export function cmpCell(r: AnalysisResult, row: CmpRow, f: Format, t: Translate): string {
   const pct = (v: number | null) => (v === null ? '—' : f.pct(v));
+  const score = (v: number | null) => (v === null ? '—' : `${f.num(v)} / 100`);
   switch (row) {
     case 'verdict':
       return t(`result.label.${r.verdict}`);
@@ -123,7 +125,7 @@ export function cmpCell(r: AnalysisResult, row: CmpRow, f: Format, t: Translate)
     case 'capture':
       return pct(r.location.captureNeededPct);
     case 'locScore':
-      return `${f.num(r.location.score)} / 100`;
+      return score(locationScore(r));
     case 'flags':
       return f.num(r.location.redFlagCount);
   }

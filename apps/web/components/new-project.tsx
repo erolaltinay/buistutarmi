@@ -1,9 +1,12 @@
 'use client';
 // "Kendi analizini başlat": sektör ve başlangıç örneği seçilir, proje bu cihazda oluşturulur.
 import { useState } from 'react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { useRouter } from '../i18n/navigation';
-import { createProject } from '../lib/project';
+import { currencyOptions, otherCountries } from '../lib/generic';
+import { createBlankProject, createProject } from '../lib/project';
+
+const OTHER = '__other';
 
 export interface SectorOption {
   id: string;
@@ -17,13 +20,17 @@ export function NewProject({ sectors }: { sectors: SectorOption[] }) {
   const [sector, setSector] = useState(sectors[0]?.id ?? '');
   const samples = sectors.find((s) => s.id === sector)?.samples ?? [];
   const [sample, setSample] = useState(samples[0]?.id ?? '');
+  const [country, setCountry] = useState('');
+  const [currency, setCurrency] = useState('');
+  const locale = useLocale();
 
   return (
     <form
       className="panel"
       onSubmit={(e) => {
         e.preventDefault();
-        const doc = createProject(sector, sample);
+        const doc =
+          sample === OTHER ? createBlankProject(sector, country, currency) : createProject(sector, sample);
         router.push(`/projects/${doc.id}/finance`);
       }}
     >
@@ -55,8 +62,45 @@ export function NewProject({ sectors }: { sectors: SectorOption[] }) {
                 {s.label}
               </option>
             ))}
+            <option value={OTHER}>{t('otherCountry')}</option>
           </select>
         </label>
+        {sample === OTHER && (
+          <>
+            <label className="field">
+              <span>{t('country')}</span>
+              <select
+                required
+                data-testid="country-select"
+                value={country}
+                onChange={(e) => setCountry(e.target.value)}
+              >
+                <option value="">{t('choose')}</option>
+                {otherCountries(locale).map((c) => (
+                  <option key={c.code} value={c.code}>
+                    {c.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="field">
+              <span>{t('currency')}</span>
+              <select
+                required
+                data-testid="currency-select"
+                value={currency}
+                onChange={(e) => setCurrency(e.target.value)}
+              >
+                <option value="">{t('choose')}</option>
+                {currencyOptions(locale).map((c) => (
+                  <option key={c.code} value={c.code}>
+                    {c.name} ({c.code})
+                  </option>
+                ))}
+              </select>
+            </label>
+          </>
+        )}
       </div>
       <div className="btnrow" style={{ marginTop: 14 }}>
         <button className="solid" type="submit" data-testid="start">

@@ -74,7 +74,7 @@ test('desteklenmeyen ülkede liste yerine genel uyarı; rozet yok', async ({ pag
 
   await page.goto(`${base}/legal`);
   await expect(page.getByTestId('legal-generic')).toContainText('mevzuat listesi sunmuyoruz');
-  await expect(page.locator('select')).toHaveCount(0);
+  await expect(page.locator('main select')).toHaveCount(0);
   expect(await page.locator('main').innerText()).not.toMatch(BANNED);
 
   await page.goto(base);

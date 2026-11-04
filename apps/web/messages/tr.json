@@ -25,7 +25,11 @@
     "localNote": "Analizin şimdilik bu cihazda, bu tarayıcıda saklanır. Hesap açınca buluta taşınacak.",
     "quickTitle": "3 dakikada ilk karar",
     "quickHint": "10 soruluk hızlı analizle başla; sonra ayrıntılı moda geçersin.",
-    "quickStart": "Hızlı analize başla"
+    "quickStart": "Hızlı analize başla",
+    "otherCountry": "Başka ülke (kendi rakamlarınla)",
+    "country": "Ülke",
+    "currency": "Para birimi",
+    "choose": "Seç"
   },
   "wb": {
     "tabs": {
@@ -63,7 +67,8 @@
       "rent": "Kira",
       "staff": "Personel",
       "other": "Diğer"
-    }
+    },
+    "currency": "Para birimi"
   },
   "finance": {
     "invest": "Açılış yatırımı",
@@ -204,7 +209,16 @@
     "qTitle": "Karar vermeden önce",
     "q1": "Bu lokasyonda gerçekten günde {be}+ {unit} olur mu? Kapının önünden geçenleri bir hafta boyunca bizzat say.",
     "q2": "{invest} toplam ihtiyacı (ilk ayların zararını karşılayan işletme sermayesi dahil) karşılayabiliyor musun?",
-    "q3": "Çevredeki rakiplerin yapmadığı, senin yapacağın tek şey ne?"
+    "q3": "Çevredeki rakiplerin yapmadığı, senin yapacağın tek şey ne?",
+    "incomplete": "EKSİK VERİ",
+    "incompleteHint": "Karar için önce şunları gir: {fields}.",
+    "incompleteField": {
+      "price": "ürün veya hizmet fiyatı",
+      "base": "günlük satış (baz senaryo)",
+      "days": "aylık çalışma günü",
+      "cap": "kapasite (istasyon, saat, hizmet süresi)"
+    },
+    "emptyRates": "{count} oran boş; hesapta 0 sayıldı. Finans ekranında kendi oranlarını gir."
   },
   "area": {
     "area": "Bölge",
@@ -484,7 +498,10 @@
     "fPrice": "Fiyat",
     "fCost": "Birim maliyet",
     "fEquity": "Öz sermaye (%)",
-    "staffLabel": "Personel"
+    "staffLabel": "Personel",
+    "otherCountry": "Başka bir ülke",
+    "currency": "Para birimi",
+    "choose": "Seç"
   },
   "summary": {
     "tab": "Karar",
@@ -679,5 +696,60 @@
     "pathHint": "Birbirini bekleyen maddelerin en uzun zinciri. Aynı anda yürüyen maddeler toplanmaz.",
     "blocked": "Lokasyon kontrol listesinde bu adreste ruhsat konusunda \"Hayır\" işaretledin. Bu yüzden karar TUTMAZ.",
     "toLocation": "Kontrol listesine git"
+  },
+  "genericTerms": {
+    "wb": {
+      "reset": "Temizle",
+      "resetConfirm": "Tüm girdilerin silinecek. Emin misin?"
+    },
+    "app": {
+      "disclaimer": "Bu analiz bir karar destek aracıdır, yatırım tavsiyesi değildir. Rakamlar senin girdiğin verilere dayanır; karar vermeden önce mali müşavirine danış."
+    },
+    "finance": {
+      "taxHint": "Ciro ve giderler gerçek kesintilerle hesaplanır: satış vergisi, kart ve paket servis komisyonu, fire, kira üzerindeki kesinti, işveren yükü, kâr vergisi. Boş bıraktığın oran 0 sayılır; kendi ülkendeki oranları gir.",
+      "fin": {
+        "kdv": "Fiyata dahil satış vergisi (%)",
+        "stopaj": "Kira üzerinden kesinti (%)",
+        "employer": "İşveren yükü (maaşın %)"
+      }
+    },
+    "result": {
+      "cols": {
+        "gross": "Ciro (vergi dahil)"
+      },
+      "ticket": "Ortalama sepet (vergi dahil)",
+      "ticketNet": "Net sepet (vergi hariç)",
+      "cm": "Birim katkı payı (vergi, fire, komisyon sonrası)",
+      "fixedM": "Aylık sabit gider (işveren yükü, kira kesintisi dahil)"
+    },
+    "location": {
+      "rentM": "Aylık kira (kesinti dahil)",
+      "revBase": "Baz senaryo aylık ciro (vergi hariç)"
+    },
+    "quick": {
+      "hint": {
+        "rent": "Varsa kira üzerindeki kesintiyi Finans ekranında ayrıca girebilirsin.",
+        "staff": "Maaşların toplamı. İşveren yükünü Finans ekranında girebilirsin. Kendin çalışacaksan sadece diğer çalışanları yaz.",
+        "price": "İlk satan ürününü veya hizmetini düşün. Vergi oranını sonra Finans ekranında gireceksin.",
+        "country": "Bu ülkede varsayılan oran yok; vergi, komisyon ve kredi oranlarını sonra kendin gireceksin."
+      }
+    },
+    "summary": {
+      "confShare": "Henüz doldurulmamış kısım: %{pct}",
+      "confHint": "Bu kalemler henüz boş. Kendi rakamını gir; bu kalem sende yoksa \"Doğru\" de.",
+      "preliminaryHint": "Analizin yarıdan fazlası henüz boş; kararı kesin sonuç gibi okuma.",
+      "source": {
+        "sample": "boş",
+        "estimate": "boş"
+      }
+    },
+    "report": {
+      "disclaimer": "Bu rapor öğretici bir modelle üretilmiştir ve yatırım tavsiyesi değildir. Rakamlar girilen verilere dayanır; karar vermeden önce bir mali müşavirle doğrulayın.",
+      "in": {
+        "kdv": "Fiyata dahil satış vergisi",
+        "stopaj": "Kira üzerinden kesinti",
+        "emp": "İşveren yükü"
+      }
+    }
   }
 }

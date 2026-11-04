@@ -1,10 +1,21 @@
 // PDF rapor modeli (İP-1.6): motor sonucu + çevrilmiş metin. Bölüm sırası prototipteki PDF'ten,
 // mevzuat bölümü SPEC-legal §5'ten. Yerleşim `@bitm/pdf` içinde.
 import { analyze, ENGINE_VERSION, type AnalysisInput, type ConfirmItem } from '@bitm/engine';
-import { engineArchetype, engineCountry, getSector, sectorChecklist, type LegalItem } from '@bitm/archetypes';
+import {
+  engineArchetype,
+  engineCountry,
+  getCountry,
+  getSector,
+  missingFinFields,
+  sectorChecklist,
+  type Fin,
+  type LegalItem,
+} from '@bitm/archetypes';
 import type { Block, Cell, Column, ReportModel, Tone } from '@bitm/pdf';
 import { CMP_ROWS, cmpCell } from './compare';
 import { confidence, PRELIMINARY_BELOW } from './confidence';
+import { isGeneric } from './generic';
+import { incompleteFields, locationScore } from './incomplete';
 import { makeFormat, numberLocale } from './format';
 import { competitorLabel, langOf, letter, type Lang } from './labels';
 import { hasLegalList, legalItems, oldestReview, openCritical, permitStatus } from './permits';
@@ -84,6 +95,17 @@ export function buildReport(args: BuildReportArgs): ReportModel {
   const nets = rows24.map((x) => x.netIncome);
   const be = r.breakEven.perDay;
   const blocks: Block[] = [];
+  const incomplete = incompleteFields(input);
+  const locScore = locationScore(r);
+  const scoreText = locScore === null ? '—' : `${fmt.num(locScore)} / 100`;
+  // Temel girdiler boşken sayılar anlamsızdır; kapakta gösterilmez.
+  const tile = (v: string) => (incomplete.length ? '—' : v);
+
+  // Genel mod bilgi bandı (STRATEGY §2); boş oranlar 0 sayıldı.
+  if (isGeneric(doc.country)) blocks.push({ kind: 'notice', text: getCountry(doc.country).taxNote[lang] });
+  const emptyRates = missingFinFields(input.fin as Fin).map((k) => t(`finance.fin.${k}`));
+  if (emptyRates.length)
+    blocks.push({ kind: 'notice', text: t('finance.missingFin', { fields: emptyRates.join(', ') }) });
 
   // Finans
   const f = input.fin;
@@ -205,27 +227,31 @@ export function buildReport(args: BuildReportArgs): ReportModel {
   const share = (v: number) => fmt.pct(v * 100, 0);
   blocks.push(
     { kind: 'h2', text: t('report.comp') },
-    {
-      kind: 'table',
-      columns: [
-        { head: t('report.compCols.name'), width: 0.24, bold: true },
-        { head: t('report.compCols.dist'), width: 0.09, right: true },
-        { head: t('report.compCols.price'), width: 0.11, right: true },
-        { head: t('report.compCols.rating'), width: 0.07, right: true },
-        { head: t('report.compCols.reviews'), width: 0.09, right: true },
-        { head: t('report.compCols.strong'), width: 0.2 },
-        { head: t('report.compCols.weak'), width: 0.2 },
-      ],
-      rows: input.comp.map((x, i) => [
-        cell(`${letter(i)} · ${competitorLabel(x, sector, lang) || '—'}`),
-        cell(`${fmt.num(n(x.dist))} m`),
-        cell(fmt.money(n(x.price))),
-        cell(n(x.rating) ? fmt.num(n(x.rating), 1) : '—'),
-        cell(fmt.num(n(x.reviews))),
-        cell(x.s.map((k) => tags.strengths[k]?.[lang] ?? k).join(', ')),
-        cell(x.w.map((k) => tags.weaknesses[k]?.[lang] ?? k).join(', ')),
-      ]),
-    },
+    ...(input.comp.length
+      ? [
+          {
+            kind: 'table',
+            columns: [
+              { head: t('report.compCols.name'), width: 0.24, bold: true },
+              { head: t('report.compCols.dist'), width: 0.09, right: true },
+              { head: t('report.compCols.price'), width: 0.11, right: true },
+              { head: t('report.compCols.rating'), width: 0.07, right: true },
+              { head: t('report.compCols.reviews'), width: 0.09, right: true },
+              { head: t('report.compCols.strong'), width: 0.2 },
+              { head: t('report.compCols.weak'), width: 0.2 },
+            ],
+            rows: input.comp.map((x, i) => [
+              cell(`${letter(i)} · ${competitorLabel(x, sector, lang) || '—'}`),
+              cell(`${fmt.num(n(x.dist))} m`),
+              cell(fmt.money(n(x.price))),
+              cell(n(x.rating) ? fmt.num(n(x.rating), 1) : '—'),
+              cell(fmt.num(n(x.reviews))),
+              cell(x.s.map((k) => tags.strengths[k]?.[lang] ?? k).join(', ')),
+              cell(x.w.map((k) => tags.weaknesses[k]?.[lang] ?? k).join(', ')),
+            ]),
+          } as Block,
+        ]
+      : []),
     {
       kind: 'kv',
       rows: [
@@ -298,7 +324,7 @@ export function buildReport(args: BuildReportArgs): ReportModel {
     {
       kind: 'kv',
       rows: [
-        { k: t('location.locTitle'), v: `${fmt.num(l.score)} / 100`, bold: true },
+        { k: t('location.locTitle'), v: scoreText, bold: true },
         {
           k: t('location.footRow'),
           v: status(l.foot) + (l.captureNeededPct === null ? '' : ` · ${fmt.pct(l.captureNeededPct)}`),
@@ -388,20 +414,24 @@ export function buildReport(args: BuildReportArgs): ReportModel {
       .filter(Boolean)
       .join(' · '),
     verdict: {
-      tone: TONES[r.verdict],
+      tone: incomplete.length ? 'mid' : TONES[r.verdict],
       eyebrow: t('result.verdict').toLocaleUpperCase(numberLocale(locale)),
-      label: t(`result.label.${r.verdict}`),
-      why: makeVerdictText(t, fmt, flagLabel)(r.verdictReason),
-      ...(conf < PRELIMINARY_BELOW ? { preliminary: t('summary.preliminary') } : {}),
+      label: incomplete.length ? t('result.incomplete') : t(`result.label.${r.verdict}`),
+      why: incomplete.length
+        ? t('result.incompleteHint', {
+            fields: incomplete.map((f) => t(`result.incompleteField.${f}`)).join(', '),
+          })
+        : makeVerdictText(t, fmt, flagLabel)(r.verdictReason),
+      ...(conf < PRELIMINARY_BELOW && !incomplete.length ? { preliminary: t('summary.preliminary') } : {}),
       confidence: t('summary.confShare', { pct: fmt.num(100 - conf) }),
     },
     tiles: [
       { value: be === null ? '—' : fmt.num(Math.ceil(be)), label: t('report.key.beDay') },
-      { value: fmt.money(r.investment.total), label: t('report.key.invest') },
-      { value: fmt.money(r.investment.cashTrough), label: t('report.key.trough') },
-      { value: payText(r.projection.paybackTotalMonths), label: t('report.key.pay') },
-      { value: fmt.money(r.projection.sum24NetProfit), label: t('report.key.sum24') },
-      { value: `${fmt.num(l.score)} / 100`, label: t('report.key.locScore') },
+      { value: tile(fmt.money(r.investment.total)), label: t('report.key.invest') },
+      { value: tile(fmt.money(r.investment.cashTrough)), label: t('report.key.trough') },
+      { value: tile(payText(r.projection.paybackTotalMonths)), label: t('report.key.pay') },
+      { value: tile(fmt.money(r.projection.sum24NetProfit)), label: t('report.key.sum24') },
+      { value: scoreText, label: t('report.key.locScore') },
     ],
     chart: {
       title: t('result.chNet'),

@@ -10,7 +10,7 @@ import {
   useState,
   type ReactNode,
 } from 'react';
-import { useTranslations } from 'next-intl';
+import { NextIntlClientProvider, useLocale, useMessages, useTimeZone, useTranslations } from 'next-intl';
 import { analyze, type AnalysisResult, type EngineArchetype, type LocationFlag } from '@bitm/engine';
 import {
   engineArchetype,
@@ -25,9 +25,10 @@ import {
 import { Link, usePathname } from '../i18n/navigation';
 import { changedGroups } from '../lib/confidence';
 import { makeFormat, type Format } from '../lib/format';
+import { currencyOptions, isGeneric, withGenericTerms } from '../lib/generic';
 import { langOf, type Lang } from '../lib/labels';
 import { makeFlagLabel, type Translate } from '../lib/verdict-text';
-import { loadProject, projectFromSample, saveProject, type ProjectDoc } from '../lib/project';
+import { loadProject, resetProject, saveProject, type ProjectDoc } from '../lib/project';
 
 export const AUTOSAVE_MS = 1000;
 export const TABS = [
@@ -73,7 +74,6 @@ type Save = 'idle' | 'saving' | 'saved';
 
 export function Workbench({ id, locale, children }: { id: string; locale: string; children: ReactNode }) {
   const t = useTranslations('wb');
-  const tApp = useTranslations('app');
   const [doc, setDoc] = useState<ProjectDoc | null | undefined>(undefined);
   const [save, setSave] = useState<Save>('idle');
   const dirty = useRef(false);
@@ -117,23 +117,76 @@ export function Workbench({ id, locale, children }: { id: string; locale: string
     );
 
   return (
+    <Terms country={doc.country}>
+      <Shell doc={doc} update={update} locale={locale} save={save}>
+        {children}
+      </Shell>
+    </Terms>
+  );
+}
+
+/** Genel modda ülkeye özgü terimler yerine genel adlar geçer; `useTranslations` kullanan her ekran etkilenir. */
+function Terms({ country, children }: { country: string; children: ReactNode }) {
+  const messages = useMessages();
+  const locale = useLocale();
+  const timeZone = useTimeZone();
+  if (!isGeneric(country)) return children;
+  return (
+    <NextIntlClientProvider locale={locale} timeZone={timeZone} messages={withGenericTerms(messages)}>
+      {children}
+    </NextIntlClientProvider>
+  );
+}
+
+function Shell({
+  doc,
+  update,
+  locale,
+  save,
+  children,
+}: {
+  doc: ProjectDoc;
+  update: WorkbenchValue['update'];
+  locale: string;
+  save: Save;
+  children: ReactNode;
+}) {
+  const t = useTranslations('wb');
+  const tApp = useTranslations('app');
+  const generic = isGeneric(doc.country);
+  return (
     <Loaded doc={doc} update={update} locale={locale}>
-      <div className="notice">
-        <span>{t('sampleNote')}</span>
+      <div
+        className={generic ? 'notice generic-band' : 'notice'}
+        data-testid={generic ? 'generic-band' : undefined}
+      >
+        <span>{generic ? getCountry(doc.country).taxNote[langOf(locale)] : t('sampleNote')}</span>
         <div className="btnrow">
           <span className="note" role="status" data-testid="save-status">
             {save === 'saving' ? t('saving') : save === 'saved' ? t('saved') : ''}
           </span>
+          {generic && (
+            <select
+              aria-label={t('currency')}
+              data-testid="band-currency"
+              value={doc.input.cur}
+              onChange={(e) => update((d) => void (d.input.cur = e.target.value), { track: false })}
+            >
+              {currencyOptions(locale).map((c) => (
+                <option key={c.code} value={c.code}>
+                  {c.code}
+                </option>
+              ))}
+            </select>
+          )}
           <button
             className="ghost"
             type="button"
             onClick={() => {
               if (!window.confirm(t('resetConfirm'))) return;
-              const fresh = projectFromSample(doc.sector, doc.sample, doc.id);
               update(
                 (d) => {
-                  // Kayıtlı adaylar ayrı tutulur; örneğe dönmek onları silmez (prototip).
-                  fresh.candidates = d.candidates;
+                  const fresh = resetProject(d);
                   for (const k of Object.keys(d)) delete (d as Partial<ProjectDoc>)[k as keyof ProjectDoc];
                   Object.assign(d, fresh);
                 },
@@ -201,7 +254,7 @@ function Loaded({
             <div>
               <p className="brand-name">{t('app.name')}</p>
               <p className="brand-sub">
-                {sector.name[lang]} · {doc.input.area} · {doc.input.cur}
+                {[sector.name[lang], doc.input.area, doc.input.cur].filter(Boolean).join(' · ')}
               </p>
             </div>
           </Link>

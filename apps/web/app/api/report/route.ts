@@ -7,6 +7,7 @@ import { z } from 'zod';
 import { renderReport } from '@bitm/pdf';
 import { routing } from '../../../i18n/routing';
 import { MAX_CANDIDATES } from '../../../lib/compare';
+import { messagesFor } from '../../../lib/generic';
 import { IS_RELEASE, PERMIT_STATUSES } from '../../../lib/permits';
 import type { ProjectDoc } from '../../../lib/project';
 import { buildReport, reportFilename } from '../../../lib/report';
@@ -18,7 +19,7 @@ const MAX_BODY = 4_000_000;
 const MAX_ROWS = 200;
 
 const Input = z.looseObject({
-  cur: z.string().length(3),
+  cur: z.string().regex(/^[A-Z]{3}$/),
   area: z.string().max(200),
   capex: z.array(z.unknown()).max(MAX_ROWS),
   fixed: z.array(z.unknown()).max(MAX_ROWS),
@@ -64,7 +65,8 @@ export async function POST(request: Request) {
   const doc = parsed.data.doc as unknown as ProjectDoc;
 
   try {
-    const messages = (await import(`../../../messages/${locale}.json`)).default;
+    const base = (await import(`../../../messages/${locale}.json`)).default;
+    const messages = messagesFor(base, doc.country);
     const t = createTranslator({ locale, messages }) as unknown as Translate;
     const model = buildReport({
       doc,

@@ -6,6 +6,7 @@ import { commonChecklist, type ChecklistItem, type Sector } from '@bitm/archetyp
 import { FlagsPanel } from '../../../../../components/flags-panel';
 import { NumberField, NumberInput, Panel, Pill } from '../../../../../components/ui';
 import { useWorkbench } from '../../../../../components/workbench';
+import { locationScore } from '../../../../../lib/incomplete';
 import type { Lang } from '../../../../../lib/labels';
 
 const SLOTS = ['morning', 'midday', 'evening'] as const;
@@ -239,6 +240,7 @@ function LocationSide() {
   const { result, fmt, archetype, checklist, lang, sector } = useWorkbench();
   const l = result.location;
   const info = archetype.location.footTraffic === 'info';
+  const locScore = locationScore(result);
   const scoreTone: Status = l.score >= 75 ? 'good' : l.score >= 50 ? 'mid' : 'bad';
   const label = (k: string) =>
     checklist.find((i) => i.k === k)?.label?.[lang] ?? sector.location.checklistOverrides[k]?.[lang] ?? k;
@@ -271,9 +273,9 @@ function LocationSide() {
       <div className="panel">
         <p className="eyebrow">{t('locTitle')}</p>
         <div className="score">
-          <b data-testid="loc-score">{fmt.num(l.score)}</b>
+          <b data-testid="loc-score">{locScore === null ? '—' : fmt.num(locScore)}</b>
           <span className="note">/ 100</span>
-          {status(scoreTone)}
+          {status(locScore === null ? null : scoreTone)}
         </div>
         {row(
           t('footRow'),

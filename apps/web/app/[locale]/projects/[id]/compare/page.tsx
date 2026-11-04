@@ -19,6 +19,7 @@ import {
   removeCandidate,
   updateCandidate,
 } from '../../../../../lib/compare';
+import { incompleteFields } from '../../../../../lib/incomplete';
 import type { Translate } from '../../../../../lib/verdict-text';
 
 const VERDICT_TONE = { GO: 'good', MID: 'mid', NO: 'bad' } as const;
@@ -153,9 +154,13 @@ export default function ComparePage() {
                     {cols.map((c, i) =>
                       row === 'verdict' ? (
                         <td key={c.id}>
-                          <Pill tone={VERDICT_TONE[c.result.verdict]}>
-                            {cmpCell(c.result, row, c.f, tRoot as Translate)}
-                          </Pill>
+                          {incompleteFields(c.input).length ? (
+                            <Pill tone="mid">{tRoot('result.incomplete')}</Pill>
+                          ) : (
+                            <Pill tone={VERDICT_TONE[c.result.verdict]}>
+                              {cmpCell(c.result, row, c.f, tRoot as Translate)}
+                            </Pill>
+                          )}
                         </td>
                       ) : (
                         <td key={c.id} className={best[row][i] ? 'best' : undefined}>

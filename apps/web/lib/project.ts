@@ -1,7 +1,7 @@
 // Analiz projesi ve bu cihazdaki deposu. İP-1.1'de aynı arayüzün arkasına Supabase gelir
 // (SPEC-architecture §3–4); o zamana kadar proje tarayıcının localStorage'ında durur.
 import type { AnalysisInput } from '@bitm/engine';
-import { buildSampleInput, getSector, sampleCountry } from '@bitm/archetypes';
+import { buildBlankInput, buildSampleInput, getSector, sampleCountry } from '@bitm/archetypes';
 import type { Group, Sources } from './confidence';
 import type { Permits } from './permits';
 
@@ -17,7 +17,7 @@ export interface ProjectDoc {
   v: 1;
   id: string;
   sector: string;
-  /** Başlangıç örneği ("Örneğe dön" bunu yeniden yükler). */
+  /** Başlangıç örneği ("Örneğe dön" bunu yeniden yükler); genel modda boş. */
   sample: string;
   country: string;
   input: AnalysisInput;
@@ -60,6 +60,34 @@ export function projectFromSample(sector: string, sample: string, id: string): P
   };
 }
 
+/** Genel mod: örnek veri olmadan, seçilen ülke ve para birimiyle boş proje. */
+export function blankProject(sector: string, country: string, currency: string, id: string): ProjectDoc {
+  return {
+    v: 1,
+    id,
+    sector,
+    sample: '',
+    country,
+    input: buildBlankInput(sector, country, currency),
+    shop: { name: '', slogan: '', palette: 0, style: 0, awning: true },
+    updatedAt: new Date().toISOString(),
+  };
+}
+
+export function createBlankProject(sector: string, country: string, currency: string): ProjectDoc {
+  const doc = blankProject(sector, country, currency, crypto.randomUUID());
+  saveProject(doc);
+  return doc;
+}
+
+/** "Örneğe dön" / "Temizle": projenin başlangıç hali; kayıtlı adaylar korunur. */
+export function resetProject(doc: ProjectDoc): ProjectDoc {
+  const fresh = doc.sample
+    ? projectFromSample(doc.sector, doc.sample, doc.id)
+    : blankProject(doc.sector, doc.country, doc.input.cur, doc.id);
+  return doc.candidates ? { ...fresh, candidates: doc.candidates } : fresh;
+}
+
 export function createProject(sector: string, sample: string): ProjectDoc {
   const doc = projectFromSample(sector, sample, crypto.randomUUID());
   saveProject(doc);
@@ -75,9 +103,11 @@ export function createQuickProject(
   sample: string,
   input: AnalysisInput,
   answered: Group[] = QUICK_GROUPS,
+  country?: string,
 ): ProjectDoc {
+  const id = crypto.randomUUID();
   const doc: ProjectDoc = {
-    ...projectFromSample(sector, sample, crypto.randomUUID()),
+    ...(sample ? projectFromSample(sector, sample, id) : blankProject(sector, country!, input.cur, id)),
     input,
     origin: 'quick',
     sources: Object.fromEntries(answered.map((g) => [g, 'user'])),

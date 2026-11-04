@@ -2,11 +2,12 @@
 // Hızlı mod sihirbazı (İP-1.4): 10 soru, her cevapta bu cihaza kaydedilir; yarıda bırakılırsa
 // aynı yerden devam eder. `?sector=` ile gelindiyse ilk soru atlanır.
 import { useEffect, useMemo, useState, type FormEvent } from 'react';
-import { useTranslations } from 'next-intl';
+import { createTranslator, useMessages, useTranslations } from 'next-intl';
 import type { FounderRole } from '@bitm/engine';
-import { countries, getSector, sectors } from '@bitm/archetypes';
+import { countries, getCountry, getSector, sectors } from '@bitm/archetypes';
 import { useRouter } from '../i18n/navigation';
 import { makeFormat, numberLocale } from '../lib/format';
+import { currencyOptions, isGeneric, otherCountries, withGenericTerms } from '../lib/generic';
 import { langOf } from '../lib/labels';
 import type { Group } from '../lib/confidence';
 import { createQuickProject, QUICK_GROUPS } from '../lib/project';
@@ -15,6 +16,7 @@ import {
   isAnswered,
   QUICK_STEPS,
   quickCountries,
+  quickCurrency,
   sampleAnswers,
   type QuickAnswers,
   type QuickState,
@@ -47,14 +49,16 @@ function initial(paramSector: string | null, locale: string): { state: QuickStat
   const saved = load();
   if (saved && (!paramSector || saved.answers.sector === paramSector))
     return { state: saved, resumed: saved.step > 0 };
-  const country = locale === 'en' ? 'US' : 'TR';
   if (paramSector) {
     const c = quickCountries(paramSector);
     return {
       state: {
         v: 1,
         step: 1,
-        answers: { sector: paramSector, country: c.includes(country) ? country : c[0] },
+        answers: {
+          sector: paramSector,
+          country: c.find((code) => countries[code]?.locale?.startsWith(locale)) ?? c[0],
+        },
       },
       resumed: false,
     };
@@ -63,7 +67,8 @@ function initial(paramSector: string | null, locale: string): { state: QuickStat
 }
 
 export function QuickWizard({ locale, paramSector }: { locale: string; paramSector: string | null }) {
-  const t = useTranslations('quick');
+  const tBase = useTranslations('quick');
+  const messages = useMessages();
   const tRoles = useTranslations('location.roles');
   const router = useRouter();
   const lang = langOf(locale);
@@ -81,17 +86,29 @@ export function QuickWizard({ locale, paramSector }: { locale: string; paramSect
   }, [state]);
 
   const a = state?.answers ?? {};
+  // Genel modda ipuçları KDV, SGK gibi ülkeye özgü terimleri kullanmaz.
+  const t = useMemo(
+    () =>
+      a.country && isGeneric(a.country)
+        ? (createTranslator({
+            locale,
+            messages: withGenericTerms(messages),
+            namespace: 'quick',
+          }) as unknown as typeof tBase)
+        : tBase,
+    [a.country, locale, messages, tBase],
+  );
   const sector = a.sector ? getSector(a.sector) : null;
   const sample = useMemo(
-    () => (a.sector && a.country ? sampleAnswers(a.sector, a.country) : null),
+    () => (a.sector && a.country && !isGeneric(a.country) ? sampleAnswers(a.sector, a.country) : null),
     [a.sector, a.country],
   );
 
   if (!state) return null;
   const step = QUICK_STEPS[state.step]!;
   const last = state.step === QUICK_STEPS.length - 1;
-  const currency = (a.country && countries[a.country]?.currency) || 'TRY';
-  const fmt = makeFormat(locale, currency);
+  // XXX: ISO'nun "para birimi yok" kodu; seçim yapılmadan önce sayı gösterilmez.
+  const fmt = makeFormat(locale, quickCurrency(a) ?? 'XXX');
   const set = (patch: Partial<QuickAnswers>) =>
     setState((s) => s && { ...s, answers: { ...s.answers, ...patch } });
   const go = (d: number) => {
@@ -101,8 +118,8 @@ export function QuickWizard({ locale, paramSector }: { locale: string; paramSect
 
   /** `answered`: kullanıcının kendi cevapladığı gruplar (örnek yüklemede yalnız yazdığı semt). */
   const finish = (answers: QuickAnswers, answered: Group[]) => {
-    const { input, sample: sampleId } = applyQuick(answers, { staff: t('staffLabel') });
-    const doc = createQuickProject(answers.sector!, sampleId, input, answered);
+    const { input, sample: sampleId, country } = applyQuick(answers, { staff: t('staffLabel') });
+    const doc = createQuickProject(answers.sector!, sampleId, input, answered, country);
     store(null);
     router.push(`/projects/${doc.id}`);
   };
@@ -121,7 +138,7 @@ export function QuickWizard({ locale, paramSector }: { locale: string; paramSect
         <span className="eyebrow" data-testid="quick-progress">
           {t('progress', { step: state.step + 1, total: QUICK_STEPS.length })}
         </span>
-        {a.sector && a.country && (
+        {sample && (
           <button
             type="button"
             className="ghost"
@@ -156,7 +173,10 @@ export function QuickWizard({ locale, paramSector }: { locale: string; paramSect
                 aria-pressed={a.sector === s.id}
                 onClick={() => {
                   const c = quickCountries(s.id);
-                  set({ sector: s.id, country: a.country && c.includes(a.country) ? a.country : c[0] });
+                  set({
+                    sector: s.id,
+                    country: a.country && (c.includes(a.country) || isGeneric(a.country)) ? a.country : c[0],
+                  });
                 }}
               >
                 {s.name[lang]}
@@ -172,11 +192,48 @@ export function QuickWizard({ locale, paramSector }: { locale: string; paramSect
                 type="button"
                 className="choice"
                 aria-pressed={a.country === c}
-                onClick={() => set({ country: c })}
+                onClick={() => set({ country: c, currency: undefined })}
               >
                 {region.of(c) ?? c} · {countries[c]?.currency}
               </button>
             ))}
+            <label className="field" htmlFor="quick-other">
+              <span>{t('otherCountry')}</span>
+              <select
+                id="quick-other"
+                value={a.country && isGeneric(a.country) ? a.country : ''}
+                onChange={(e) => e.target.value && set({ country: e.target.value })}
+              >
+                <option value="">{t('choose')}</option>
+                {otherCountries(locale).map((c) => (
+                  <option key={c.code} value={c.code}>
+                    {c.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+            {a.country && isGeneric(a.country) && (
+              <>
+                <label className="field" htmlFor="quick-currency">
+                  <span>{t('currency')}</span>
+                  <select
+                    id="quick-currency"
+                    value={a.currency ?? ''}
+                    onChange={(e) => set({ currency: e.target.value || undefined })}
+                  >
+                    <option value="">{t('choose')}</option>
+                    {currencyOptions(locale).map((c) => (
+                      <option key={c.code} value={c.code}>
+                        {c.name} ({c.code})
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <p className="note" style={{ gridColumn: '1 / -1' }}>
+                  {getCountry(a.country).taxNote[lang]}
+                </p>
+              </>
+            )}
           </div>
         )}
         {step === 'area' && (

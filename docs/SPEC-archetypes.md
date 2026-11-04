@@ -160,7 +160,7 @@ ABD: `currency USD`, `priceRounding 0.25`, `kdv 0`, `stopaj 0`, `employer 10`, `
 
 Birleştirme sırası: `ülke.fin` → `sektör.defaults[ülke].fin` → kullanıcı girdisi.
 
-**`GENERIC` şablonu (`countries/GENERIC.json`):** `supportLevel: "generic"`, `legal: null`, `dataSources` boş. `fin` içinde vergi, stopaj ve SGK alanları `0`, komisyon ve faiz alanları `null` (kullanıcı doldurana kadar sonuçlar "eksik veri" uyarısıyla gösterilir). Para birimi kullanıcı seçer; `priceRounding` para biriminden türetilir. Listede olmayan her ülke bu şablonu kullanır.
+**`GENERIC` şablonu (`countries/GENERIC.json`):** `supportLevel: "generic"`, `legal: null`, `dataSources` boş. `fin` içinde vergi, stopaj, işveren yükü, komisyon, artış ve faiz alanları `null`: boş alan hesapta 0 sayılır ama kullanıcı doldurana kadar sonuçlar "eksik veri" uyarısıyla gösterilir (`STRATEGY.md` §2: boş ve elle). Fiyat veya baz satış gibi temel girdi boşken karar damgası yerine "eksik veri" görünür. Proje örnek veri olmadan, boş girdiyle başlar (`buildBlankInput`); ülkeye özgü terimler (KDV, SGK, stopaj) yerine genel adlar kullanılır (`messages` → `genericTerms`). Para birimi kullanıcı seçer; `priceRounding` para biriminden türetilir. Listede olmayan her ülke bu şablonu kullanır.
 
 **DE (Faz 3):** `currency EUR`, `supportLevel: full`, Türkçe ve (sonra) Almanca arayüz; Meisterpflicht gerektiren sektörlerde (ör. berber) `requiresCertificate` legal dosyasıyla eşleşir.
 

@@ -1412,3 +1412,13 @@ a.ghost {
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* genel mod bandı (İP-1.9) */
+.generic-band {
+  background: var(--warn-soft);
+  border-radius: 10px;
+  padding: 8px 12px;
+}
+.generic-band select {
+  width: auto;
+}

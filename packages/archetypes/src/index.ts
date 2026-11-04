@@ -167,9 +167,79 @@ export function buildSampleInput(sectorId: string, sampleId: string): AnalysisIn
   };
 }
 
+/**
+ * Genel mod: örnek veri olmadan boş girdi. Sadece sektörün yapısı (kalem adları, türler, kapasite, çalışma
+ * düzeni) ve ülkeden bağımsız yöntem varsayılanları kalır; tutar, oran ve bölge bilgisi kullanıcıdan gelir.
+ * Satış payları eşit başlar. Çalışma günü sektörün işleyişidir, sektörün her örneğinde aynıdır.
+ */
+export function buildBlankInput(sectorId: string, countryCode: string, currency: string): AnalysisInput {
+  const s = getSector(sectorId);
+  const d = analysisDefaults;
+  const count = s.itemTemplate.length;
+  const mix = Math.floor(100 / count);
+  return {
+    biz: s.id,
+    city: '',
+    cur: currency,
+    fin: mergeFin(countryCode, sectorId),
+    contPct: d.contPct,
+    wcMonths: d.wcMonths,
+    days: Object.values(s.samples)[0]?.days ?? null,
+    scen: [0, 0, 0],
+    cap: s.capacity
+      ? [s.capacity.defaults.stations, s.capacity.defaults.hours, s.capacity.defaults.serviceMin]
+      : null,
+    capex: s.capexTemplate.map((t) => ({
+      k: t.k,
+      n: null,
+      v: null,
+      ...(t.depreciable !== undefined ? { depreciable: t.depreciable } : {}),
+    })),
+    fixed: s.fixedTemplate.map((t) => ({ k: t.k, n: null, v: null, type: t.type })),
+    items: s.itemTemplate.map((t, i) => ({
+      k: t.k,
+      n: null,
+      price: null,
+      cost: null,
+      mix: i === 0 ? 100 - mix * (count - 1) : mix,
+      ...(t.kind !== undefined ? { kind: t.kind } : {}),
+    })),
+    area: '',
+    pop: null,
+    demo: {
+      inc: null,
+      incCity: null,
+      a1: null,
+      a2: null,
+      a3: null,
+      hh: null,
+      day: null,
+      turnout: '',
+      elec: '',
+    },
+    loc: {
+      foot: { wd: [0, 0, 0], we: [0, 0, 0] },
+      countMin: d.countMin,
+      openH: null,
+      hist: { turnover: null, reason: 'unknown', closures: null, talked: false },
+      founder: {
+        role: d.founder.role,
+        mgr: null,
+        years: d.founder.years,
+        runway: d.founder.runway,
+        equity: d.founder.equity,
+      },
+      chk: {},
+    },
+    comp: [],
+  };
+}
+
 /** Örnek kimliğinden ülke kodu (golden fixture'daki `city` alanı için). */
 export function sampleCountry(sectorId: string, sampleId: string): string {
   const sample = getSector(sectorId).samples[sampleId];
   if (!sample) throw new Error(`${sectorId}: örnek yok: ${sampleId}`);
   return sample.country;
 }
+
+export { ISO_REGIONS } from './regions';

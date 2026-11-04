@@ -7,6 +7,7 @@ import { Pill } from '../../../../components/ui';
 import { useWorkbench } from '../../../../components/workbench';
 import { Link } from '../../../../i18n/navigation';
 import { confidence, GROUP_TAB, GROUPS, sourceOf, untrustedGroups } from '../../../../lib/confidence';
+import { incompleteFields, locationScore } from '../../../../lib/incomplete';
 import { hasLegalList, legalItems, openCritical } from '../../../../lib/permits';
 
 export default function SummaryPage() {
@@ -14,6 +15,8 @@ export default function SummaryPage() {
   const { doc, result: r, fmt, sector, lang } = useWorkbench();
   const be = r.breakEven.perDay;
   const pay = r.projection.paybackTotalMonths;
+  const locScore = locationScore(r);
+  const empty = incompleteFields(doc.input).length > 0;
 
   return (
     <main className="bench">
@@ -28,20 +31,20 @@ export default function SummaryPage() {
             </dd>
             <dt className="em">{t('result.totalInvest')}</dt>
             <dd className="big" data-testid="invest">
-              {fmt.money(r.investment.total)}
+              {empty ? '—' : fmt.money(r.investment.total)}
             </dd>
             <dt>{t('result.stTrough')}</dt>
-            <dd data-testid="trough">{fmt.money(r.investment.cashTrough)}</dd>
+            <dd data-testid="trough">{empty ? '—' : fmt.money(r.investment.cashTrough)}</dd>
             <dt>{t('result.payAll')}</dt>
             <dd data-testid="payback">
-              {pay === null ? t('result.never') : t('result.months', { count: fmt.num(pay) })}
+              {empty ? '—' : pay === null ? t('result.never') : t('result.months', { count: fmt.num(pay) })}
             </dd>
             <dt>{t('summary.sum24')}</dt>
             <dd className={r.projection.sum24NetProfit >= 0 ? 'pos' : 'neg'}>
-              {fmt.money(r.projection.sum24NetProfit)}
+              {empty ? '—' : fmt.money(r.projection.sum24NetProfit)}
             </dd>
             <dt>{t('summary.locScore')}</dt>
-            <dd>{fmt.num(r.location.score)} / 100</dd>
+            <dd>{locScore === null ? '—' : `${fmt.num(locScore)} / 100`}</dd>
           </dl>
         </div>
         <PermitsBadge />

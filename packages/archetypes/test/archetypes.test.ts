@@ -82,11 +82,20 @@ describe('ülke dosyaları', () => {
     expect(mergeFin('TR', 'coffee', { loanRate: 30 }).loanRate).toBe(30);
   });
 
-  it('GENERIC: vergi alanları 0, komisyon ve faiz kullanıcı doldurana kadar boş; TR/US değeri sızmaz', () => {
+  it('GENERIC: vergi, komisyon ve faiz kullanıcı doldurana kadar boş; TR/US değeri sızmaz', () => {
     const fin = mergeFin('FR', 'coffee');
-    expect(fin).toMatchObject({ kdv: 0, stopaj: 0, employer: 0, profitTax: 0 });
     expect(missingFinFields(fin)).toEqual(
-      expect.arrayContaining(['cardShare', 'cardFee', 'platShare', 'platFee', 'loanRate']),
+      expect.arrayContaining([
+        'kdv',
+        'stopaj',
+        'employer',
+        'profitTax',
+        'cardShare',
+        'cardFee',
+        'platShare',
+        'platFee',
+        'loanRate',
+      ]),
     );
     for (const k of ['loanRate', 'cardFee', 'employer', 'priceInc'] as const) {
       expect(fin[k]).not.toBe(countries.TR!.fin[k]);

@@ -25,7 +25,11 @@
     "localNote": "For now your analysis is stored on this device, in this browser. It moves to the cloud once you have an account.",
     "quickTitle": "Your first verdict in 3 minutes",
     "quickHint": "Start with the 10-question quick analysis, then move to the detailed mode.",
-    "quickStart": "Start the quick analysis"
+    "quickStart": "Start the quick analysis",
+    "otherCountry": "Another country (with your own numbers)",
+    "country": "Country",
+    "currency": "Currency",
+    "choose": "Choose"
   },
   "wb": {
     "tabs": {
@@ -63,7 +67,8 @@
       "rent": "Rent",
       "staff": "Staff",
       "other": "Other"
-    }
+    },
+    "currency": "Currency"
   },
   "finance": {
     "invest": "Startup investment",
@@ -204,7 +209,16 @@
     "qTitle": "Before you decide",
     "q1": "Will this location really bring {be}+ {unit} a day? Count the people walking past the door for a full week.",
     "q2": "Can you fund {invest} in total, including the working capital that carries the first loss-making months?",
-    "q3": "What is the one thing you will do that nearby competitors don’t?"
+    "q3": "What is the one thing you will do that nearby competitors don’t?",
+    "incomplete": "MISSING DATA",
+    "incompleteHint": "To get a verdict, first enter: {fields}.",
+    "incompleteField": {
+      "price": "product or service price",
+      "base": "daily sales (base case)",
+      "days": "working days per month",
+      "cap": "capacity (stations, hours, service time)"
+    },
+    "emptyRates": "{count} rates are empty and count as 0. Enter your own rates on the Finance screen."
   },
   "area": {
     "area": "Area",
@@ -484,7 +498,10 @@
     "fPrice": "Price",
     "fCost": "Unit cost",
     "fEquity": "Own money (%)",
-    "staffLabel": "Staff"
+    "staffLabel": "Staff",
+    "otherCountry": "Another country",
+    "currency": "Currency",
+    "choose": "Choose"
   },
   "summary": {
     "tab": "Verdict",
@@ -679,5 +696,60 @@
     "pathHint": "The longest chain of items that wait on each other. Items that run at the same time are not added up.",
     "blocked": "You marked \"No\" for the permit item in the location checklist, so the verdict is NO.",
     "toLocation": "Go to the checklist"
+  },
+  "genericTerms": {
+    "wb": {
+      "reset": "Clear",
+      "resetConfirm": "All your inputs will be deleted. Are you sure?"
+    },
+    "app": {
+      "disclaimer": "This analysis is a decision-support tool, not investment advice. The figures rely on your inputs; check them with an accountant before you decide."
+    },
+    "finance": {
+      "taxHint": "Sales and costs carry real-world deductions: sales tax, card and delivery-app fees, waste, deductions on rent, employer costs, profit tax. A rate left empty counts as 0; enter the rates for your country.",
+      "fin": {
+        "kdv": "Sales tax included in price (%)",
+        "stopaj": "Deduction on rent (%)",
+        "employer": "Employer costs (% of wages)"
+      }
+    },
+    "result": {
+      "cols": {
+        "gross": "Sales (incl. tax)"
+      },
+      "ticket": "Average ticket (incl. tax)",
+      "ticketNet": "Net ticket (excl. tax)",
+      "cm": "Unit contribution (after tax, waste, fees)",
+      "fixedM": "Monthly fixed costs (incl. employer costs, rent deductions)"
+    },
+    "location": {
+      "rentM": "Monthly rent (incl. deductions)",
+      "revBase": "Base-case monthly sales (excl. tax)"
+    },
+    "quick": {
+      "hint": {
+        "rent": "If rent carries a deduction, you can enter it later on the Finance screen.",
+        "staff": "Total wages. You can enter employer costs on the Finance screen. If you will work there yourself, list only the others.",
+        "price": "Think of your best seller. You will enter the tax rate later on the Finance screen.",
+        "country": "There are no default rates for this country; you will enter tax, fee and loan rates yourself later."
+      }
+    },
+    "summary": {
+      "confShare": "Not filled in yet: {pct}%",
+      "confHint": "These items are still empty. Enter your own figure, or tap \"Correct\" if you do not have this item.",
+      "preliminaryHint": "More than half of the analysis is still empty; do not read the verdict as final.",
+      "source": {
+        "sample": "empty",
+        "estimate": "empty"
+      }
+    },
+    "report": {
+      "disclaimer": "This report comes from a teaching model and is not investment advice. The numbers rest on entered data; check them with an accountant before you decide.",
+      "in": {
+        "kdv": "Sales tax included in price",
+        "stopaj": "Deduction on rent",
+        "emp": "Employer costs"
+      }
+    }
   }
 }

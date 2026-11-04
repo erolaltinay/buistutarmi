@@ -2,7 +2,8 @@
 // Cevaplanmayan her şey (rakipler, bölge, yaya, kontrol listesi, vergiler) örnekten gelir;
 // sonuç ekranı bunu söyler ve ayrıntılı moda yönlendirir.
 import { roundPrice, type AnalysisInput, type FounderRole } from '@bitm/engine';
-import { buildSampleInput, countries, engineCountry, getSector } from '@bitm/archetypes';
+import { buildBlankInput, buildSampleInput, countries, engineCountry, getSector } from '@bitm/archetypes';
+import { isGeneric } from './generic';
 
 export const QUICK_STEPS = [
   'sector',
@@ -21,6 +22,8 @@ export type QuickStep = (typeof QUICK_STEPS)[number];
 export interface QuickAnswers {
   sector?: string;
   country?: string;
+  /** Genel modda kullanıcı seçer; tam desteklenen ülkede ülke dosyasından gelir. */
+  currency?: string;
   area?: string;
   /** Aylık kira (tüm kira satırlarının yerine). */
   rent?: number;
@@ -47,13 +50,16 @@ export interface QuickState {
 const sum = (rows: { v: unknown }[]) => rows.reduce((a, r) => a + (Number(r.v) || 0), 0);
 const positive = (v: number | undefined) => v !== undefined && Number.isFinite(v) && v > 0;
 
-/** Sektörün örneği olan, tam desteklenen ülkeler (genel mod İP-1.9'da). */
+/** Sektörün örneği olan, tam desteklenen ülkeler; diğerleri genel moddadır. */
 export function quickCountries(sector: string): string[] {
   const s = getSector(sector);
   return Object.values(countries)
     .filter((c) => c.supportLevel === 'full' && s.defaults[c.code]?.sample)
     .map((c) => c.code);
 }
+
+export const quickCurrency = (a: QuickAnswers): string | undefined =>
+  a.currency ?? (a.country ? (countries[a.country]?.currency ?? undefined) : undefined);
 
 function sampleFor(sector: string, country: string): string {
   const sample = getSector(sector).defaults[country]?.sample;
@@ -85,7 +91,7 @@ export function isAnswered(step: QuickStep, a: QuickAnswers): boolean {
     case 'sector':
       return !!a.sector;
     case 'country':
-      return !!a.country;
+      return !!a.country && (!isGeneric(a.country) || !!a.currency);
     case 'area':
       return !!a.area?.trim();
     case 'role':
@@ -105,6 +111,7 @@ export function applyQuick(
   labels: { staff: string },
 ): { input: AnalysisInput; sample: string; country: string } {
   if (!a.sector || !a.country) throw new Error('sektör ve ülke gerekli');
+  if (isGeneric(a.country)) return applyQuickBlank(a, labels);
   const sample = sampleFor(a.sector, a.country);
   const input = buildSampleInput(a.sector, sample);
   const base = sampleAnswers(a.sector, a.country);
@@ -157,4 +164,33 @@ export function applyQuick(
 
   if (a.equity !== undefined) input.loc.founder.equity = a.equity;
   return { input, sample, country: a.country };
+}
+
+/** Genel mod: cevaplar boş girdiye yazılır; tek fiyat bilindiği için satışın tamamı ilk kalemdedir. */
+function applyQuickBlank(
+  a: QuickAnswers,
+  labels: { staff: string },
+): { input: AnalysisInput; sample: string; country: string } {
+  const input = buildBlankInput(a.sector!, a.country!, a.currency!);
+  input.area = a.area?.trim() ?? '';
+  const rent = input.fixed.find((r) => r.type === 'rent');
+  if (rent && a.rent !== undefined) rent.v = a.rent;
+  const staff = input.fixed.find((r) => r.type === 'staff');
+  if (staff && a.staff !== undefined) {
+    staff.v = a.staff;
+    staff.n = labels.staff;
+  }
+  if (a.role) input.loc.founder.role = a.role;
+  input.items.forEach((r, i) => {
+    r.mix = i === 0 ? 100 : 0;
+    if (i === 0) {
+      r.price = a.price ?? null;
+      r.cost = a.cost ?? null;
+    }
+  });
+  if (a.daily !== undefined) input.scen = [a.daily, a.daily, a.daily];
+  const capex = input.capex[0];
+  if (capex && a.capex !== undefined) capex.v = a.capex;
+  if (a.equity !== undefined) input.loc.founder.equity = a.equity;
+  return { input, sample: '', country: a.country! };
 }
