@@ -1317,3 +1317,56 @@ a.ghost {
 .conf-list .ghost {
   padding: 4px 10px;
 }
+
+/* aday karşılaştırma (İP-1.5) */
+.bench.one {
+  grid-template-columns: minmax(0, 1fr);
+}
+.cand-list {
+  margin-top: 12px;
+  gap: 8px;
+}
+.cand {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px 12px;
+  background: var(--bg);
+}
+.cand > div:first-child {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.cand strong {
+  font-size: 0.92rem;
+}
+.tscroll table.cmp {
+  min-width: 520px;
+  font-size: 0.84rem;
+}
+.cmp th {
+  vertical-align: bottom;
+}
+.cmp th .sub {
+  display: block;
+  font-size: 0.68rem;
+  letter-spacing: 0;
+  text-transform: none;
+  font-weight: 500;
+  color: var(--muted);
+}
+.cmp td.best {
+  background: var(--good-soft);
+  color: var(--good);
+  font-weight: 700;
+}
+.cmp td:first-child {
+  color: var(--muted);
+  font-family: var(--body);
+  text-align: left;
+}

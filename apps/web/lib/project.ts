@@ -25,7 +25,20 @@ export interface ProjectDoc {
   origin?: 'quick';
   /** Girdi gruplarının kaynak etiketleri; yazılmayan grup başlangıç değerindedir (SPEC-architecture §7). */
   sources?: Sources;
+  /**
+   * Kaydedilmiş aday lokasyonlar (en fazla 4). Prototip gibi her aday analizin tam kopyasını
+   * tutar; İP-1.1'de lokasyona bağlı kısım `candidates` tablosuna ayrılır (SPEC-architecture §3).
+   */
+  candidates?: Candidate[];
   updatedAt: string;
+}
+
+export interface Candidate {
+  id: string;
+  name: string;
+  savedAt: string;
+  input: AnalysisInput;
+  sources?: Sources;
 }
 
 const KEY = 'bitm:project:';

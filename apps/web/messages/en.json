@@ -34,7 +34,8 @@
       "area": "Area and rivals",
       "location": "Location",
       "pricing": "Pricing strategy",
-      "storefront": "Storefront"
+      "storefront": "Storefront",
+      "compare": "Compare"
     },
     "sampleNote": "Figures, competitors and location data are illustrative. Enter your own data and everything updates instantly.",
     "reset": "Reset example",
@@ -517,6 +518,39 @@
       "site": "Shop history and checklist",
       "fin": "Tax, fee and loan rates",
       "founder": "Founder profile"
+    }
+  },
+  "compare": {
+    "hCand": "Candidate locations",
+    "count": "{count} / {max}",
+    "candHint": "Set up the same business for different shops and save each one. Every candidate keeps all of its data; load it to edit or compare side by side. Candidates are stored on this device.",
+    "lName": "Candidate name",
+    "save": "Save this analysis as a candidate",
+    "max": "You can save up to {max} candidates; delete one first.",
+    "saved": "\"{name}\" saved.",
+    "updated": "Updated: {name}",
+    "load": "Load",
+    "loadArm": "This replaces the current analysis. Load?",
+    "update": "Update",
+    "del": "Remove",
+    "delArm": "Delete?",
+    "empty": "No saved candidates yet. Finish the analysis for one shop, name it and save it; then do the same for the next shop.",
+    "hCmp": "Side-by-side comparison",
+    "cmpHint": "The best value in each row is highlighted (among candidates in the same currency).",
+    "now": "Current analysis",
+    "rows": {
+      "verdict": "Verdict",
+      "beDay": "Break-even (cash, incl. loan)",
+      "invest": "True investment needed",
+      "trough": "Deepest cash gap",
+      "pay": "Investment payback",
+      "sum24": "24-month total net profit",
+      "fit": "Demand fit",
+      "rivals": "Rivals within 1 km",
+      "rent": "Rent / sales",
+      "capture": "Capture rate needed",
+      "locScore": "Location score",
+      "flags": "Red flags"
     }
   }
 }

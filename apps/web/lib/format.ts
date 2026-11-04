@@ -16,15 +16,15 @@ export function makeFormat(locale: string, currency: string): Format {
     new Intl.NumberFormat(loc, { style: 'currency', currency }).resolvedOptions().maximumFractionDigits ?? 0;
   const num = (v: number, digits = 0) =>
     new Intl.NumberFormat(loc, { maximumFractionDigits: digits, minimumFractionDigits: digits }).format(v);
-  // Küsuratlı para birimlerinde küçük tutarlar kuruşuyla gösterilir (5,75 $).
+  // Küsuratlı para birimlerinde küçük tutarlar kuruşuyla gösterilir (5,75 $). -0 "−₺0" görünmesin diye +0.
   const money = (v: number) => {
-    const d = fraction > 0 && Math.abs(v) < 100 ? fraction : 0;
+    const d = fraction > 0 && v !== 0 && Math.abs(v) < 100 ? fraction : 0;
     return new Intl.NumberFormat(loc, {
       style: 'currency',
       currency,
       maximumFractionDigits: d,
       minimumFractionDigits: d,
-    }).format(v);
+    }).format(v + 0);
   };
   const compactMoney = (v: number) =>
     new Intl.NumberFormat(loc, {

@@ -34,7 +34,8 @@
       "area": "Bölge ve rakipler",
       "location": "Lokasyon",
       "pricing": "Fiyat stratejisi",
-      "storefront": "Mağaza görseli"
+      "storefront": "Mağaza görseli",
+      "compare": "Karşılaştırma"
     },
     "sampleNote": "Rakamlar, rakipler ve lokasyon verileri temsili örnektir. Kendi verini gir, her şey anında güncellenir.",
     "reset": "Örneğe dön",
@@ -517,6 +518,39 @@
       "site": "Dükkân geçmişi ve kontrol listesi",
       "fin": "Vergi, komisyon ve kredi oranları",
       "founder": "Girişimci profili"
+    }
+  },
+  "compare": {
+    "hCand": "Aday lokasyonlar",
+    "count": "{count} / {max}",
+    "candHint": "Aynı işi farklı dükkânlar için kur ve kaydet. Her aday tüm verisiyle saklanır; yükleyip düzenleyebilir, yan yana karşılaştırabilirsin. Adaylar bu cihazda saklanır.",
+    "lName": "Aday adı",
+    "save": "Bu analizi aday olarak kaydet",
+    "max": "En fazla {max} aday kaydedebilirsin; önce birini sil.",
+    "saved": "\"{name}\" kaydedildi.",
+    "updated": "Güncellendi: {name}",
+    "load": "Yükle",
+    "loadArm": "Mevcut analiz değişecek. Yükle?",
+    "update": "Güncelle",
+    "del": "Sil",
+    "delArm": "Silinsin mi?",
+    "empty": "Henüz kayıtlı aday yok. Bir dükkânın analizini tamamla, adını yaz ve kaydet; sonra diğer dükkân için aynısını yap.",
+    "hCmp": "Yan yana karşılaştırma",
+    "cmpHint": "Her satırda en iyi değer işaretlenir (aynı para birimindeki adaylar arasında).",
+    "now": "Şu anki analiz",
+    "rows": {
+      "verdict": "Karar",
+      "beDay": "Başabaş (nakit, taksit dahil)",
+      "invest": "Gerçek yatırım ihtiyacı",
+      "trough": "En derin nakit açığı",
+      "pay": "Yatırımın geri dönüşü",
+      "sum24": "24 ay toplam net kâr",
+      "fit": "Talep uyumu",
+      "rivals": "1 km içindeki rakip",
+      "rent": "Kira / ciro",
+      "capture": "Gereken giriş oranı",
+      "locScore": "Lokasyon puanı",
+      "flags": "Kırmızı bayrak"
     }
   }
 }

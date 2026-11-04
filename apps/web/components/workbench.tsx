@@ -29,7 +29,7 @@ import { langOf, type Lang } from '../lib/labels';
 import { loadProject, projectFromSample, saveProject, type ProjectDoc } from '../lib/project';
 
 export const AUTOSAVE_MS = 1000;
-export const TABS = ['summary', 'finance', 'area', 'location', 'pricing', 'storefront'] as const;
+export const TABS = ['summary', 'finance', 'area', 'location', 'pricing', 'storefront', 'compare'] as const;
 
 export interface WorkbenchValue {
   doc: ProjectDoc;
@@ -121,6 +121,8 @@ export function Workbench({ id, locale, children }: { id: string; locale: string
               const fresh = projectFromSample(doc.sector, doc.sample, doc.id);
               update(
                 (d) => {
+                  // Kayıtlı adaylar ayrı tutulur; örneğe dönmek onları silmez (prototip).
+                  fresh.candidates = d.candidates;
                   for (const k of Object.keys(d)) delete (d as Partial<ProjectDoc>)[k as keyof ProjectDoc];
                   Object.assign(d, fresh);
                 },
