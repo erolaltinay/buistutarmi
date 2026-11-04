@@ -458,6 +458,7 @@
     },
     "nyc": {
       "country": "US",
+      "legalRegion": "US-NY-NYC",
       "currency": "USD",
       "area": "Brooklyn, Park Slope",
       "pop": 60000,
@@ -567,6 +568,7 @@
     },
     "aus": {
       "country": "US",
+      "legalRegion": "US-TX-AUSTIN",
       "currency": "USD",
       "area": "Austin, East Cesar Chavez",
       "pop": 9000,

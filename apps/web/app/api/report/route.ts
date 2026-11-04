@@ -7,6 +7,7 @@ import { z } from 'zod';
 import { renderReport } from '@bitm/pdf';
 import { routing } from '../../../i18n/routing';
 import { MAX_CANDIDATES } from '../../../lib/compare';
+import { IS_RELEASE, PERMIT_STATUSES } from '../../../lib/permits';
 import type { ProjectDoc } from '../../../lib/project';
 import { buildReport, reportFilename } from '../../../lib/report';
 import type { Translate } from '../../../lib/verdict-text';
@@ -25,6 +26,8 @@ const Input = z.looseObject({
   comp: z.array(z.looseObject({ s: z.array(z.string()), w: z.array(z.string()) })).max(MAX_ROWS),
 });
 
+const Permits = z.record(z.string(), z.looseObject({ status: z.enum(PERMIT_STATUSES) }));
+
 const Body = z.object({
   locale: z.enum(routing.locales),
   options: z.object({ monthly: z.boolean(), cmp: z.boolean(), shop: z.boolean() }),
@@ -38,14 +41,13 @@ const Body = z.object({
     sector: z.string(),
     country: z.string(),
     input: Input,
+    permits: Permits.optional(),
     candidates: z
       .array(z.looseObject({ name: z.string().max(100), input: Input }))
       .max(MAX_CANDIDATES)
       .optional(),
   }),
 });
-
-const isRelease = () => process.env.VERCEL_ENV === 'production' || process.env.BITM_RELEASE === 'production';
 
 export async function POST(request: Request) {
   const text = await request.text();
@@ -71,7 +73,7 @@ export async function POST(request: Request) {
       options,
       ...(shopImage ? { shopImage } : {}),
       today: new Date(),
-      release: isRelease(),
+      release: IS_RELEASE,
     });
     const pdf = await renderReport(model, { fontDir: join(process.cwd(), '../../packages/pdf/fonts') });
     return new NextResponse(new Uint8Array(pdf), {

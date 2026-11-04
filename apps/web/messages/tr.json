@@ -36,7 +36,8 @@
       "pricing": "Fiyat stratejisi",
       "storefront": "Mağaza görseli",
       "compare": "Karşılaştırma",
-      "report": "Rapor"
+      "report": "Rapor",
+      "legal": "Mevzuat"
     },
     "sampleNote": "Rakamlar, rakipler ve lokasyon verileri temsili örnektir. Kendi verini gir, her şey anında güncellenir.",
     "reset": "Örneğe dön",
@@ -617,24 +618,66 @@
       "emp": "SGK işveren yükü",
       "loan": "Kredi",
       "loanV": "yıllık %{rate}, {term} ay; öz sermaye %{equity}"
-    },
-    "legal": {
-      "title": "Mevzuat yol haritası",
-      "item": "Madde",
-      "authority": "Kurum",
-      "status": "Durum",
-      "days": "Süre",
-      "source": "Kaynak",
-      "critical": "kritik",
-      "unknown": "Bilinmiyor",
-      "dayRange": "{min}–{max} gün",
-      "sourceLink": "Resmi kaynak",
-      "noSource": "Doğrulanmadı",
-      "warning": "Bu liste genel bir rehberdir ve değişebilir. Başvurmadan önce belediyene, ilgili kuruma ve mali müşavirine teyit ettir. Son kontrol: {date}.",
-      "draft": "Bu listedeki taslak maddeler resmi kaynaktan henüz doğrulanmadı. Başvuru için dayanak olarak kullanma.",
-      "generic": "Bu ülke için mevzuat listesi sunmuyoruz. İzin ve belgeler için yerel belediyene ve mali müşavirine danış.",
-      "none": "Bu iş için doğrulanmış mevzuat maddesi henüz yok. İzin ve belgeler için belediyene, ilgili kuruma ve mali müşavirine danış.",
-      "confirm": "Mevzuat: {item}"
     }
+  },
+  "legal": {
+    "tab": "Mevzuat",
+    "title": "Mevzuat yol haritası",
+    "hint": "Dükkânı açmak için hangi belgeyi, hangi kurumdan almak gerektiğini gösteren kontrol listesi. Bu bir hukuki görüş değildir; her maddeyi kendi durumuna göre işaretle.",
+    "item": "Madde",
+    "authority": "Kurum",
+    "status": "Durum",
+    "days": "Süre",
+    "source": "Kaynak",
+    "cost": "Maliyet",
+    "critical": "kritik",
+    "criticalBadge": "Kritik",
+    "dayRange": "{min}–{max} gün",
+    "sourceLink": "Resmi kaynak",
+    "noSource": "Doğrulanmadı",
+    "warning": "Bu liste genel bir rehberdir ve değişebilir. Başvurmadan önce belediyene, ilgili kuruma ve mali müşavirine teyit ettir. Son kontrol: {date}.",
+    "draft": "Bu listedeki taslak maddeler resmi kaynaktan henüz doğrulanmadı. Başvuru için dayanak olarak kullanma.",
+    "draftBadge": "Taslak — doğrulanmadı",
+    "staleBadge": "Güncelliği doğrulanmadı",
+    "generic": "Bu ülke için mevzuat listesi sunmuyoruz. İzin ve belgeler için yerel belediyene ve mali müşavirine danış.",
+    "none": "Bu iş için doğrulanmış mevzuat maddesi henüz yok. İzin ve belgeler için belediyene, ilgili kuruma ve mali müşavirine danış.",
+    "confirm": "Mevzuat: {item}",
+    "stage": {
+      "before_lease": "Kiralamadan önce",
+      "before_opening": "Açılıştan önce",
+      "after_opening": "Açılıştan sonra"
+    },
+    "statuses": {
+      "unknown": "Bilmiyorum",
+      "todo": "Yapılacak",
+      "applied": "Başvurdum",
+      "done": "Aldım",
+      "na": "Bana uygulanmaz"
+    },
+    "statusPdf": {
+      "unknown": "Bilinmiyor",
+      "todo": "Yapılacak",
+      "applied": "Başvuruldu",
+      "done": "Alındı",
+      "na": "Uygulanmıyor"
+    },
+    "condition": {
+      "hasEmployees": "Personel çalıştırıyorsan",
+      "servesFood": "Gıda sunuyorsan",
+      "outdoorSeating": "Dışarıya masa koyuyorsan",
+      "hasSign": "Tabela asıyorsan",
+      "sellsAlcohol": "Alkol satıyorsan"
+    },
+    "dependsOn": "Önce: {items}",
+    "openCritical": "{count, plural, =0 {İşaretlediğin kadarıyla bekleyen kritik madde yok} other {# kritik madde tamamlanmadı}}",
+    "openMap": "Yol haritasını aç",
+    "pathTitle": "Tahmini toplam süre",
+    "pathKnown": "{min}–{max} gün",
+    "pathPartial": "En az {min}–{max} gün. {count} maddenin süresi henüz bilinmiyor, gerçek süre daha uzun olabilir.",
+    "pathUnknown": "Hesaplanamadı: {count} maddenin süresi henüz doğrulanmadı.",
+    "pathNone": "Açılışı bekleten madde kalmadı.",
+    "pathHint": "Birbirini bekleyen maddelerin en uzun zinciri. Aynı anda yürüyen maddeler toplanmaz.",
+    "blocked": "Lokasyon kontrol listesinde bu adreste ruhsat konusunda \"Hayır\" işaretledin. Bu yüzden karar TUTMAZ.",
+    "toLocation": "Kontrol listesine git"
   }
 }

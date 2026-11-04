@@ -3,9 +3,11 @@
 import { useTranslations } from 'next-intl';
 import { VerdictCard } from '../../../../components/finance-results';
 import { FlagsPanel } from '../../../../components/flags-panel';
+import { Pill } from '../../../../components/ui';
 import { useWorkbench } from '../../../../components/workbench';
 import { Link } from '../../../../i18n/navigation';
 import { confidence, GROUP_TAB, GROUPS, sourceOf, untrustedGroups } from '../../../../lib/confidence';
+import { hasLegalList, legalItems, openCritical } from '../../../../lib/permits';
 
 export default function SummaryPage() {
   const t = useTranslations();
@@ -42,6 +44,7 @@ export default function SummaryPage() {
             <dd>{fmt.num(r.location.score)} / 100</dd>
           </dl>
         </div>
+        <PermitsBadge />
         <div className="btnrow">
           <Link className="solid" href={`/projects/${doc.id}/finance`} data-testid="to-detail">
             {t('summary.detail')}
@@ -56,6 +59,24 @@ export default function SummaryPage() {
         <FlagsPanel />
       </aside>
     </main>
+  );
+}
+
+function PermitsBadge() {
+  const t = useTranslations('legal');
+  const { doc } = useWorkbench();
+  if (!hasLegalList(doc)) return null;
+  const open = openCritical(legalItems(doc), doc.permits).length;
+  return (
+    <div className="panel" data-testid="permits-badge">
+      <p className="eyebrow">{t('tab')}</p>
+      <p style={{ margin: 0 }}>
+        <Pill tone={open ? 'mid' : 'good'}>{t('openCritical', { count: open })}</Pill>
+      </p>
+      <p className="note" style={{ marginTop: 10 }}>
+        <Link href={`/projects/${doc.id}/legal`}>{t('openMap')}</Link>
+      </p>
+    </div>
   );
 }
 

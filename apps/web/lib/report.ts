@@ -1,20 +1,13 @@
 // PDF rapor modeli (İP-1.6): motor sonucu + çevrilmiş metin. Bölüm sırası prototipteki PDF'ten,
 // mevzuat bölümü SPEC-legal §5'ten. Yerleşim `@bitm/pdf` içinde.
 import { analyze, ENGINE_VERSION, type AnalysisInput, type ConfirmItem } from '@bitm/engine';
-import {
-  engineArchetype,
-  engineCountry,
-  getCountry,
-  getSector,
-  mergeLegal,
-  sectorChecklist,
-  type LegalItem,
-} from '@bitm/archetypes';
+import { engineArchetype, engineCountry, getSector, sectorChecklist, type LegalItem } from '@bitm/archetypes';
 import type { Block, Cell, Column, ReportModel, Tone } from '@bitm/pdf';
 import { CMP_ROWS, cmpCell } from './compare';
 import { confidence, PRELIMINARY_BELOW } from './confidence';
 import { makeFormat, numberLocale } from './format';
 import { competitorLabel, langOf, letter, type Lang } from './labels';
+import { hasLegalList, legalItems, oldestReview, openCritical, permitStatus } from './permits';
 import type { ProjectDoc } from './project';
 import { makeFlagLabel, makeVerdictText, type Translate } from './verdict-text';
 
@@ -40,44 +33,34 @@ const TONES: Record<'GO' | 'MID' | 'NO', Tone> = { GO: 'good', MID: 'mid', NO: '
 const n = (v: unknown) => Number(v) || 0;
 const cell = (text: string, extra?: Partial<Cell>): Cell => ({ text, ...extra });
 
-/** Gösterilecek mevzuat maddeleri; ülke dosyası izin vermiyorsa boş (kural 13). */
-export function legalItems(doc: ProjectDoc, release: boolean): LegalItem[] {
-  if (!getCountry(doc.country).legal) return [];
-  const items = mergeLegal(doc.country, doc.sector);
-  return release ? items.filter((i) => i.verification.status === 'verified' && i.sourceUrl) : items;
-}
-
 function legalBlocks(items: LegalItem[], args: BuildReportArgs, lang: Lang): Block[] {
   const { t, doc, locale } = args;
-  const heading: Block = { kind: 'h2', text: t('report.legal.title') };
-  if (!getCountry(doc.country).legal) return [heading, { kind: 'notice', text: t('report.legal.generic') }];
-  if (!items.length) return [heading, { kind: 'notice', text: t('report.legal.none') }];
+  const heading: Block = { kind: 'h2', text: t('legal.title') };
+  if (!hasLegalList(doc)) return [heading, { kind: 'notice', text: t('legal.generic') }];
+  if (!items.length) return [heading, { kind: 'notice', text: t('legal.none') }];
 
-  // Bütün liste en eski kontrol tarihi kadar günceldir.
-  const oldest = items.map((i) => i.verification.lastReviewed).sort()[0]!;
-  const date = new Intl.DateTimeFormat(numberLocale(locale), { timeZone: 'UTC' }).format(new Date(oldest));
+  const date = new Intl.DateTimeFormat(numberLocale(locale), { timeZone: 'UTC' }).format(
+    new Date(oldestReview(items)!),
+  );
   const drafts = items.some((i) => i.verification.status === 'draft');
   const columns: Column[] = [
-    { head: t('report.legal.item'), width: 0.34, bold: true },
-    { head: t('report.legal.authority'), width: 0.26 },
-    { head: t('report.legal.status'), width: 0.13 },
-    { head: t('report.legal.days'), width: 0.12 },
-    { head: t('report.legal.source'), width: 0.15 },
+    { head: t('legal.item'), width: 0.34, bold: true },
+    { head: t('legal.authority'), width: 0.26 },
+    { head: t('legal.status'), width: 0.13 },
+    { head: t('legal.days'), width: 0.12 },
+    { head: t('legal.source'), width: 0.15 },
   ];
   const rows = items.map((i): Cell[] => [
-    cell(i.critical ? `${i.title[lang]} (${t('report.legal.critical')})` : i.title[lang]),
+    cell(i.critical ? `${i.title[lang]} (${t('legal.critical')})` : i.title[lang]),
     cell(i.authority[lang]),
-    // Durum takibi İP-1.7 ile gelir; o zamana kadar her madde "bilinmiyor".
-    cell(t('report.legal.unknown')),
-    cell(i.typicalDays ? t('report.legal.dayRange', { min: i.typicalDays[0], max: i.typicalDays[1] }) : '—'),
-    i.sourceUrl
-      ? cell(t('report.legal.sourceLink'), { href: i.sourceUrl })
-      : cell(t('report.legal.noSource')),
+    cell(t(`legal.statusPdf.${permitStatus(doc.permits, i.id)}`)),
+    cell(i.typicalDays ? t('legal.dayRange', { min: i.typicalDays[0], max: i.typicalDays[1] }) : '—'),
+    i.sourceUrl ? cell(t('legal.sourceLink'), { href: i.sourceUrl }) : cell(t('legal.noSource')),
   ]);
   return [
     heading,
-    { kind: 'notice', text: t('report.legal.warning', { date }) },
-    ...(drafts ? [{ kind: 'notice', text: t('report.legal.draft') } as Block] : []),
+    { kind: 'notice', text: t('legal.warning', { date }) },
+    ...(drafts ? [{ kind: 'notice', text: t('legal.draft') } as Block] : []),
     { kind: 'table', columns, rows, small: true },
   ];
 }
@@ -294,7 +277,7 @@ export function buildReport(args: BuildReportArgs): ReportModel {
   // SPEC-legal §1: kritik ve tamamlanmamış maddeler teyit listesine girer.
   const confirm = [
     ...l.confirm.map(confirmText),
-    ...legal.filter((i) => i.critical).map((i) => t('report.legal.confirm', { item: i.title[lang] })),
+    ...openCritical(legal, doc.permits).map((i) => t('legal.confirm', { item: i.title[lang] })),
   ];
   const notes = [
     ...l.historyNotes.map((x) => t(`location.histNote.${x}`)),

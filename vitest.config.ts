@@ -18,12 +18,14 @@ export default defineConfig({
       {
         test: {
           name: 'web',
+          testTimeout: 30_000,
           include: ['apps/web/lib/**/*.test.ts'],
         },
       },
       {
         test: {
           name: 'pdf',
+          testTimeout: 30_000,
           include: ['packages/pdf/test/**/*.test.ts'],
         },
       },

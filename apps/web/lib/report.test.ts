@@ -7,6 +7,7 @@ import { createTranslator } from 'next-intl';
 import { renderReport } from '@bitm/pdf';
 import { pdfText } from '@bitm/pdf/test-utils';
 import { addCandidate } from './compare';
+import { setPermit } from './permits';
 import { projectFromSample, type ProjectDoc } from './project';
 import { buildReport, reportFilename, type ReportOptions } from './report';
 import type { Translate } from './verdict-text';
@@ -121,6 +122,25 @@ describe('PDF rapor (İP-1.6)', () => {
     const i = blocks.findIndex((b) => b.kind === 'h3' && b.text === 'Açmadan önce teyit et');
     const next = blocks[i + 1];
     expect(next?.kind === 'bullets' && next.items).toContain('Mevzuat: Vergi mükellefiyeti kaydı');
+  });
+
+  it('işaretlenen durum tabloya yansır; tamamlanan kritik madde teyit listesinden çıkar', () => {
+    const d = coffee();
+    setPermit(d, 'tr.common.tax_registration', 'done', 't');
+    setPermit(d, 'tr.common.trade_registry', 'applied', 't');
+    const blocks = build(d, NONE).blocks;
+    const i = blocks.findIndex((b) => b.kind === 'h3' && b.text === 'Açmadan önce teyit et');
+    const list = blocks[i + 1];
+    expect(list?.kind === 'bullets' && list.items).not.toContain('Mevzuat: Vergi mükellefiyeti kaydı');
+    expect(list?.kind === 'bullets' && list.items).toContain(
+      'Mevzuat: Esnaf sicili veya ticaret sicili kaydı',
+    );
+    const table = blocks.find((b) => b.kind === 'table' && b.columns[0]?.head === 'Madde');
+    const statusOf = (title: string) =>
+      table?.kind === 'table' ? table.rows.find((r) => r[0]?.text.startsWith(title))?.[2]?.text : undefined;
+    expect(statusOf('Vergi mükellefiyeti')).toBe('Alındı');
+    expect(statusOf('Esnaf sicili')).toBe('Başvuruldu');
+    expect(statusOf('Yangın uygunluğu')).toBe('Bilinmiyor');
   });
 
   it('desteklenmeyen ülkede liste yerine genel uyarı', async () => {

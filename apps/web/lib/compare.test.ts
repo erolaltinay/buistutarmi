@@ -94,7 +94,9 @@ describe('aday karşılaştırma (İP-1.5)', () => {
 
     d.input.days = 31;
     d.sources = { rent: 'user' };
+    d.permits = { x: { status: 'done', updatedAt: 't' } };
     loadCandidate(d, 'c2');
+    expect(d.permits).toBeUndefined();
     expect(d.input.days).not.toBe(31);
     expect(d.sources).toBeUndefined();
 

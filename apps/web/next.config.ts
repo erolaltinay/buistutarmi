@@ -3,7 +3,11 @@ import createNextIntlPlugin from 'next-intl/plugin';
 
 const withNextIntl = createNextIntlPlugin('./i18n/request.ts');
 
+const isRelease = process.env.VERCEL_ENV === 'production' || process.env.BITM_RELEASE === 'production';
+
 const nextConfig: NextConfig = {
+  // Yayın derlemesi taslak mevzuat maddesi göstermez; ekran da sunucu da aynı bayrağı okur.
+  env: { NEXT_PUBLIC_BITM_RELEASE: isRelease ? '1' : '' },
   transpilePackages: ['@bitm/engine', '@bitm/archetypes', '@bitm/pdf'],
   // PDF dizgisi Node'da çalışır; font dosyaları dağıtıma dahil edilir (/api/report).
   serverExternalPackages: ['@react-pdf/renderer'],

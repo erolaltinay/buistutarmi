@@ -44,6 +44,8 @@ export const FIN_KEYS = Object.keys(FinSchema.shape) as (keyof Fin)[];
 
 const Sample = z.object({
   country: z.string(),
+  /** Örneğin şehri için mevzuat bölge dosyası (SPEC-legal §2). */
+  legalRegion: z.string().optional(),
   currency: z.string().length(3),
   area: z.string(),
   pop: z.number(),

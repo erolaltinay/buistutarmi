@@ -71,8 +71,8 @@ const LegalItem = z.object({
 
 - **Rota:** `/projects/[id]/legal` (sekme adı: TR "Mevzuat", EN "Permits").
 - **Görünüm:** `stage`'e göre gruplu liste (kiralamadan önce / açılıştan önce / açılıştan sonra). Her satırda başlık, kurum, kritik rozeti, tahmini süre, durum seçici, "Resmi kaynak" bağlantısı.
-- **Zaman çizelgesi:** `dependsOn` ve `typicalDays` ile kritik yol; "tahmini toplam süre: X–Y gün".
-- **Karar ekranı:** kritik ve `done` olmayan madde sayısı rozet olarak; Lokasyon kontrol listesindeki `permitOk` maddesiyle bağlantılı (kullanıcı `permitOk = hayır` derse karar zaten TUTMAZ).
+- **Zaman çizelgesi:** `dependsOn` ve `typicalDays` ile kritik yol; "tahmini toplam süre: X–Y gün". Açılıştan sonraki maddeler ile `done`/`na` maddeler süre eklemez. Süresi bilinmeyen madde tahmin edilmez: sayısı ayrıca söylenir, hepsi bilinmiyorsa toplam gösterilmez.
+- **Karar ekranı:** kritik ve `done` olmayan madde sayısı (`na` sayılmaz) rozet olarak; Lokasyon kontrol listesindeki `permitOk` maddesiyle bağlantılı (kullanıcı `permitOk = hayır` derse karar zaten TUTMAZ).
 - **PDF:** "Mevzuat yol haritası" bölümü: madde, kurum, durum, süre, kaynak; sabit uyarı ve son kontrol tarihi.
 - **Durum saklama:** `candidate_permits(candidate_id, item_id, status, note, updated_at)`; RLS.
 

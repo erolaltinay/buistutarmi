@@ -46,6 +46,7 @@ supabase/migrations    şema + RLS
 | `/projects/[id]/media` | Foto & video |
 | `/projects/[id]/pricing` | Fiyat stratejisi |
 | `/projects/[id]/storefront` | Mağaza görseli |
+| `/projects/[id]/legal` | Mevzuat yol haritası (SPEC-legal §5) |
 | `/projects/[id]/compare` | Adaylar ve karşılaştırma |
 | `/projects/[id]/report` | PDF önizleme ve indirme |
 | `/projects/[id]/actuals` | Açılış sonrası aylık gerçekleşen (Faz 3) |

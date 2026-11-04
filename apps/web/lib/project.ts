@@ -3,6 +3,7 @@
 import type { AnalysisInput } from '@bitm/engine';
 import { buildSampleInput, getSector, sampleCountry } from '@bitm/archetypes';
 import type { Group, Sources } from './confidence';
+import type { Permits } from './permits';
 
 export interface Shop {
   name: string;
@@ -25,6 +26,8 @@ export interface ProjectDoc {
   origin?: 'quick';
   /** Girdi gruplarının kaynak etiketleri; yazılmayan grup başlangıç değerindedir (SPEC-architecture §7). */
   sources?: Sources;
+  /** Mevzuat maddelerinin durumu; işaretlenmeyen madde "bilmiyorum"dur (SPEC-legal §5). */
+  permits?: Permits;
   /**
    * Kaydedilmiş aday lokasyonlar (en fazla 4). Prototip gibi her aday analizin tam kopyasını
    * tutar; İP-1.1'de lokasyona bağlı kısım `candidates` tablosuna ayrılır (SPEC-architecture §3).
@@ -39,6 +42,7 @@ export interface Candidate {
   savedAt: string;
   input: AnalysisInput;
   sources?: Sources;
+  permits?: Permits;
 }
 
 const KEY = 'bitm:project:';

@@ -1376,3 +1376,39 @@ a.ghost {
   gap: 8px;
   margin-bottom: 10px;
 }
+
+/* mevzuat yol haritası (İP-1.7) */
+.legal-sum {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 12px;
+}
+.legal-list {
+  gap: 10px;
+}
+.permit {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 10.5rem;
+  gap: 14px;
+  align-items: start;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 12px;
+  background: var(--bg);
+}
+.permit p {
+  margin: 4px 0 0;
+}
+.permit-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+@media (max-width: 560px) {
+  .permit {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

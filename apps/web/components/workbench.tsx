@@ -37,6 +37,7 @@ export const TABS = [
   'location',
   'pricing',
   'storefront',
+  'legal',
   'compare',
   'report',
 ] as const;

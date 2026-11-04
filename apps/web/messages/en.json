@@ -36,7 +36,8 @@
       "pricing": "Pricing strategy",
       "storefront": "Storefront",
       "compare": "Compare",
-      "report": "Report"
+      "report": "Report",
+      "legal": "Permits"
     },
     "sampleNote": "Figures, competitors and location data are illustrative. Enter your own data and everything updates instantly.",
     "reset": "Reset example",
@@ -617,24 +618,66 @@
       "emp": "Employer payroll cost",
       "loan": "Loan",
       "loanV": "{rate}% a year, {term} months; equity {equity}%"
-    },
-    "legal": {
-      "title": "Permit roadmap",
-      "item": "Item",
-      "authority": "Authority",
-      "status": "Status",
-      "days": "Time",
-      "source": "Source",
-      "critical": "critical",
-      "unknown": "Unknown",
-      "dayRange": "{min}–{max} days",
-      "sourceLink": "Official source",
-      "noSource": "Not verified",
-      "warning": "This list is a general guide and can change. Before you apply, confirm with your municipality, the relevant authority and your accountant. Last reviewed: {date}.",
-      "draft": "Draft items in this list have not been verified against an official source yet. Do not rely on them for an application.",
-      "generic": "We do not offer a permit list for this country. Ask your local municipality and accountant about permits and documents.",
-      "none": "There are no verified permit items for this business yet. Ask your municipality, the relevant authority and your accountant about permits and documents.",
-      "confirm": "Permit: {item}"
     }
+  },
+  "legal": {
+    "tab": "Permits",
+    "title": "Permit roadmap",
+    "hint": "A checklist of which documents you need and which authority issues them. This is not legal advice; mark each item for your own situation.",
+    "item": "Item",
+    "authority": "Authority",
+    "status": "Status",
+    "days": "Time",
+    "source": "Source",
+    "cost": "Cost",
+    "critical": "critical",
+    "criticalBadge": "Critical",
+    "dayRange": "{min}–{max} days",
+    "sourceLink": "Official source",
+    "noSource": "Not verified",
+    "warning": "This list is a general guide and can change. Before you apply, confirm with your municipality, the relevant authority and your accountant. Last reviewed: {date}.",
+    "draft": "Draft items in this list have not been verified against an official source yet. Do not rely on them for an application.",
+    "draftBadge": "Draft, not verified",
+    "staleBadge": "Currency not verified",
+    "generic": "We do not offer a permit list for this country. Ask your local municipality and accountant about permits and documents.",
+    "none": "There are no verified permit items for this business yet. Ask your municipality, the relevant authority and your accountant about permits and documents.",
+    "confirm": "Permit: {item}",
+    "stage": {
+      "before_lease": "Before signing the lease",
+      "before_opening": "Before opening",
+      "after_opening": "After opening"
+    },
+    "statuses": {
+      "unknown": "Not sure",
+      "todo": "To do",
+      "applied": "Applied",
+      "done": "Have it",
+      "na": "Does not apply to me"
+    },
+    "statusPdf": {
+      "unknown": "Unknown",
+      "todo": "To do",
+      "applied": "Applied",
+      "done": "Obtained",
+      "na": "Not applicable"
+    },
+    "condition": {
+      "hasEmployees": "If you have employees",
+      "servesFood": "If you serve food",
+      "outdoorSeating": "If you put tables outside",
+      "hasSign": "If you put up a sign",
+      "sellsAlcohol": "If you sell alcohol"
+    },
+    "dependsOn": "First: {items}",
+    "openCritical": "{count, plural, =0 {No critical items pending, as far as you have marked} one {# critical item not finished} other {# critical items not finished}}",
+    "openMap": "Open the roadmap",
+    "pathTitle": "Estimated total time",
+    "pathKnown": "{min}–{max} days",
+    "pathPartial": "At least {min}–{max} days. The time for {count} items is not known yet, so it may take longer.",
+    "pathUnknown": "Could not be calculated: the time for {count} items has not been verified yet.",
+    "pathNone": "No items left that hold up opening.",
+    "pathHint": "The longest chain of items that wait on each other. Items that run at the same time are not added up.",
+    "blocked": "You marked \"No\" for the permit item in the location checklist, so the verdict is NO.",
+    "toLocation": "Go to the checklist"
   }
 }
