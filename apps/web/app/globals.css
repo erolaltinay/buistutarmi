@@ -1370,3 +1370,9 @@ a.ghost {
   font-family: var(--body);
   text-align: left;
 }
+
+/* PDF rapor (İP-1.6) */
+.report-opts {
+  gap: 8px;
+  margin-bottom: 10px;
+}

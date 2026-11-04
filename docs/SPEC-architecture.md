@@ -128,6 +128,9 @@ Motor çıktısı istemcide anlık hesaplanır (motor saf ve hızlı). Sunucu ka
 - Sunucuda `@react-pdf/renderer` ile; Türkçe karakterli font (Noto Sans veya DejaVu Sans) gömülür.
 - İçerik ve sıra prototipteki PDF ile aynı: kapak, karar, 6 temel sayı, aylık net grafiği, finans özeti, varsayımlar, 24 ay tablosu (isteğe bağlı), bölge, rakipler, fırsatlar, lokasyon karnesi, bayraklar, teyit listesi, fiyat stratejisi, Claude analizi, aday karşılaştırması (isteğe bağlı), mağaza görseli (isteğe bağlı), her sayfada uyarı metni ve sayfa numarası.
 - Rapor üretildiğinde `reports`'a motor sürümüyle kaydedilir.
+- Font: DejaVu Sans, `packages/pdf/fonts` (lisans dosyası yanında). Bu paket metin üretmez; `apps/web/lib/report.ts` çevrilmiş ve biçimlenmiş rapor modelini kurar.
+- Mevzuat bölümü her raporda vardır ve sabit uyarı ile son kontrol tarihini taşır (listedeki en eski `lastReviewed`). Yayın derlemesinde taslak veya kaynaksız madde rapora girmez; yayın dışında "doğrulanmadı" işaretiyle görünür.
+- İP-1.1'e kadar proje tarayıcıda durduğu için `POST /api/report` girdiyi istekten alır, zod ile doğrular ve motoru sunucuda yeniden çalıştırır. `reports` kaydı ve yetki kontrolü İP-1.1 ile gelir.
 
 ### 5.7 Ödeme (Faz 3)
 - TR: iyzico; global: Stripe. Webhook'lar `subscriptions` tablosunu günceller. Ücretli özellikler sunucu tarafında kontrol edilir (istemci bayrağına güvenilmez).

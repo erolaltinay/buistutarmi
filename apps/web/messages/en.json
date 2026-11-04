@@ -35,7 +35,8 @@
       "location": "Location",
       "pricing": "Pricing strategy",
       "storefront": "Storefront",
-      "compare": "Compare"
+      "compare": "Compare",
+      "report": "Report"
     },
     "sampleNote": "Figures, competitors and location data are illustrative. Enter your own data and everything updates instantly.",
     "reset": "Reset example",
@@ -551,6 +552,89 @@
       "capture": "Capture rate needed",
       "locScore": "Location score",
       "flags": "Red flags"
+    }
+  },
+  "report": {
+    "heading": "PDF report",
+    "hint": "Puts the whole analysis in one file: verdict, numbers, 24-month projection, area, rivals, location scorecard, pricing strategy and the permit list. Share it with your bank, partner or family.",
+    "optMonthly": "Include the 24-month table",
+    "optCmp": "Include the candidate comparison",
+    "optShop": "Include the storefront image",
+    "always": "The investment notice, the permit notice and the last-reviewed date are in every report.",
+    "download": "Download PDF report",
+    "busy": "Preparing the report…",
+    "ok": "Report downloaded.",
+    "error": "The report could not be created. Try again.",
+    "title": "Feasibility report",
+    "engine": "Engine version {version}",
+    "key": {
+      "beDay": "Break-even / day",
+      "invest": "True investment",
+      "trough": "Deepest cash gap",
+      "pay": "Investment payback",
+      "sum24": "24-month net profit",
+      "locScore": "Location score"
+    },
+    "fin": "Financial summary",
+    "inputs": "Key assumptions",
+    "monthly": "24-month projection (base case)",
+    "area": "Area profile",
+    "incIdx": "Income index",
+    "comp": "Rivals (1 km)",
+    "compCols": {
+      "name": "Rival",
+      "dist": "Distance",
+      "price": "Signature price",
+      "rating": "Rating",
+      "reviews": "Reviews",
+      "strong": "Strong",
+      "weak": "Weak"
+    },
+    "gaps": "Opportunities: where rivals are weak",
+    "stakes": "Table stakes: where rivals are strong",
+    "loc": "Location scorecard",
+    "price": "Pricing strategy",
+    "priceCols": {
+      "name": "Strategy",
+      "price": "Signature price",
+      "cm": "Contribution",
+      "be": "Break-even / day",
+      "net": "Base monthly cash"
+    },
+    "cmp": "Candidate comparison",
+    "shop": "Storefront image (draft)",
+    "disclaimer": "This report comes from a teaching model and is not investment advice. The numbers rest on entered or sample data; check them with an accountant before you decide.",
+    "page": "Page {page} / {total}",
+    "in": {
+      "base": "Base case",
+      "days": "Working days per month",
+      "ramp": "Ramp-up",
+      "rampV": "starts at {start}%, reaches base in {months} months",
+      "growth": "Annual increase (price / cost / rent / wage)",
+      "kdv": "VAT included in price",
+      "fees": "Card / platform fee",
+      "stopaj": "Rent withholding",
+      "emp": "Employer payroll cost",
+      "loan": "Loan",
+      "loanV": "{rate}% a year, {term} months; equity {equity}%"
+    },
+    "legal": {
+      "title": "Permit roadmap",
+      "item": "Item",
+      "authority": "Authority",
+      "status": "Status",
+      "days": "Time",
+      "source": "Source",
+      "critical": "critical",
+      "unknown": "Unknown",
+      "dayRange": "{min}–{max} days",
+      "sourceLink": "Official source",
+      "noSource": "Not verified",
+      "warning": "This list is a general guide and can change. Before you apply, confirm with your municipality, the relevant authority and your accountant. Last reviewed: {date}.",
+      "draft": "Draft items in this list have not been verified against an official source yet. Do not rely on them for an application.",
+      "generic": "We do not offer a permit list for this country. Ask your local municipality and accountant about permits and documents.",
+      "none": "There are no verified permit items for this business yet. Ask your municipality, the relevant authority and your accountant about permits and documents.",
+      "confirm": "Permit: {item}"
     }
   }
 }

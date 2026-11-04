@@ -1,6 +1,8 @@
 // Aday karşılaştırma (İP-1.5): prototipteki 12 satır ve "en iyi değer" vurgu kuralı.
 import type { AnalysisResult } from '@bitm/engine';
+import type { Format } from './format';
 import type { ProjectDoc } from './project';
+import type { Translate } from './verdict-text';
 
 export const MAX_CANDIDATES = 4;
 
@@ -88,6 +90,43 @@ export function bestCells(cols: CmpColumn[]): Record<CmpRow, boolean[]> {
     out[row] = vals.map((v) => best !== null && v === best);
   }
   return out;
+}
+
+/** Satırın gösterim metni; ekran ve PDF ortak (karar satırı dahil). */
+export function cmpCell(r: AnalysisResult, row: CmpRow, f: Format, t: Translate): string {
+  const pct = (v: number | null) => (v === null ? '—' : f.pct(v));
+  switch (row) {
+    case 'verdict':
+      return t(`result.label.${r.verdict}`);
+    case 'beDay':
+      return r.breakEven.perDay === null
+        ? '—'
+        : t('result.perDay', { value: f.num(Math.ceil(r.breakEven.perDay)) });
+    case 'invest':
+      return f.money(r.investment.total);
+    case 'trough':
+      return f.money(r.investment.cashTrough);
+    case 'pay':
+      return r.projection.paybackTotalMonths === null
+        ? t('result.never')
+        : t('result.months', { count: f.num(r.projection.paybackTotalMonths) });
+    case 'sum24':
+      return f.money(r.projection.sum24NetProfit);
+    case 'fit':
+      return `${f.num(r.demandFit.score)} / 100`;
+    case 'rivals': {
+      const sat = r.competition.saturation;
+      return f.num(r.competition.rivalsWithin1km) + (sat ? ` · ${t(`area.sat.${sat}`)}` : '');
+    }
+    case 'rent':
+      return pct(r.location.rentToSalesPct);
+    case 'capture':
+      return pct(r.location.captureNeededPct);
+    case 'locScore':
+      return `${f.num(r.location.score)} / 100`;
+    case 'flags':
+      return f.num(r.location.redFlagCount);
+  }
 }
 
 /** Aday adı alanının sınırı (prototip). */

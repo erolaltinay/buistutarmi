@@ -3,29 +3,29 @@
 // yan yana tablo, her satırda en iyi değer vurgusu. PDF kısmı İP-1.6'da gelir.
 import { useEffect, useMemo, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
-import { analyze, type AnalysisResult } from '@bitm/engine';
+import { analyze } from '@bitm/engine';
 import { engineCountry } from '@bitm/archetypes';
 import { Panel, Pill } from '../../../../../components/ui';
 import { useWorkbench } from '../../../../../components/workbench';
-import { makeFormat, numberLocale, type Format } from '../../../../../lib/format';
+import { makeFormat, numberLocale } from '../../../../../lib/format';
 import {
   addCandidate,
   bestCells,
   CAND_NAME_MAX,
+  cmpCell,
   CMP_ROWS,
   loadCandidate,
   MAX_CANDIDATES,
   removeCandidate,
   updateCandidate,
-  type CmpRow,
 } from '../../../../../lib/compare';
+import type { Translate } from '../../../../../lib/verdict-text';
 
 const VERDICT_TONE = { GO: 'good', MID: 'mid', NO: 'bad' } as const;
 
 export default function ComparePage() {
   const t = useTranslations('compare');
-  const tr = useTranslations('result');
-  const ta = useTranslations('area');
+  const tRoot = useTranslations();
   const locale = useLocale();
   const { doc, update, result, archetype, sector, lang, fmt } = useWorkbench();
   const cands = doc.candidates ?? [];
@@ -47,42 +47,6 @@ export default function ComparePage() {
   );
   const best = bestCells(cols.map((c) => ({ cur: c.input.cur, result: c.result })));
   const dateFmt = new Intl.DateTimeFormat(numberLocale(locale));
-
-  const cell = (r: AnalysisResult, row: CmpRow, f: Format): string => {
-    const money = f.money;
-    switch (row) {
-      case 'verdict':
-        return '';
-      case 'beDay':
-        return r.breakEven.perDay === null
-          ? '—'
-          : tr('perDay', { value: f.num(Math.ceil(r.breakEven.perDay)) });
-      case 'invest':
-        return money(r.investment.total);
-      case 'trough':
-        return money(r.investment.cashTrough);
-      case 'pay':
-        return r.projection.paybackTotalMonths === null
-          ? tr('never')
-          : tr('months', { count: f.num(r.projection.paybackTotalMonths) });
-      case 'sum24':
-        return money(r.projection.sum24NetProfit);
-      case 'fit':
-        return `${f.num(r.demandFit.score)} / 100`;
-      case 'rivals': {
-        const sat = r.competition.saturation;
-        return f.num(r.competition.rivalsWithin1km) + (sat ? ` · ${ta(`sat.${sat}`)}` : '');
-      }
-      case 'rent':
-        return r.location.rentToSalesPct === null ? '—' : f.pct(r.location.rentToSalesPct);
-      case 'capture':
-        return r.location.captureNeededPct === null ? '—' : f.pct(r.location.captureNeededPct);
-      case 'locScore':
-        return `${f.num(r.location.score)} / 100`;
-      case 'flags':
-        return f.num(r.location.redFlagCount);
-    }
-  };
 
   const save = () => {
     if (cands.length >= MAX_CANDIDATES) return setMsg(t('max', { max: MAX_CANDIDATES }));
@@ -189,11 +153,13 @@ export default function ComparePage() {
                     {cols.map((c, i) =>
                       row === 'verdict' ? (
                         <td key={c.id}>
-                          <Pill tone={VERDICT_TONE[c.result.verdict]}>{tr(`label.${c.result.verdict}`)}</Pill>
+                          <Pill tone={VERDICT_TONE[c.result.verdict]}>
+                            {cmpCell(c.result, row, c.f, tRoot as Translate)}
+                          </Pill>
                         </td>
                       ) : (
                         <td key={c.id} className={best[row][i] ? 'best' : undefined}>
-                          {cell(c.result, row, c.f)}
+                          {cmpCell(c.result, row, c.f, tRoot as Translate)}
                         </td>
                       ),
                     )}

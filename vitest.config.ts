@@ -21,6 +21,12 @@ export default defineConfig({
           include: ['apps/web/lib/**/*.test.ts'],
         },
       },
+      {
+        test: {
+          name: 'pdf',
+          include: ['packages/pdf/test/**/*.test.ts'],
+        },
+      },
     ],
   },
 });

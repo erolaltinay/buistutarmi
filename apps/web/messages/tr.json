@@ -35,7 +35,8 @@
       "location": "Lokasyon",
       "pricing": "Fiyat stratejisi",
       "storefront": "Mağaza görseli",
-      "compare": "Karşılaştırma"
+      "compare": "Karşılaştırma",
+      "report": "Rapor"
     },
     "sampleNote": "Rakamlar, rakipler ve lokasyon verileri temsili örnektir. Kendi verini gir, her şey anında güncellenir.",
     "reset": "Örneğe dön",
@@ -551,6 +552,89 @@
       "capture": "Gereken giriş oranı",
       "locScore": "Lokasyon puanı",
       "flags": "Kırmızı bayrak"
+    }
+  },
+  "report": {
+    "heading": "PDF rapor",
+    "hint": "Tüm analizi tek dosyada toplar: karar, rakamlar, 24 aylık projeksiyon, bölge, rakipler, lokasyon karnesi, fiyat stratejisi ve mevzuat listesi. Banka, ortak veya ailenle paylaşabilirsin.",
+    "optMonthly": "Ay ay 24 aylık tabloyu ekle",
+    "optCmp": "Aday karşılaştırmasını ekle",
+    "optShop": "Mağaza görselini ekle",
+    "always": "Yatırım uyarısı, mevzuat uyarısı ve son kontrol tarihi her raporda bulunur.",
+    "download": "PDF raporu indir",
+    "busy": "Rapor hazırlanıyor…",
+    "ok": "Rapor indirildi.",
+    "error": "Rapor oluşturulamadı, tekrar dene.",
+    "title": "Fizibilite raporu",
+    "engine": "Motor sürümü {version}",
+    "key": {
+      "beDay": "Başabaş / gün",
+      "invest": "Gerçek yatırım",
+      "trough": "En derin nakit açığı",
+      "pay": "Yatırımın geri dönüşü",
+      "sum24": "24 ay net kâr",
+      "locScore": "Lokasyon puanı"
+    },
+    "fin": "Finans özeti",
+    "inputs": "Temel varsayımlar",
+    "monthly": "24 aylık projeksiyon (baz senaryo)",
+    "area": "Bölge profili",
+    "incIdx": "Gelir endeksi",
+    "comp": "Rakipler (1 km)",
+    "compCols": {
+      "name": "Rakip",
+      "dist": "Mesafe",
+      "price": "İmza fiyat",
+      "rating": "Puan",
+      "reviews": "Yorum",
+      "strong": "Güçlü",
+      "weak": "Zayıf"
+    },
+    "gaps": "Fırsatlar: rakiplerin zayıf olduğu yerler",
+    "stakes": "Asgari şartlar: rakiplerin güçlü olduğu yerler",
+    "loc": "Lokasyon karnesi",
+    "price": "Fiyat stratejisi",
+    "priceCols": {
+      "name": "Strateji",
+      "price": "İmza fiyat",
+      "cm": "Katkı payı",
+      "be": "Başabaş / gün",
+      "net": "Baz aylık nakit"
+    },
+    "cmp": "Aday karşılaştırması",
+    "shop": "Mağaza görseli (taslak)",
+    "disclaimer": "Bu rapor öğretici bir modelle üretilmiştir ve yatırım tavsiyesi değildir. Rakamlar girilen veya örnek verilere dayanır; karar vermeden önce bir mali müşavirle doğrulayın.",
+    "page": "Sayfa {page} / {total}",
+    "in": {
+      "base": "Baz senaryo",
+      "days": "Aylık çalışma günü",
+      "ramp": "Rampa",
+      "rampV": "%{start} ile başlar, {months} ayda baza ulaşır",
+      "growth": "Yıllık artış (fiyat / maliyet / kira / maaş)",
+      "kdv": "Fiyata dahil KDV",
+      "fees": "Kart / platform komisyonu",
+      "stopaj": "Kira stopajı",
+      "emp": "SGK işveren yükü",
+      "loan": "Kredi",
+      "loanV": "yıllık %{rate}, {term} ay; öz sermaye %{equity}"
+    },
+    "legal": {
+      "title": "Mevzuat yol haritası",
+      "item": "Madde",
+      "authority": "Kurum",
+      "status": "Durum",
+      "days": "Süre",
+      "source": "Kaynak",
+      "critical": "kritik",
+      "unknown": "Bilinmiyor",
+      "dayRange": "{min}–{max} gün",
+      "sourceLink": "Resmi kaynak",
+      "noSource": "Doğrulanmadı",
+      "warning": "Bu liste genel bir rehberdir ve değişebilir. Başvurmadan önce belediyene, ilgili kuruma ve mali müşavirine teyit ettir. Son kontrol: {date}.",
+      "draft": "Bu listedeki taslak maddeler resmi kaynaktan henüz doğrulanmadı. Başvuru için dayanak olarak kullanma.",
+      "generic": "Bu ülke için mevzuat listesi sunmuyoruz. İzin ve belgeler için yerel belediyene ve mali müşavirine danış.",
+      "none": "Bu iş için doğrulanmış mevzuat maddesi henüz yok. İzin ve belgeler için belediyene, ilgili kuruma ve mali müşavirine danış.",
+      "confirm": "Mevzuat: {item}"
     }
   }
 }

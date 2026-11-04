@@ -1,48 +1,18 @@
 'use client';
 // Finans sekmesinin sağ sütunu: karar, başabaş, senaryolar, projeksiyon, yatırım dökümü, duyarlılık.
 import { useTranslations } from 'next-intl';
-import type { FinalReason, FinancialReason, ProjectionRow } from '@bitm/engine';
+import type { ProjectionRow } from '@bitm/engine';
 import { confidence, PRELIMINARY_BELOW } from '../lib/confidence';
+import { makeVerdictText, type Translate } from '../lib/verdict-text';
 import { Pill } from './ui';
 import { useWorkbench } from './workbench';
 
 const ceil = (v: number | null) => (v === null ? null : Math.ceil(v));
 
 export function useVerdictText() {
-  const t = useTranslations('result.why');
+  const t = useTranslations();
   const { fmt, flagLabel } = useWorkbench();
-  const fin = (r: FinancialReason): string => {
-    switch (r.code) {
-      case 'negativeMargin':
-        return t('negativeMargin');
-      case 'capacity':
-        return t('capacity');
-      case 'belowBreakEven':
-      case 'thinMargin':
-        return t(r.code, { base: fmt.num(r.base), be: fmt.num(Math.ceil(r.bePerDay)) });
-      case 'longPayback':
-        return t('longPayback', { months: r.paybackMonths === null ? '60+' : fmt.num(r.paybackMonths) });
-      case 'go':
-        return t('go', {
-          margin: fmt.num(r.marginPct),
-          months: r.paybackMonths === null ? '60+' : fmt.num(r.paybackMonths),
-        });
-    }
-  };
-  return (r: FinalReason): string => {
-    switch (r.code) {
-      case 'permitBlocked':
-        return t('permitBlocked');
-      case 'locationFlags':
-        return t('locationFlags', { flags: r.flags.map(flagLabel).join(', ') });
-      case 'locationFlag':
-        return t('locationFlag', { flag: flagLabel(r.flag) });
-      case 'financialWithFlag':
-        return `${fin(r.financial)} ${t('alsoFlag', { flag: flagLabel(r.flag) })}`;
-      case 'financial':
-        return fin(r.financial);
-    }
-  };
+  return makeVerdictText(t as Translate, fmt, flagLabel);
 }
 
 export function VerdictCard() {

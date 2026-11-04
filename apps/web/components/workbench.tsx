@@ -26,10 +26,20 @@ import { Link, usePathname } from '../i18n/navigation';
 import { changedGroups } from '../lib/confidence';
 import { makeFormat, type Format } from '../lib/format';
 import { langOf, type Lang } from '../lib/labels';
+import { makeFlagLabel, type Translate } from '../lib/verdict-text';
 import { loadProject, projectFromSample, saveProject, type ProjectDoc } from '../lib/project';
 
 export const AUTOSAVE_MS = 1000;
-export const TABS = ['summary', 'finance', 'area', 'location', 'pricing', 'storefront', 'compare'] as const;
+export const TABS = [
+  'summary',
+  'finance',
+  'area',
+  'location',
+  'pricing',
+  'storefront',
+  'compare',
+  'report',
+] as const;
 
 export interface WorkbenchValue {
   doc: ProjectDoc;
@@ -165,13 +175,7 @@ function Loaded({
     [doc.input, doc.country, archetype],
   );
   const fmt = useMemo(() => makeFormat(locale, doc.input.cur), [locale, doc.input.cur]);
-  const flagLabel = useCallback(
-    (flag: LocationFlag) =>
-      flag.kind === 'checklist'
-        ? (checklist.find((i) => i.k === flag.key)?.flag?.[lang] ?? flag.key)
-        : t(`result.flag.${flag.kind}`),
-    [checklist, lang, t],
-  );
+  const flagLabel = useMemo(() => makeFlagLabel(t as Translate, checklist, lang), [checklist, lang, t]);
   const value: WorkbenchValue = {
     doc,
     update,
