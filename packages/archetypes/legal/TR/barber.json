@@ -1,5 +1,5 @@
 {
-  "_note": "TASLAK. Hiçbir madde doğrulanmadı; sourceUrl, typicalDays ve typicalCost resmi kaynaktan doldurulmadan production'a çıkamaz (SPEC-legal §4).",
+  "_note": "TASLAK. Maddeler 2026-11-04 tarihinde resmi kaynaklardan araştırıldı; mali müşavir onayı gelmeden status verified yapılmaz (SPEC-legal §4, ROADMAP İP-1.8).",
   "country": "TR",
   "scope": "barber",
   "items": [
@@ -10,14 +10,14 @@
         "en": "Master craftsman certificate"
       },
       "what": {
-        "tr": "Berber dükkânı açacak kişi veya işletmede sorumlu kişi için ustalık belgesi aranır.",
-        "en": "A master craftsman certificate is required for the person opening or running the barbershop."
+        "tr": "Belediye, işyeri açılışında işyeri sahibinden veya o meslekte çalışan en az bir kişiden ustalık belgesi ya da en az ön lisans diploması ister. Esnaf sicili ve oda kayıt sırasında bu belgeyi istemez.",
+        "en": "At opening, the municipality asks the owner or at least one employee in that trade for a mastery certificate or at least an associate degree. The craftsmen registry and chamber do not ask for it at registration."
       },
       "authority": {
-        "tr": "Milli Eğitim Bakanlığı (mesleki eğitim merkezleri)",
-        "en": "Ministry of National Education (vocational training)"
+        "tr": "Belediye (belgeyi Millî Eğitim Bakanlığı mesleki eğitim merkezleri verir)",
+        "en": "Municipality (Ministry of Education vocational centres issue the certificate)"
       },
-      "sourceUrl": "",
+      "sourceUrl": "https://www.mevzuat.gov.tr/MevzuatMetin/1.5.3308.pdf",
       "appliesTo": {
         "sectors": ["barber"],
         "condition": "always"
@@ -29,24 +29,28 @@
       "dependsOn": [],
       "verification": {
         "status": "draft",
-        "lastReviewed": "2026-11-02"
+        "lastReviewed": "2026-11-04"
+      },
+      "notes": {
+        "tr": "3308 sayılı Mesleki Eğitim Kanunu m.30; 5362 sayılı Kanun m.68.",
+        "en": "Vocational Education Law 3308 art. 30; Law 5362 art. 68."
       }
     },
     {
       "id": "tr.barber.hygiene",
       "title": {
-        "tr": "Hijyen ve sterilizasyon şartları",
-        "en": "Hygiene and sterilization rules"
+        "tr": "Salon ve hijyen şartları",
+        "en": "Salon and hygiene requirements"
       },
       "what": {
-        "tr": "Alet sterilizasyonu, tek kullanımlık malzeme ve temizlik şartları; denetimlerde kontrol edilir.",
-        "en": "Tool sterilization, single-use materials and cleaning requirements checked during inspections."
+        "tr": "Ruhsatta salonun sınıfına göre zemin, su, havalandırma ve temizlik şartları aranır; birinci sınıfta sterilizatör ve otoklav gerekir. Çalışanların ustalık veya kalfalık belgesi ya da çıraklık sözleşmesi ve hijyen eğitimi belgesi olmalıdır.",
+        "en": "The licence sets floor, water, ventilation and cleanliness requirements by salon class; first-class salons need a steriliser and autoclave. Staff need a mastery or journeyman certificate or an apprenticeship contract, plus a hygiene training certificate."
       },
       "authority": {
-        "tr": "Belediye / il sağlık müdürlüğü",
-        "en": "Municipality / provincial health directorate"
+        "tr": "Belediye",
+        "en": "Municipality"
       },
-      "sourceUrl": "",
+      "sourceUrl": "https://www.mevzuat.gov.tr/MevzuatMetin/21.5.20059207.pdf",
       "appliesTo": {
         "sectors": ["barber"],
         "condition": "always"
@@ -58,7 +62,11 @@
       "dependsOn": [],
       "verification": {
         "status": "draft",
-        "lastReviewed": "2026-11-02"
+        "lastReviewed": "2026-11-04"
+      },
+      "notes": {
+        "tr": "İşyeri Açma ve Çalışma Ruhsatlarına İlişkin Yönetmelik Ek-1 (M) ve Hijyen Eğitimi Yönetmeliği m.2, m.5.",
+        "en": "Workplace Licensing Regulation Annex 1 (M) and Hygiene Training Regulation arts. 2, 5."
       }
     }
   ]

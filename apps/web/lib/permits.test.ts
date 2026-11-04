@@ -134,12 +134,11 @@ describe('kritik yol', () => {
     expect(criticalPath(items, undefined)).toEqual({ min: 3, max: 4, unknownDays: 2, pending: 3 });
   });
 
-  it('bugünkü taslak listede süre yok: toplam 0, hepsi bilinmiyor', () => {
+  it('gerçek liste: yalnız mevzuattaki süre sayılır, kalanı bilinmiyor olarak söylenir', () => {
     const items = legalItems(projectFromSample('coffee', 'ist', 'p'), false);
     const path = criticalPath(items, undefined);
-    expect(path).toMatchObject({ min: 0, max: 0 });
-    expect(path.unknownDays).toBe(path.pending);
-    expect(path.pending).toBeGreaterThan(0);
+    expect(path).toMatchObject({ min: 1, max: 30 });
+    expect(path.unknownDays).toBe(path.pending - 2);
   });
 
   it('döngülü veri kilitlemez', () => {

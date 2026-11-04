@@ -654,7 +654,7 @@
     "sourceLink": "Resmi kaynak",
     "noSource": "Doğrulanmadı",
     "warning": "Bu liste genel bir rehberdir ve değişebilir. Başvurmadan önce belediyene, ilgili kuruma ve mali müşavirine teyit ettir. Son kontrol: {date}.",
-    "draft": "Bu listedeki taslak maddeler resmi kaynaktan henüz doğrulanmadı. Başvuru için dayanak olarak kullanma.",
+    "draft": "Bu listedeki taslak maddeler henüz bir uzman tarafından onaylanmadı. Başvuru için dayanak olarak kullanma.",
     "draftBadge": "Taslak — doğrulanmadı",
     "staleBadge": "Güncelliği doğrulanmadı",
     "generic": "Bu ülke için mevzuat listesi sunmuyoruz. İzin ve belgeler için yerel belediyene ve mali müşavirine danış.",

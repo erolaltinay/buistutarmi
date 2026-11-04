@@ -20,13 +20,17 @@ test('TR kahve: liste görünür, durum kaydedilir, rozet ve teyit listesi günc
   const base = await start(page);
 
   await page.goto(`${base}/legal`);
-  await expect(page.getByTestId('legal-warning')).toContainText('Son kontrol: 02.11.2026.');
+  await expect(page.getByTestId('legal-warning')).toContainText('Son kontrol: 04.11.2026.');
   await expect(page.getByTestId('stage-before_lease')).toContainText('İşyeri açma ve çalışma ruhsatı');
   await expect(page.getByTestId('stage-before_opening')).toContainText('Gıda işletmesi kaydı');
   await expect(page.getByTestId('stage-after_opening')).toBeVisible();
-  // Taslak maddeler işaretli; süresi olmayan madde için toplam uydurulmaz.
+  // Taslak maddeler işaretli; süresi bilinmeyen maddeler için toplam tamamlanmış gibi gösterilmez.
   await expect(page.getByTestId('permit-tr.common.tax_registration')).toContainText('Taslak — doğrulanmadı');
-  await expect(page.getByTestId('legal-path')).toContainText('Hesaplanamadı');
+  await expect(page.getByTestId('legal-path')).toContainText('En az 1–30 gün');
+  await expect(page.getByTestId('legal-path')).toContainText('süresi henüz bilinmiyor');
+  await expect(
+    page.getByTestId('permit-tr.common.tax_registration').getByRole('link', { name: 'Resmi kaynak' }),
+  ).toHaveAttribute('href', /mevzuat\.gov\.tr/);
   expect(await page.locator('main').innerText()).not.toMatch(BANNED);
 
   // Kahvede 6 kritik madde.

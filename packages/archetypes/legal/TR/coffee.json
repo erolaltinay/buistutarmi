@@ -1,5 +1,5 @@
 {
-  "_note": "TASLAK. Hiçbir madde doğrulanmadı; sourceUrl, typicalDays ve typicalCost resmi kaynaktan doldurulmadan production'a çıkamaz (SPEC-legal §4).",
+  "_note": "TASLAK. Maddeler 2026-11-04 tarihinde resmi kaynaklardan araştırıldı; mali müşavir onayı gelmeden status verified yapılmaz (SPEC-legal §4, ROADMAP İP-1.8).",
   "country": "TR",
   "scope": "coffee",
   "items": [
@@ -10,26 +10,30 @@
         "en": "Food business registration"
       },
       "what": {
-        "tr": "Gıda satan veya hazırlayan işletmeler kayıt veya onay alır.",
-        "en": "Businesses that prepare or sell food must be registered or approved."
+        "tr": "Perakende ve toplu tüketim işletmeleri kayıt belgesi için Bakanlığın il veya ilçe müdürlüğüne başvurur. Başvuru 15 iş günü içinde incelenir; eksiksizse işletme kayıt belgesi verilir.",
+        "en": "Retail and catering businesses apply to the ministry's provincial or district office for a registration certificate. The application is reviewed within 15 working days; if complete, the certificate is issued."
       },
       "authority": {
         "tr": "Tarım ve Orman Bakanlığı il / ilçe müdürlüğü",
         "en": "Ministry of Agriculture and Forestry, provincial office"
       },
-      "sourceUrl": "",
+      "sourceUrl": "https://www.mevzuat.gov.tr/File/GeneratePdf?mevzuatNo=15594&mevzuatTur=KurumVeKurulusYonetmeligi&mevzuatTertip=5",
       "appliesTo": {
         "sectors": ["coffee"],
         "condition": "servesFood"
       },
       "stage": "before_opening",
       "critical": true,
-      "typicalDays": null,
+      "typicalDays": [1, 21],
       "typicalCost": null,
       "dependsOn": [],
       "verification": {
         "status": "draft",
-        "lastReviewed": "2026-11-02"
+        "lastReviewed": "2026-11-04"
+      },
+      "notes": {
+        "tr": "Gıda İşletmelerinin Kayıt ve Onay İşlemlerine Dair Yönetmelik m.5 ve m.6. Süre mevzuattaki inceleme süresidir, uygulamada uzayabilir.",
+        "en": "Regulation on Registration and Approval of Food Businesses arts. 5 and 6. The time shown is the legal review period and can run longer in practice."
       }
     },
     {
@@ -39,14 +43,14 @@
         "en": "Staff hygiene training"
       },
       "what": {
-        "tr": "Gıda ile çalışan personel için hijyen eğitimi belgesi.",
-        "en": "Hygiene training certificate for staff handling food."
+        "tr": "Gıda perakende işyerlerinde hijyen eğitimi belgesi olmayan kişi çalıştırılamaz; işyeri sahibi kendisi çalışıyorsa o da eğitimi alır. Eğitim en az 8 saattir.",
+        "en": "Food retail workplaces cannot employ anyone without a hygiene training certificate; an owner who works there must take the training too. The training lasts at least 8 hours."
       },
       "authority": {
-        "tr": "Yetkili eğitim kurumları / halk eğitim merkezleri",
-        "en": "Authorized training providers"
+        "tr": "Millî Eğitim Bakanlığı Hayat Boyu Öğrenme kurumları (halk eğitim merkezleri gibi)",
+        "en": "Ministry of Education lifelong learning institutions (such as public education centres)"
       },
-      "sourceUrl": "",
+      "sourceUrl": "https://www.resmigazete.gov.tr/eskiler/2013/07/20130705-3.htm",
       "appliesTo": {
         "sectors": ["coffee"],
         "condition": "servesFood"
@@ -58,7 +62,11 @@
       "dependsOn": [],
       "verification": {
         "status": "draft",
-        "lastReviewed": "2026-11-02"
+        "lastReviewed": "2026-11-04"
+      },
+      "notes": {
+        "tr": "Hijyen Eğitimi Yönetmeliği m.2, m.5, m.6.",
+        "en": "Hygiene Training Regulation arts. 2, 5, 6."
       }
     },
     {
@@ -68,14 +76,14 @@
         "en": "Sidewalk seating permit"
       },
       "what": {
-        "tr": "Dışarıya masa veya sandalye koymak için belediyeden izin ve işgaliye harcı.",
-        "en": "Municipal permit and fee to place tables or chairs outside."
+        "tr": "Yol, meydan gibi umuma ait yerlerin izinle geçici olarak kullanılması işgal harcına tabidir. Dışarıya masa koymadan önce belediyeden izin al.",
+        "en": "Temporary use of public places such as roads and squares with a permit is subject to an occupancy fee. Get the municipality's permit before you put tables outside."
       },
       "authority": {
-        "tr": "Belediye zabıta / imar",
+        "tr": "Belediye",
         "en": "Municipality"
       },
-      "sourceUrl": "",
+      "sourceUrl": "https://www.mevzuat.gov.tr/MevzuatMetin/1.5.2464.pdf",
       "appliesTo": {
         "sectors": ["coffee"],
         "condition": "outdoorSeating"
@@ -87,7 +95,11 @@
       "dependsOn": [],
       "verification": {
         "status": "draft",
-        "lastReviewed": "2026-11-02"
+        "lastReviewed": "2026-11-04"
+      },
+      "notes": {
+        "tr": "2464 sayılı Belediye Gelirleri Kanunu m.52. İzin usulü ve tarife belediyeye göre değişir.",
+        "en": "Municipal Revenues Law 2464 art. 52. The permit procedure and tariff vary by municipality."
       }
     }
   ]

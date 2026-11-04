@@ -1,5 +1,5 @@
 {
-  "_note": "TASLAK. Hiçbir madde doğrulanmadı; sourceUrl, typicalDays ve typicalCost resmi kaynaktan doldurulmadan production'a çıkamaz (SPEC-legal §4).",
+  "_note": "TASLAK. Maddeler 2026-11-04 tarihinde resmi kaynaklardan araştırıldı; mali müşavir onayı gelmeden status verified yapılmaz (SPEC-legal §4, ROADMAP İP-1.8).",
   "country": "TR",
   "scope": "common",
   "items": [
@@ -10,14 +10,14 @@
         "en": "Tax registration"
       },
       "what": {
-        "tr": "İşe başlamadan önce vergi dairesine mükellefiyet kaydı yapılır.",
-        "en": "Register as a taxpayer with the tax office before starting."
+        "tr": "Gerçek kişiler işe başlamayı başlama tarihinden itibaren 10 gün içinde vergi dairesine bildirir. Şirket kuruluşunda bildirimi ticaret sicili memurluğu yapar.",
+        "en": "Individuals notify the tax office within 10 days of starting work. When a company is formed, the trade registry office makes the notification."
       },
       "authority": {
         "tr": "Gelir İdaresi Başkanlığı / vergi dairesi",
         "en": "Revenue Administration (GİB) / tax office"
       },
-      "sourceUrl": "",
+      "sourceUrl": "https://www.mevzuat.gov.tr/MevzuatMetin/1.4.213.pdf",
       "appliesTo": {
         "sectors": "all",
         "condition": "always"
@@ -29,7 +29,11 @@
       "dependsOn": [],
       "verification": {
         "status": "draft",
-        "lastReviewed": "2026-11-02"
+        "lastReviewed": "2026-11-04"
+      },
+      "notes": {
+        "tr": "Vergi Usul Kanunu m.153 ve m.168.",
+        "en": "Tax Procedure Law arts. 153 and 168."
       }
     },
     {
@@ -39,14 +43,14 @@
         "en": "Tradesmen or trade registry"
       },
       "what": {
-        "tr": "İşletme türüne göre esnaf ve sanatkârlar odası ile esnaf siciline ya da ticaret sicili ve ticaret odasına kayıt.",
-        "en": "Depending on business type, register with the tradesmen chamber or the trade registry and chamber of commerce."
+        "tr": "Esnaf ve sanatkârlar çalışmaya başladıktan sonra 30 gün içinde sicile tescil edilir; oda kaydı sicil üzerinden yapılır. Tacirler işletmeyi açtıkları günden itibaren 15 gün içinde ticaret siciline tescil ettirir.",
+        "en": "Tradespeople register with the craftsmen registry within 30 days of starting work; chamber membership follows through the registry. Merchants register the business with the trade registry within 15 days of opening."
       },
       "authority": {
         "tr": "Esnaf ve sanatkârlar odası / ticaret sicili müdürlüğü",
         "en": "Tradesmen chamber / trade registry office"
       },
-      "sourceUrl": "",
+      "sourceUrl": "https://ticaret.gov.tr/esnaf-sanatkarlar/sikca-sorulan-sorular/odaya-sicile-kayit-islemleri",
       "appliesTo": {
         "sectors": "all",
         "condition": "always"
@@ -55,10 +59,14 @@
       "critical": true,
       "typicalDays": null,
       "typicalCost": null,
-      "dependsOn": ["tr.common.tax_registration"],
+      "dependsOn": [],
       "verification": {
         "status": "draft",
-        "lastReviewed": "2026-11-02"
+        "lastReviewed": "2026-11-04"
+      },
+      "notes": {
+        "tr": "5362 sayılı Kanun m.68; Türk Ticaret Kanunu m.40.",
+        "en": "Law 5362 art. 68; Turkish Commercial Code art. 40."
       }
     },
     {
@@ -68,26 +76,30 @@
         "en": "Business opening and operating license"
       },
       "what": {
-        "tr": "Belediyeden işyeri açma ve çalışma ruhsatı alınır; dükkânın imar ve kullanım durumu bu işe uygun olmalıdır.",
-        "en": "A business opening and operating license from the municipality; the premises must be zoned and permitted for this use."
+        "tr": "Ruhsat alınmadan işyeri açılamaz. Sıhhi işyerinde başvuru kriterlere uygunsa ruhsat aynı gün verilir; umuma açık istirahat ve eğlence yerinde (kahvehane, içkili kafe gibi) başvuru bir ay içinde sonuçlandırılır.",
+        "en": "A workplace cannot open without this licence. A sanitary-class workplace gets it the same day if the application meets the criteria; a public recreation venue (such as a kahvehane or a café serving alcohol) gets a decision within one month."
       },
       "authority": {
-        "tr": "Belediye (ilçe/büyükşehir)",
-        "en": "Municipality"
+        "tr": "Belediye (belediye ve mücavir alan dışında il özel idaresi)",
+        "en": "Municipality (provincial administration outside municipal limits)"
       },
-      "sourceUrl": "",
+      "sourceUrl": "https://www.mevzuat.gov.tr/MevzuatMetin/21.5.20059207.pdf",
       "appliesTo": {
         "sectors": "all",
         "condition": "always"
       },
       "stage": "before_lease",
       "critical": true,
-      "typicalDays": null,
+      "typicalDays": [1, 30],
       "typicalCost": null,
       "dependsOn": [],
       "verification": {
         "status": "draft",
-        "lastReviewed": "2026-11-02"
+        "lastReviewed": "2026-11-04"
+      },
+      "notes": {
+        "tr": "Kiralamadan önce tapuya bak: tapuda mesken görünen bağımsız bölümde dükkân, pastane, kahvehane gibi işyerleri için kat maliklerinin oy birliği gerekir. Süre mevzuattaki süredir, uygulamada uzayabilir. İşyeri Açma ve Çalışma Ruhsatlarına İlişkin Yönetmelik m.5, m.6, m.12, m.32.",
+        "en": "Check the title deed before you sign: where the unit is registered as a residence, a shop, patisserie or kahvehane needs the unanimous decision of the flat owners. The time shown is the legal period and can run longer in practice. Workplace Licensing Regulation arts. 5, 6, 12, 32."
       }
     },
     {
@@ -97,14 +109,14 @@
         "en": "Fire safety compliance"
       },
       "what": {
-        "tr": "İşyeri türüne ve büyüklüğüne göre itfaiye uygunluk raporu istenebilir.",
-        "en": "Depending on type and size, a fire department compliance report may be required."
+        "tr": "Umuma açık istirahat ve eğlence yerlerinde, 30 kişiden fazla çalışanı olan işyerlerinde ve iş hanı, çarşı gibi yerlerdeki işyerlerinde itfaiye raporu gerekir. Diğer işyerleri yangın önlemlerini almış olmalıdır.",
+        "en": "A fire report is required for public recreation venues, workplaces with more than 30 employees, and units inside business centres or arcades. Other workplaces must have fire precautions in place."
       },
       "authority": {
         "tr": "Belediye itfaiye müdürlüğü",
         "en": "Municipal fire department"
       },
-      "sourceUrl": "",
+      "sourceUrl": "https://www.mevzuat.gov.tr/MevzuatMetin/21.5.20059207.pdf",
       "appliesTo": {
         "sectors": "all",
         "condition": "always"
@@ -116,7 +128,11 @@
       "dependsOn": [],
       "verification": {
         "status": "draft",
-        "lastReviewed": "2026-11-02"
+        "lastReviewed": "2026-11-04"
+      },
+      "notes": {
+        "tr": "İşyeri Açma ve Çalışma Ruhsatlarına İlişkin Yönetmelik m.5.",
+        "en": "Workplace Licensing Regulation art. 5."
       }
     },
     {
@@ -126,14 +142,14 @@
         "en": "Social security workplace registration"
       },
       "what": {
-        "tr": "Çalışan varsa işyeri SGK'ya tescil edilir ve çalışanlar işe başlamadan önce bildirilir.",
-        "en": "If you have employees, register the workplace with social security and declare staff before they start."
+        "tr": "İşyeri bildirgesi en geç ilk sigortalının çalışmaya başladığı tarihte, sigortalı işe giriş bildirgesi kural olarak çalışma başlamadan önce SGK'ya verilir.",
+        "en": "The workplace notification is due no later than the day the first insured employee starts; the employee start notification is generally due before work begins."
       },
       "authority": {
         "tr": "Sosyal Güvenlik Kurumu",
         "en": "Social Security Institution (SGK)"
       },
-      "sourceUrl": "",
+      "sourceUrl": "https://www.mevzuat.gov.tr/MevzuatMetin/1.5.5510.pdf",
       "appliesTo": {
         "sectors": "all",
         "condition": "hasEmployees"
@@ -145,24 +161,28 @@
       "dependsOn": [],
       "verification": {
         "status": "draft",
-        "lastReviewed": "2026-11-02"
+        "lastReviewed": "2026-11-04"
+      },
+      "notes": {
+        "tr": "5510 sayılı Kanun m.8 ve m.11. İlk kez bildirge verecek işyerinde ilk bir ay için süre istisnası var. Şirket kuruluşunda ticaret siciline yapılan bildirim SGK'ya yapılmış sayılır.",
+        "en": "Law 5510 arts. 8 and 11. Workplaces filing for the first time have an exception for the first month. For a new company, the notification to the trade registry counts as notifying SGK."
       }
     },
     {
       "id": "tr.common.signage",
       "title": {
-        "tr": "Tabela izni ve ilan-reklam vergisi",
-        "en": "Sign permit and advertising tax"
+        "tr": "Tabela için ilan ve reklam vergisi",
+        "en": "Advertising tax on your sign"
       },
       "what": {
-        "tr": "Dış tabela için belediye izni ve ilan-reklam vergisi beyanı.",
-        "en": "Municipal permit for exterior signage and advertising tax declaration."
+        "tr": "Belediye sınırları içindeki tabela ilan ve reklam vergisine tabidir; beyanname tabela asılmadan önce belediyeye verilir. İşin adını ve mahiyetini gösteren, 1/2 metrekareyi aşmayan ışıksız levha vergiden muaftır; aşan kısım vergilenir.",
+        "en": "Signs within municipal limits are subject to advertising tax; the return goes to the municipality before the sign goes up. An unlit sign of up to 1/2 square metre showing the business name and activity is exempt; anything above that is taxed."
       },
       "authority": {
         "tr": "Belediye",
         "en": "Municipality"
       },
-      "sourceUrl": "",
+      "sourceUrl": "https://www.mevzuat.gov.tr/MevzuatMetin/1.5.2464.pdf",
       "appliesTo": {
         "sectors": "all",
         "condition": "hasSign"
@@ -174,7 +194,11 @@
       "dependsOn": [],
       "verification": {
         "status": "draft",
-        "lastReviewed": "2026-11-02"
+        "lastReviewed": "2026-11-04"
+      },
+      "notes": {
+        "tr": "2464 sayılı Belediye Gelirleri Kanunu m.12–16. Ayrıca tabela izni isteyip istemediğini belediyene sor.",
+        "en": "Municipal Revenues Law 2464 arts. 12–16. Ask your municipality whether a separate sign permit is needed."
       }
     },
     {
@@ -184,14 +208,14 @@
         "en": "Registered cash register / POS"
       },
       "what": {
-        "tr": "Satış belgesi düzenlemek için onaylı ödeme kaydedici cihaz veya uygun POS çözümü.",
-        "en": "An approved cash register or compliant POS to issue sales receipts."
+        "tr": "Birinci ve ikinci sınıf tüccarlar, fatura vermek zorunda olmadıkları perakende satış ve hizmetlerde ödeme kaydedici cihaz kullanır. Bazı faaliyetler muaf tutulabilir.",
+        "en": "First- and second-class merchants use a payment recording device for retail sales and services where no invoice is required. Some activities may be exempt."
       },
       "authority": {
-        "tr": "Gelir İdaresi Başkanlığı onaylı cihaz sağlayıcıları",
-        "en": "Approved device providers (GİB)"
+        "tr": "Gelir İdaresi Başkanlığı (onaylı cihaz listesi: ynokc.gib.gov.tr)",
+        "en": "Revenue Administration (approved devices: ynokc.gib.gov.tr)"
       },
-      "sourceUrl": "",
+      "sourceUrl": "https://www.mevzuat.gov.tr/MevzuatMetin/1.5.3100.pdf",
       "appliesTo": {
         "sectors": "all",
         "condition": "always"
@@ -203,36 +227,44 @@
       "dependsOn": ["tr.common.tax_registration"],
       "verification": {
         "status": "draft",
-        "lastReviewed": "2026-11-02"
+        "lastReviewed": "2026-11-04"
+      },
+      "notes": {
+        "tr": "3100 sayılı Kanun m.1.",
+        "en": "Law 3100 art. 1."
       }
     },
     {
       "id": "tr.common.lease_withholding",
       "title": {
-        "tr": "Kira sözleşmesi ve kira stopajı",
-        "en": "Lease agreement and rent withholding"
+        "tr": "Kira stopajı",
+        "en": "Withholding tax on rent"
       },
       "what": {
-        "tr": "İşyeri kirasında stopaj kesilir ve beyan edilir; sözleşmede artış ve süre maddeleri netleştirilir.",
-        "en": "Withholding tax applies to commercial rent and is declared; clarify increase and term clauses in the lease."
+        "tr": "Şirketler ve gerçek gelirini beyan eden ticaret erbabı, kiraya verdikleri kişiye ödedikleri kira üzerinden gelir vergisi keserek öder.",
+        "en": "Companies and merchants who declare actual income withhold income tax from the rent they pay to the landlord."
       },
       "authority": {
-        "tr": "Mali müşavir / vergi dairesi",
-        "en": "Accountant / tax office"
+        "tr": "Vergi dairesi",
+        "en": "Tax office"
       },
-      "sourceUrl": "",
+      "sourceUrl": "https://www.mevzuat.gov.tr/MevzuatMetin/1.4.193.pdf",
       "appliesTo": {
         "sectors": "all",
         "condition": "always"
       },
-      "stage": "before_lease",
+      "stage": "before_opening",
       "critical": false,
       "typicalDays": null,
       "typicalCost": null,
       "dependsOn": [],
       "verification": {
         "status": "draft",
-        "lastReviewed": "2026-11-02"
+        "lastReviewed": "2026-11-04"
+      },
+      "notes": {
+        "tr": "Gelir Vergisi Kanunu m.94/5-a. Oran kanunda değil, Cumhurbaşkanı kararıyla belirlenir.",
+        "en": "Income Tax Law art. 94/5-a. The rate is set by presidential decision, not in the law."
       }
     }
   ]

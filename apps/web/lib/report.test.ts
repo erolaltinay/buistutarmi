@@ -93,7 +93,7 @@ describe('PDF rapor (İP-1.6)', () => {
     for (const options of [ALL, NONE]) {
       const { pages, text } = await read(coffee(), options);
       expect(has(text, 'Bu liste genel bir rehberdir ve değişebilir.')).toBe(true);
-      expect(has(text, 'Son kontrol: 2.11.2026.') || has(text, 'Son kontrol: 02.11.2026.')).toBe(true);
+      expect(has(text, 'Son kontrol: 04.11.2026.')).toBe(true);
       // Her sayfada yatırım uyarısı ve sayfa numarası.
       pages.forEach((p, i) => {
         expect(has(p, 'yatırım tavsiyesi değildir'), `sayfa ${i + 1}`).toBe(true);
@@ -109,7 +109,7 @@ describe('PDF rapor (İP-1.6)', () => {
 
   it('taslak madde işaretlenir; yayın derlemesinde gösterilmez', async () => {
     const demo = (await read(coffee(), NONE)).text;
-    expect(has(demo, 'henüz doğrulanmadı')).toBe(true);
+    expect(has(demo, 'henüz bir uzman tarafından onaylanmadı')).toBe(true);
     expect(has(demo, 'Vergi mükellefiyeti kaydı')).toBe(true);
 
     const release = (await read(coffee(), NONE, 'tr', true)).text;
