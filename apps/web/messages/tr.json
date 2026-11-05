@@ -119,7 +119,7 @@
       "depYears": "Amortisman süresi (yıl)"
     },
     "preOpen": "Açılış öncesi bekleme (ay)",
-    "preOpenHint": "Ruhsat beklerken kira tam, diğer sabit giderlerin %{share}'i ve kredi faizi işler. Personel ve satış yok. Toplam yatırıma eklenir.",
+    "preOpenHint": "Ruhsat beklerken kira tam, diğer sabit giderlerin %{share}'u ve kredi faizi işler. Personel ve satış yok. Toplam yatırıma eklenir.",
     "preOpenMissing": "Bekleme giderleri şu an hesapta yok, yatırım ihtiyacı düşük görünebilir.",
     "preOpenSuggest": "Mevzuat listesindeki en uzun yol {days} gün, yani yaklaşık {months} ay. Bu genel bir rehberdir; kendi durumuna göre değiştir.",
     "preOpenUnknown": "Süresi bilinmeyen {count} madde sayılmadı.",
@@ -507,7 +507,6 @@
       "evening": "Akşam"
     },
     "minutesError": "Süreyi {min} ile {max} dakika arasında gir.",
-    "overwrite": "Bu dilim daha önce sayıldı. Yeni sayım eskisinin yerine geçer.",
     "offlineReady": "Bu ekran internetsiz de açılır.",
     "offlineNow": "İnternet yok. Sayım telefonda saklanıyor, kaybolmaz.",
     "start": "Saymaya başla",
@@ -527,7 +526,22 @@
     "write": "Lokasyona yaz",
     "discard": "Sil",
     "discardConfirm": "Bu sayım silinsin mi?",
-    "saved": "{day}, {slot} dilimine {value} yazıldı."
+    "saved": "{day}, {slot} dilimine {value} yazıldı.",
+    "previous": "Bu dilim {count} kez sayıldı. Yeni sayım ortalamaya eklenir.",
+    "previousRow": "{count} kişi · {minutes} dk · {date}",
+    "delete": "Sil",
+    "deleteConfirm": "Bu sayım silinip ortalama yeniden hesaplansın mı?",
+    "disagree": "Sayımlar arasındaki fark %{pct}'u geçiyor. Bir kez daha saymak iyi olur.",
+    "averaged": "Bu dilimin {n}. sayımı. Hepsinin ortalaması tabloya {value} olarak yazılacak.",
+    "guideT": "Nasıl sayılır?",
+    "guide": {
+      "time": "Açık saatlerini üçe böl, her parçanın ortasında say. Örnek: 08.00-22.00 açıksa 10.20, 15.00 ve 19.40. Yalnız yoğun saatlerde sayarsan günlük rakam olduğundan yüksek çıkar.",
+      "days": "Hafta içi için ortadaki günlerden birini, hafta sonu için dükkânın açık olacağı bir günü seç. Yağmurlu gün, tatil, pazar kurulan gün ve okul tatilinde sayma.",
+      "who": "Dükkânın önündeki kaldırımdan geçen herkesi say. Karşı kaldırımı yalnız sokak dar ve geçişi kolaysa say. Kuryeleri ve çalışanları sayma. Aynı kuralı her dilimde uygula.",
+      "length": "15 dakikada 20 kişiden az geçiyorsa süreyi 30 dakikaya çıkar; sayı azken hata payı büyür.",
+      "repeat": "Karar bu rakama dayanacaksa her dilimi farklı haftalarda ikişer kez say. Aynı dilimin sayımlarının ortalaması alınır.",
+      "rival": "Yakındaki bir rakibin önünde de say: kaç kişi geçti, kaçı içeri girdi. Bu, o sokağın gerçek giriş oranını gösterir. Fotoğraf çekme, yalnız say."
+    }
   },
   "pricing": {
     "bandTitle": "Fiyat haritası: imza ürün",

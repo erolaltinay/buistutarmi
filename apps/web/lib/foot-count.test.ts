@@ -6,15 +6,19 @@ import {
   canWrite,
   clearSession,
   countedSlotCount,
-  countValue,
   elapsedMinutes,
   isCounted,
   isRunning,
   loadSession,
   nextSlot,
+  previewValue,
   remainingMs,
+  removeCount,
   saveSession,
   settle,
+  slotCounts,
+  slotDisagrees,
+  slotValue,
   startCount,
   stopCount,
   tap,
@@ -81,10 +85,29 @@ describe('sayım', () => {
   });
 
   it('farklı süre tablonun sayım süresine çevrilir', () => {
-    expect(countValue(finished(70), 15)).toBe(70);
-    expect(countValue(finished(10, 15, 5), 15)).toBe(30);
-    expect(countValue(finished(70), 30)).toBe(140);
-    expect(countValue(finished(0), 15)).toBe(0);
+    expect(slotValue([{ count: 70, minutes: 15 }], 15)).toBe(70);
+    expect(slotValue([{ count: 10, minutes: 5 }], 15)).toBe(30);
+    expect(slotValue([{ count: 70, minutes: 15 }], 30)).toBe(140);
+    expect(slotValue([{ count: 0, minutes: 15 }], 15)).toBe(0);
+    expect(slotValue([], 15)).toBe(0);
+  });
+
+  it('birden çok sayımda uzun sayım daha ağır basar', () => {
+    const short = { count: 10, minutes: 5 };
+    const long = { count: 40, minutes: 30 };
+    expect(slotValue([short, long], 15)).toBe(Math.round((50 / 35) * 15));
+    expect(slotValue([short, long], 15)).toBe(21);
+  });
+
+  it('sayımlar %30tan fazla ayrışınca uyarır', () => {
+    const at = (count: number) => ({ count, minutes: 15 });
+    expect(slotDisagrees([at(100)])).toBe(false);
+    expect(slotDisagrees([at(100), at(130)])).toBe(false);
+    expect(slotDisagrees([at(100), at(131)])).toBe(true);
+    expect(slotDisagrees([at(0), at(10)])).toBe(true);
+    expect(slotDisagrees([at(0), at(0)])).toBe(false);
+    // Süre farkı hızla düzeltilir: 5 dakikada 10 ile 15 dakikada 30 aynı hızdır.
+    expect(slotDisagrees([{ count: 10, minutes: 5 }, at(30)])).toBe(false);
   });
 });
 
@@ -112,12 +135,64 @@ describe("Lokasyon'a yazma", () => {
     expect(d.input.loc.foot.wd[0]).toBe(20);
   });
 
-  it('aynı dilim yeniden sayılınca eskisinin yerine geçer', () => {
+  it('aynı dilim yeniden sayılınca ortalamaya eklenir', () => {
     const d = doc();
+    d.input.loc.countMin = 15;
     applyCount(d, finished(20), 'a');
-    applyCount(d, finished(25), 'b');
-    expect(d.input.loc.foot.wd[0]).toBe(25);
+    expect(previewValue(d.input.loc, finished(40))).toBe(30);
+    applyCount(d, finished(40), 'b');
+    expect(d.input.loc.foot.wd[0]).toBe(30);
+    expect(slotCounts(d.input.loc, 'wd', 0)).toHaveLength(2);
     expect(countedSlotCount(d.input.loc)).toBe(1);
+    expect(isCounted(d.input.loc, 'wd', 0)).toBe(true);
+  });
+
+  it('başka dilimin sayımı ortalamaya karışmaz', () => {
+    const d = doc();
+    d.input.loc.countMin = 15;
+    applyCount(d, finished(20), 'a');
+    applyCount(d, { ...finished(100), slot: 1 }, 'b');
+    expect(d.input.loc.foot.wd[0]).toBe(20);
+    expect(d.input.loc.foot.wd[1]).toBe(100);
+  });
+
+  it('elle yazılan rakam ortalamaya girmez', () => {
+    const d = doc();
+    d.input.loc.countMin = 15;
+    applyCount(d, finished(20), 'a');
+    d.input.loc.foot.wd[0] = 999;
+    applyCount(d, finished(40), 'b');
+    expect(d.input.loc.foot.wd[0]).toBe(30);
+    expect(isCounted(d.input.loc, 'wd', 0)).toBe(true);
+  });
+
+  it('sayım silinince ortalama yeniden hesaplanır, sonuncusu silinince dilim 0 olur', () => {
+    const d = doc();
+    d.input.loc.countMin = 15;
+    applyCount(d, finished(20), 'a');
+    applyCount(d, finished(40), 'b');
+    removeCount(d, 'wd', 0, 1);
+    expect(d.input.loc.foot.wd[0]).toBe(20);
+    expect(isCounted(d.input.loc, 'wd', 0)).toBe(true);
+    expect(slotCounts(d.input.loc, 'wd', 0).map((c) => c.count)).toEqual([20]);
+    removeCount(d, 'wd', 0, 5);
+    expect(slotCounts(d.input.loc, 'wd', 0)).toHaveLength(1);
+    removeCount(d, 'wd', 0, 0);
+    expect(d.input.loc.foot.wd[0]).toBe(0);
+    expect(isCounted(d.input.loc, 'wd', 0)).toBe(false);
+  });
+
+  it('sayım silinince altı dilim bozulursa measured kalkar', () => {
+    const d = doc();
+    (['wd', 'we'] as const).forEach((day) =>
+      [0, 1, 2].forEach((slot) => applyCount(d, { ...finished(20), day, slot }, 'a')),
+    );
+    expect(d.sources?.foot).toBe('measured');
+    applyCount(d, finished(30), 'b');
+    removeCount(d, 'wd', 0, 1);
+    expect(d.sources?.foot).toBe('measured');
+    removeCount(d, 'wd', 0, 0);
+    expect(d.sources?.foot).toBe('user');
   });
 
   it('elle değişen değer veya süre artık sayılmış değildir', () => {

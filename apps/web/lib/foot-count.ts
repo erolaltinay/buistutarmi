@@ -82,9 +82,25 @@ export const elapsedMinutes = (s: CountSession): number =>
 
 export const canWrite = (s: CountSession): boolean => elapsedMinutes(s) >= MIN_COUNT_MIN;
 
-/** Motorda altı dilim tek sayım süresini paylaşır (SPEC-calc-engine §10.1); farklı süre o süreye çevrilir. */
-export const countValue = (s: CountSession, countMin: number): number =>
-  Math.round((s.count / elapsedMinutes(s)) * countMin);
+type Tally = Pick<FootCount, 'count' | 'minutes'>;
+
+/**
+ * Motorda altı dilim tek sayım süresini paylaşır (SPEC-calc-engine §10.1); farklı süre o süreye çevrilir.
+ * Birden çok sayım toplam kişi / toplam süre ile birleşir, uzun sayım daha ağır basar.
+ */
+export function slotValue(entries: Tally[], countMin: number): number {
+  const minutes = entries.reduce((a, c) => a + c.minutes, 0);
+  return minutes > 0 ? Math.round((entries.reduce((a, c) => a + c.count, 0) / minutes) * countMin) : 0;
+}
+
+export const DISAGREE_PCT = 30;
+
+/** En yüksek hız en düşüğün %30'undan fazla üstündeyse sayımlar birbirini doğrulamıyor demektir. */
+export function slotDisagrees(entries: Tally[]): boolean {
+  if (entries.length < 2) return false;
+  const rates = entries.map((c) => c.count / c.minutes);
+  return Math.max(...rates) > Math.min(...rates) * (1 + DISAGREE_PCT / 100);
+}
 
 export const effectiveCountMin = (loc: LocationInput, minutes: number): number => {
   const current = Number(loc.countMin);
@@ -96,11 +112,21 @@ export function countsOf(loc: LocationInput): FootCount[] {
   return parsed.success ? parsed.data : [];
 }
 
+export const slotCounts = (loc: LocationInput, day: CountDay, slot: number): FootCount[] =>
+  countsOf(loc).filter((c) => c.day === day && c.slot === slot);
+
 /** Tablodaki değer sayımdan geliyor mu? Elle değiştirilen veya süresi değişen dilim sayılmaz. */
 export function isCounted(loc: LocationInput, day: CountDay, slot: number): boolean {
-  const c = countsOf(loc).find((x) => x.day === day && x.slot === slot);
+  const c = slotCounts(loc, day, slot).at(-1);
   return !!c && c.value === loc.foot[day][slot] && c.countMin === Number(loc.countMin);
 }
+
+/** Bu sayım yazılırsa tabloya girecek değer. */
+export const previewValue = (loc: LocationInput, s: CountSession): number =>
+  slotValue(
+    [...slotCounts(loc, s.day, s.slot), { count: s.count, minutes: elapsedMinutes(s) }],
+    effectiveCountMin(loc, s.minutes),
+  );
 
 const allSlots = () =>
   DAYS.flatMap((day) => Array.from({ length: SLOT_COUNT }, (_, slot) => ({ day, slot })));
@@ -121,11 +147,11 @@ export const nextSlot = (loc: LocationInput): { day: CountDay; slot: number } =>
 export function applyCount(doc: ProjectDoc, s: CountSession, countedAt: string): void {
   const loc = doc.input.loc;
   const countMin = effectiveCountMin(loc, s.minutes);
-  const value = countValue(s, countMin);
+  const value = previewValue(loc, s);
   loc.countMin = countMin;
   loc.foot[s.day][s.slot] = value;
   (loc as Counted).counts = [
-    ...countsOf(loc).filter((c) => !(c.day === s.day && c.slot === s.slot)),
+    ...countsOf(loc),
     {
       day: s.day,
       slot: s.slot,
@@ -138,6 +164,26 @@ export function applyCount(doc: ProjectDoc, s: CountSession, countedAt: string):
     },
   ];
   if (countedSlotCount(loc) === totalSlots) doc.sources = { ...doc.sources, foot: 'measured' };
+}
+
+/** Bir sayımı siler, dilimin ortalamasını yeniden hesaplar; altı dilim bozulursa `measured` kalkar. */
+export function removeCount(doc: ProjectDoc, day: CountDay, slot: number, index: number): void {
+  const loc = doc.input.loc;
+  const entries = slotCounts(loc, day, slot);
+  const target = entries[index];
+  if (!target) return;
+  const countMin = effectiveCountMin(loc, target.countMin);
+  const remaining = entries.filter((_, i) => i !== index);
+  const value = slotValue(remaining, countMin);
+  const last = remaining.at(-1);
+  (loc as Counted).counts = [
+    ...countsOf(loc).filter((c) => !(c.day === day && c.slot === slot)),
+    ...remaining.slice(0, -1),
+    ...(last ? [{ ...last, value, countMin }] : []),
+  ];
+  loc.foot[day][slot] = value;
+  if (doc.sources?.foot === 'measured' && countedSlotCount(loc) < totalSlots)
+    doc.sources = { ...doc.sources, foot: 'user' };
 }
 
 export function loadSession(projectId: string): CountSession | null {

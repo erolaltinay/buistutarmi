@@ -123,6 +123,53 @@ test('art arda hızlı dokunuşların hiçbiri kaybolmaz', async ({ page }) => {
   await expect(page.getByTestId('counter-count')).toHaveText('20');
 });
 
+test('aynı dilim yeniden sayılınca ortalama yazılır, sayım silinebilir, ayrışma uyarılır', async ({
+  page,
+}) => {
+  await open(page);
+  // İlk açılışta rehber açık gelir.
+  await expect(page.getByTestId('counter-guide').locator('li').first()).toBeVisible();
+  await expect(page.getByTestId('counter-guide')).toContainText('üçe böl');
+
+  const count = async (n: number) => {
+    await page.getByTestId('counter-day').selectOption('wd');
+    await page.getByTestId('counter-slot').selectOption('0');
+    await page.getByTestId('counter-start').click();
+    await tapTimes(page, n);
+    await page.clock.fastForward(15 * MIN);
+    await expect(page.getByTestId('counter-done')).toBeVisible();
+  };
+
+  await count(10);
+  await expect(page.getByTestId('counter-disagree')).toHaveCount(0);
+  await page.getByTestId('counter-write').click();
+
+  // İkinci sayım: yazmadan önce ortalama ve ayrışma söylenir.
+  await count(20);
+  await expect(page.getByTestId('counter-value')).toContainText('2. sayımı');
+  await expect(page.getByTestId('counter-value')).toContainText('15');
+  await expect(page.getByTestId('counter-disagree')).toBeVisible();
+  await page.getByTestId('counter-write').click();
+
+  // Dilim seçilince önceki sayımlar görünür; ilk rehber kapanır.
+  await page.getByTestId('counter-day').selectOption('wd');
+  await page.getByTestId('counter-slot').selectOption('0');
+  const previous = page.getByTestId('counter-previous');
+  await expect(previous.locator('li')).toHaveCount(2);
+  await expect(previous).toContainText('2 kez');
+  await expect(page.getByTestId('counter-disagree')).toBeVisible();
+  await expect(page.getByTestId('counter-guide').locator('li').first()).toBeHidden();
+
+  // Sayım silinince ortalama yeniden hesaplanır.
+  page.once('dialog', (d) => void d.accept());
+  await previous.getByTestId('counter-delete').last().click();
+  await expect(previous.locator('li')).toHaveCount(1);
+  await expect(page.getByTestId('counter-disagree')).toHaveCount(0);
+  await page.getByTestId('counter-close').click();
+  await expect(page.locator('#foot-wd-0')).toHaveValue('10');
+  await expect(page.locator('#foot-wd-0')).toHaveClass(/counted/);
+});
+
 test('süre geçersizse başlamaz', async ({ page }) => {
   await open(page);
   await page.getByTestId('counter-minutes').fill('0');

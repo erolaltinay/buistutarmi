@@ -10,20 +10,23 @@ import {
   canWrite,
   clearSession,
   countedSlotCount,
-  countValue,
   DAYS,
   DEFAULT_COUNT_MIN,
+  DISAGREE_PCT,
   effectiveCountMin,
   elapsedMinutes,
-  isCounted,
   isRunning,
   loadSession,
   MAX_COUNT_MIN,
   MIN_COUNT_MIN,
   nextSlot,
+  previewValue,
   remainingMs,
+  removeCount,
   saveSession,
   settle,
+  slotCounts,
+  slotDisagrees,
   SLOT_COUNT,
   startCount,
   stopCount,
@@ -33,10 +36,12 @@ import {
   type CountDay,
   type CountSession,
 } from '../lib/foot-count';
+import { numberLocale } from '../lib/format';
 import { prepareOffline } from '../lib/offline';
 import { loadProject, saveProject } from '../lib/project';
 
 const SLOTS = ['morning', 'midday', 'evening'] as const;
+const GUIDE = ['time', 'days', 'who', 'length', 'repeat', 'rival'] as const;
 const TICK_MS = 250;
 
 const clock = (ms: number) => {
@@ -162,7 +167,7 @@ export function FootCounter() {
       t('saved', {
         day: t(`day.${s.day}`),
         slot: t(`slot.${SLOTS[s.slot]!}`),
-        value: countValue(s, effectiveCountMin(loc, s.minutes)),
+        value: previewValue(loc, s),
       }),
     );
   };
@@ -260,7 +265,7 @@ function Setup({
   onClose: () => void;
 }) {
   const t = useTranslations('counter');
-  const { doc } = useWorkbench();
+  const { doc, update, fmt, lang } = useWorkbench();
   const loc = doc.input.loc;
   const first = nextSlot(loc);
   const [day, setDay] = useState<CountDay>(first.day);
@@ -274,6 +279,8 @@ function Setup({
   }, [first.day, first.slot]);
 
   const validMinutes = minutes !== null && minutes >= MIN_COUNT_MIN && minutes <= MAX_COUNT_MIN;
+  const previous = slotCounts(loc, day, slot);
+  const date = (iso: string) => new Intl.DateTimeFormat(numberLocale(lang)).format(Date.parse(iso));
 
   return (
     <div className="counter-setup">
@@ -315,10 +322,39 @@ function Setup({
           {t('minutesError', { min: MIN_COUNT_MIN, max: MAX_COUNT_MIN })}
         </p>
       )}
-      {isCounted(loc, day, slot) && (
-        <p className="note" data-testid="counter-overwrite">
-          {t('overwrite')}
-        </p>
+      {previous.length > 0 && (
+        <div data-testid="counter-previous">
+          <p className="note">{t('previous', { count: previous.length })}</p>
+          <ul className="counter-previous">
+            {previous.map((c, i) => (
+              <li key={`${c.countedAt}-${i}`}>
+                <span>
+                  {t('previousRow', {
+                    count: c.count,
+                    minutes: fmt.num(c.minutes, 1),
+                    date: date(c.countedAt),
+                  })}
+                </span>
+                <button
+                  type="button"
+                  className="ghost"
+                  data-testid="counter-delete"
+                  onClick={() => {
+                    if (window.confirm(t('deleteConfirm')))
+                      update((d) => removeCount(d, day, slot, i), { track: false });
+                  }}
+                >
+                  {t('delete')}
+                </button>
+              </li>
+            ))}
+          </ul>
+          {slotDisagrees(previous) && (
+            <p className="warn" data-testid="counter-disagree">
+              {t('disagree', { pct: DISAGREE_PCT })}
+            </p>
+          )}
+        </div>
       )}
       {offlineReady && (
         <p className="note" data-testid="counter-offline-ready">
@@ -337,6 +373,14 @@ function Setup({
       <button type="button" className="ghost" data-testid="counter-close" onClick={onClose}>
         {t('close')}
       </button>
+      <details className="pt" data-testid="counter-guide" open={countedSlotCount(loc) === 0}>
+        <summary>{t('guideT')}</summary>
+        <ul className="q">
+          {GUIDE.map((k) => (
+            <li key={k}>{t(`guide.${k}`)}</li>
+          ))}
+        </ul>
+      </details>
     </div>
   );
 }
@@ -415,7 +459,8 @@ function Done({
   const elapsed = elapsedMinutes(session);
   const countMin = effectiveCountMin(doc.input.loc, session.minutes);
   const writable = canWrite(session);
-  const value = writable ? countValue(session, countMin) : 0;
+  const value = writable ? previewValue(doc.input.loc, session) : 0;
+  const previous = slotCounts(doc.input.loc, session.day, session.slot);
   return (
     <div className="counter-setup" data-testid="counter-done">
       <h2>{t('doneTitle')}</h2>
@@ -436,11 +481,20 @@ function Done({
         </p>
       )}
       {writable ? (
-        <p data-testid="counter-value">
-          {elapsed === countMin
-            ? t('direct', { value })
-            : t('scaled', { from: fmt.num(elapsed, 1), to: fmt.num(countMin), value })}
-        </p>
+        <>
+          <p data-testid="counter-value">
+            {previous.length > 0
+              ? t('averaged', { n: previous.length + 1, value })
+              : elapsed === countMin
+                ? t('direct', { value })
+                : t('scaled', { from: fmt.num(elapsed, 1), to: fmt.num(countMin), value })}
+          </p>
+          {slotDisagrees([...previous, { count: session.count, minutes: elapsed }]) && (
+            <p className="warn" data-testid="counter-disagree">
+              {t('disagree', { pct: DISAGREE_PCT })}
+            </p>
+          )}
+        </>
       ) : (
         <p className="warn" data-testid="counter-too-short">
           {t('tooShort', { min: MIN_COUNT_MIN })}

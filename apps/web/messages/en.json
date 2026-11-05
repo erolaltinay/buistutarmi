@@ -507,7 +507,6 @@
       "evening": "Evening"
     },
     "minutesError": "Enter a length between {min} and {max} minutes.",
-    "overwrite": "This slot was counted before. The new count replaces it.",
     "offlineReady": "This screen also opens without internet.",
     "offlineNow": "No internet. The count is stored on your phone and will not be lost.",
     "start": "Start counting",
@@ -527,7 +526,22 @@
     "write": "Save to Location",
     "discard": "Delete",
     "discardConfirm": "Delete this count?",
-    "saved": "{value} saved to {day}, {slot}."
+    "saved": "{value} saved to {day}, {slot}.",
+    "previous": "This slot was counted {count} times. A new count is added to the average.",
+    "previousRow": "{count} people · {minutes} min · {date}",
+    "delete": "Delete",
+    "deleteConfirm": "Delete this count and recalculate the average?",
+    "disagree": "These counts differ by more than {pct}%. It is worth counting once more.",
+    "averaged": "Count {n} for this slot. The average of all counts, {value}, will go into the table.",
+    "guideT": "How to count",
+    "guide": {
+      "time": "Split your opening hours into three parts and count in the middle of each. Example: if open 08:00-22:00, count at 10:20, 15:00 and 19:40. Counting only at busy times makes the daily number too high.",
+      "days": "For a weekday, pick one of the middle days. For the weekend, pick a day the shop will be open. Skip rainy days, holidays, street market days and school breaks.",
+      "who": "Count everyone on the sidewalk in front of the shop. Count the far sidewalk only if the street is narrow and easy to cross. Skip couriers and staff. Use the same rule in every slot.",
+      "length": "If fewer than 20 people pass in 15 minutes, count for 30 minutes; small counts have a large margin of error.",
+      "repeat": "If your decision rests on this number, count each slot twice in different weeks. Counts for the same slot are averaged.",
+      "rival": "Also count in front of a nearby rival: how many passed and how many went in. That shows the real entry rate on that street. Do not take photos; just count."
+    }
   },
   "pricing": {
     "bandTitle": "Price map: signature item",
