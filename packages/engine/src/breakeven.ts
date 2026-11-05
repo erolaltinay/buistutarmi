@@ -40,15 +40,20 @@ export interface Payback {
   total: number;
 }
 
-/** Birikimli (net kâr + amortisman) ilk kez yatırımı geçtiği ay; 60 ayda olmuyorsa ∞. */
-export function payback(rows: ProjectionRow[], capexTotal: number, invest: number): Payback {
+/** Birikimli (net kâr + amortisman) ilk kez yatırımı geçtiği ay + bekleme ayları (§5.1); 60 ayda olmuyorsa ∞. */
+export function payback(
+  rows: ProjectionRow[],
+  capexTotal: number,
+  invest: number,
+  preOpenMonths: number,
+): Payback {
   let cum = 0;
   let startup = Infinity;
   let total = Infinity;
   for (const r of rows) {
     cum += r.netIncome + r.dep;
-    if (startup === Infinity && cum >= capexTotal) startup = r.m;
-    if (total === Infinity && cum >= invest) total = r.m;
+    if (startup === Infinity && cum >= capexTotal) startup = r.m + preOpenMonths;
+    if (total === Infinity && cum >= invest) total = r.m + preOpenMonths;
   }
   return { startup, total };
 }

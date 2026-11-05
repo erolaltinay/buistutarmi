@@ -94,6 +94,22 @@ export function criticalPath(items: LegalItem[], permits: Permits | undefined): 
   return { min, max, pending: pending.length, unknownDays: pending.filter((i) => !i.typicalDays).length };
 }
 
+const MAX_SUGGESTED_PRE_OPEN = 6;
+
+/**
+ * Açılış öncesi bekleme önerisi (SPEC-legal §6). Hesaba kendiliğinden girmez: süreler genel rehberdir ve
+ * durum işaretlemek kararı sessizce değiştirmemelidir. Süre bilgisi yoksa öneri de yoktur.
+ */
+export function preOpenSuggestion(doc: ProjectDoc, release: boolean = IS_RELEASE) {
+  const path = criticalPath(legalItems(doc, release), doc.permits);
+  if (path.max <= 0) return null;
+  return {
+    months: Math.min(MAX_SUGGESTED_PRE_OPEN, Math.ceil(path.max / 30)),
+    days: path.max,
+    unknownDays: path.unknownDays,
+  };
+}
+
 /** Bütün liste en eski kontrol tarihi kadar günceldir (YYYY-MM-DD). */
 export const oldestReview = (items: LegalItem[]): string | null =>
   items.map((i) => i.verification.lastReviewed).sort()[0] ?? null;

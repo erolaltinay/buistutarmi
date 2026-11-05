@@ -21,6 +21,9 @@ export interface ProjectionParams {
   depBase: number;
   loan: number;
   pmt: number;
+  /** §5.1: açılıştan önceki ay sayısı ve o ayların gideri (faiz hariç). */
+  preOpenMonths: number;
+  preOpenMonthly: number;
 }
 
 export interface Projection {
@@ -30,6 +33,7 @@ export interface Projection {
   troughMonth: number;
   firstProfitMonth: number | null;
   sum24: number;
+  preOpenInterest: number;
 }
 
 export function project(p: ProjectionParams): Projection {
@@ -53,6 +57,16 @@ export function project(p: ProjectionParams): Projection {
   let firstProfitMonth: number | null = null;
   let sum24 = 0;
   const rows: ProjectionRow[] = [];
+
+  // §5.1: yalnız faiz ödenir, satış ve amortisman yoktur; zarar sonraki kârdan mahsup edilir.
+  let preOpenInterest = 0;
+  for (let i = 0; i < p.preOpenMonths; i++) {
+    const interest = bal > 0 ? bal * r : 0;
+    preOpenInterest += interest;
+    cash -= p.preOpenMonthly + interest;
+    lossPool += p.preOpenMonthly + interest;
+    if (cash < trough) trough = cash;
+  }
 
   for (let m = 1; m <= PROJECTION_MONTHS; m++) {
     const ramp = m >= rm ? 1 : rs + ((1 - rs) * (m - 1)) / Math.max(1, rm - 1);
@@ -105,5 +119,5 @@ export function project(p: ProjectionParams): Projection {
       cash,
     });
   }
-  return { rows, trough: -trough, troughMonth, firstProfitMonth, sum24 };
+  return { rows, trough: -trough, troughMonth, firstProfitMonth, sum24, preOpenInterest };
 }

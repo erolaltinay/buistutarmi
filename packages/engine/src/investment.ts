@@ -5,6 +5,12 @@ import type { AnalysisInput, CapexRow } from './types';
 
 const NON_DEPRECIABLE_KEY = /^(stock|stockB|permits)$/;
 export const FIXED_POINT_ROUNDS = 5;
+/** §5.1: bekleme aylarında kira tam, diğer sabitlerin bir kısmı işler; personel işlemez. */
+export const PRE_OPEN_SHARES = { rent: 1, other: 0.3 } as const;
+const PRE_OPEN_MAX_MONTHS = 24;
+
+export const preOpenMonthsOf = (input: AnalysisInput): number =>
+  Math.min(PRE_OPEN_MAX_MONTHS, Math.max(0, Math.round(n(input.preOpenMonths))));
 
 /** Açık `depreciable` yoksa §4'teki anahtar kuralı. */
 export const isDepreciable = (r: CapexRow): boolean =>

@@ -14,6 +14,7 @@ type AnalysisInput = {
   city: string; cur: string;  // ISO 4217; genel modda kullanıcı seçer
   contPct: number;           // beklenmedik gider payı %
   wcMonths: number;          // ek güvenlik yastığı (ay × sabit gider)
+  preOpenMonths?: number;    // açılış öncesi bekleme (§5.1); yoksa 0
   days: number;              // aylık çalışma günü
   scen: [number, number, number];   // kötümser / baz / iyimser günlük satış (veya müşteri)
   cap: [stations: number, hours: number, serviceMin: number] | null; // sadece hizmet arketipi
@@ -136,6 +137,31 @@ Geri ödeme hesabı, 5. turun projeksiyonu ve son `invest` değeriyle yapılır 
 
 Nakit açığı penceresinin 24 ayla sınırlı olmasının nedeni: hiç kâra geçmeyen bir işte 60 aylık zarar "işletme sermayesi" sayılmamalı. Böyle bir iş zaten karar adımında TUTMAZ olur.
 
+### 5.1 Açılış öncesi bekleme (`preOpenMonths`)
+
+Ruhsat beklerken kira ödenir, satış olmaz (`SPEC-legal.md` §6). Projeksiyonun `m = 1` satırından önce `p` ay işletilir. Satırlar değişmez: `m = 1` açılış ayıdır, `rows` yine 60 satırdır.
+
+```
+p = min(24, max(0, round(preOpenMonths)))     // yok veya geçersizse 0
+preOpenRentShare = 1; preOpenOtherShare = 0.3; personel, müdür ve sahip maaşı 0
+monthlyPreOpen = rent0 · preOpenRentShare + other0 · preOpenOtherShare
+
+p kez, m = 1 döngüsünden önce:
+  interest  = bal > 0 ? bal·r : 0             // yalnız faiz; anapara ödenmez, bal değişmez
+  cash     −= monthlyPreOpen + interest
+  lossPool += monthlyPreOpen + interest       // amortisman yok, sonraki kârdan mahsup edilir
+  cash < trough ise trough = cash, troughM = 0
+preOpenInterest = Σ interest
+preOpenTotal    = p · monthlyPreOpen + preOpenInterest
+```
+
+- `p = 0` iken hiçbir sayı değişmez; 30 golden vaka bununla korunur.
+- Artışlar (`g`, `st`) açılış ayından başlar: bekleme ayları 1. ay fiyatlarıyladır.
+- `trough` bu ayları içerir, dolayısıyla işletme sermayesine, krediye ve toplam yatırıma yansır (§4 iterasyonu aynen). Bekleme ayları 24 aylık nakit açığı penceresine sayılmaz, ek olarak girer.
+- `troughM = 0` ve `trough > 0`: en dip nokta açılıştan önce.
+- `firstProfit` ve `sum24` açılıştan sayılır. `sum24` bekleme ayı zararını içermez, bu tutar `preOpenTotal` olarak ayrı döner.
+- Geri ödeme yatırımın çıktığı günden sayılır: `payOpen` ve `payAll` aylarına `p` eklenir (§6). Toplam yatırım zaten bekleme giderini içerdiği için `cum`'a ayrıca yazılmaz.
+
 ## 6. Başabaş ve senaryolar
 
 ```
@@ -150,7 +176,7 @@ svcShare = model 'service' ise 1; 'hybrid' ise Σ mix(kind = 'service') / Σ mix
 
 Kapasite sadece hizmet işlemlerine uygulanır: hibrit arketipte (ör. veteriner kliniği: muayene + mama/aksesuar satışı) günlük işlemlerin yalnızca `svcShare` kadarı koltuk/oda kapasitesi kullanır. `service` modelinde `svcShare = 1` olduğundan kahve ve berber sonuçları değişmez. Hibritte `kind` yazılmamış kalem hizmet sayılır (kapasite açısından ihtiyatlı); arketip şeması hibritte `kind`'ı zorunlu tuttuğu için bu yalnız eksik kullanıcı verisinde olur.
 
-Geri ödeme (projeksiyon satırları üzerinde): `cum += ni + dep`; `payOpen` = ilk `cum ≥ capexTotal` olan ay; `payAll` = ilk `cum ≥ invest` olan ay. 60 ayda olmuyorsa ∞.
+Geri ödeme (projeksiyon satırları üzerinde): `cum += ni + dep`; `payOpen` = ilk `cum ≥ capexTotal` olan ay + `p`; `payAll` = ilk `cum ≥ invest` olan ay + `p` (§5.1). 60 ayda olmuyorsa ∞.
 
 Duyarlılık tablosu: `cm × {1, 0.9, 0.8}` için `fixed / cm' / days`.
 
@@ -332,7 +358,8 @@ Yeterlilik eşiğinin altında fiyat aralığı ve hücreler görünür, ama end
 
 - Mevsimsellik yok (kontrol listesinde soru olarak var). Faz 3'te aylık mevsim profili eklenebilir; eklenirse golden fixture yeniden üretilir.
 - Vergi aylık hesaplanır, geçmiş zarar mahsubu var; yıllık beyan dönemleri modellenmez.
-- Kredi tek parça annüite; ödemesiz dönem yok.
+- Kredi tek parça annüite; ödemesiz dönem yok. Tek istisna §5.1: açılış öncesi beklemede yalnız faiz ödenir, annüite açılış ayında başlar.
+- Bekleme aylarında fiyat ve kira artışı işlemez; artışlar açılıştan başlar (§5.1).
 - Senaryo kartları ve başabaş 1. ay fiyatlarıyla hesaplanır; projeksiyon artışları içerir.
 - Kapasite tek bir ortalama işlem süresiyle hesaplanır (`serviceMin`); diş hekiminde muayene ile implant gibi süreleri çok farklı işlemler için kullanıcı ağırlıklı ortalama girer.
 
@@ -344,6 +371,7 @@ Yeterlilik eşiğinin altında fiyat aralığı ve hücreler görünür, ama end
 | `fixed.opFixed / loan / monthlyLoanPayment` | §3.1, §4 (`pmt`) |
 | `breakEven.perDay / perMonth` | `beDay`, `beMonth` |
 | `investment.capexTotal / cashTrough / troughMonth / cushion / total` | §4–5 (`trough`, `troughM`, `invest`) |
+| `investment.preOpen.months / monthlyCost / interest / total` | §5.1 (`golden-preopen.json`; 30 vakalık fixture'da yok) |
 | `projection.firstProfitMonth / sum24NetProfit / paybackTotalMonths / paybackStartupMonths` | `firstProfit`, `sum24`, `payAll`, `payOpen` |
 | `projection.month1/month12/month24` | ilgili satırın `units, gross, ebitda, ni (netIncome), cash` |
 | `scenarios` | `nets` |
@@ -368,5 +396,6 @@ Kurallar: Türkçe etiketler (iyi/dikkat/risk, yüksek/orta/düşük) sadece ara
 - Bu şartname, prototipe bakmadan yalnızca bu dokümandan yazılan bağımsız bir motorla test edildi; ilk 18 vakanın tamamı geçti, uç durumlar bu sürümde netleştirildi.
 - Ek birim testleri: `annuity` sınır durumları, `mix` toplamı 0, `cm ≤ 0`, kapasite aşımı, sayım yokken lokasyon puanı, `equity = 100` iken kredi = 0.
 - Düzenlemeli meslek eklemeleri (§6 `svcShare`, §10.1 yaya modu, §10.5 sektöre özel liste, §12.1 taban fiyat) mevcut 30 vakayı değiştirmez; bu, eklemeler yapılırken golden testlerle kanıtlanır. Ek birim testleri: `footTraffic = 'info'` iken yaya bayrağı ve "say" teyidi oluşmaz; hiçbir kart `minPrice` altına düşmez, `now` kartı değişmez; hibrit arketipte kapasite yalnızca hizmet payına uygulanır.
+- Açılış öncesi bekleme (§5.1): 30 vaka `preOpenMonths` olmadan aynen geçer. `tests/fixtures/golden-preopen.json` `p > 0` vakalarını tutar; beklenen değerleri motordan bağımsız `scripts/golden-preopen.py` üretir. Betik önce kendi hesabını 30 vakayla doğrular, tutmazsa dosya yazmaz.
 - Fiyat haritası (§12.2) golden fixture'a girmez; birim testleri `packages/engine/test/price-map.test.ts` içindedir: aynı girdi ve `asOf` aynı sonuç; eski gözlem medyana girmez ama görünür; kanallar karışmaz; eşik altında endeks çıkmaz; tek gözlemden zam çıkmaz; artık yıl içeren gün farkı.
 - Yeni sektörlerin golden vakaları prototipten üretilemez: her vaka için temel sayılar (cm, başabaş, toplam yatırım, karar) motordan bağımsız bir hesap tablosuyla elle doğrulanır ve PR'da gösterilir.

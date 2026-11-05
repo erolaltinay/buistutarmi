@@ -66,7 +66,7 @@ export function groupSlices(input: AnalysisInput): Record<Group, unknown> {
     cost: input.items.map((r) => r.cost),
     base: [input.scen, input.days, input.cap],
     foot: [input.loc.foot, input.loc.countMin, input.loc.openH],
-    capex: [input.capex, input.contPct, input.wcMonths],
+    capex: [input.capex, input.contPct, input.wcMonths, input.preOpenMonths ?? 0],
     area: [input.area, input.pop, input.demo],
     comp: input.comp,
     site: [input.loc.hist, input.loc.chk],

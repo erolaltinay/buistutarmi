@@ -299,6 +299,14 @@ export function buildReport(args: BuildReportArgs): ReportModel {
         { k: t('result.totalInvest'), v: fmt.money(r.investment.total), bold: true },
         { k: t('result.openCost'), v: fmt.money(r.investment.capexTotal) },
         { k: t('result.troughL'), v: fmt.money(r.investment.cashTrough) },
+        ...(r.investment.preOpen.months > 0
+          ? [
+              {
+                k: t('result.preOpenL', { months: r.investment.preOpen.months }),
+                v: fmt.money(r.investment.preOpen.total),
+              },
+            ]
+          : []),
         { k: t('result.cushionL'), v: fmt.money(r.investment.cushion) },
         ...(r.fixed.loan > 0
           ? [

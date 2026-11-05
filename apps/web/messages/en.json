@@ -117,7 +117,13 @@
       "loanRate": "Loan interest (annual %)",
       "loanTerm": "Loan term (months)",
       "depYears": "Depreciation period (years)"
-    }
+    },
+    "preOpen": "Waiting before opening (months)",
+    "preOpenHint": "While you wait for permits, full rent, {share}% of other fixed costs and loan interest keep running. No staff and no sales. This is added to the total investment.",
+    "preOpenMissing": "Waiting costs are not in the numbers yet, so the investment may look too low.",
+    "preOpenSuggest": "The longest path in the permit list is {days} days, about {months} months. This is general guidance; adjust it to your situation.",
+    "preOpenUnknown": "{count} items with unknown durations were not counted.",
+    "preOpenApply": "Use suggestion: {months} months"
   },
   "result": {
     "verdict": "Verdict",
@@ -220,7 +226,9 @@
       "days": "working days per month",
       "cap": "capacity (stations, hours, service time)"
     },
-    "emptyRates": "{count} rates are empty and count as 0. Enter your own rates on the Finance screen."
+    "emptyRates": "{count} rates are empty and count as 0. Enter your own rates on the Finance screen.",
+    "preOpenL": "{months} months before opening (included in the gap)",
+    "stTroughPre": "Deepest cash gap · before opening"
   },
   "area": {
     "area": "Area",

@@ -176,6 +176,12 @@ export function FinanceResults() {
           <dd>{fmt.money(r.investment.workingCapital)}</dd>
           <dt>· {t('troughL')}</dt>
           <dd data-testid="trough">{fmt.money(r.investment.cashTrough)}</dd>
+          {r.investment.preOpen.months > 0 && (
+            <>
+              <dt>· {t('preOpenL', { months: r.investment.preOpen.months })}</dt>
+              <dd data-testid="preopen-cost">{fmt.money(r.investment.preOpen.total)}</dd>
+            </>
+          )}
           <dt>· {t('cushionL')}</dt>
           <dd>{fmt.money(r.investment.cushion)}</dd>
           {r.fixed.loan > 0 && (
@@ -265,7 +271,11 @@ function Projection() {
         <div className="stat">
           <b>{fmt.money(-r.investment.cashTrough)}</b>
           <span>
-            {r.investment.troughMonth ? t('stTroughAt', { month: r.investment.troughMonth }) : t('stTrough')}
+            {r.investment.troughMonth
+              ? t('stTroughAt', { month: r.investment.troughMonth })
+              : r.investment.preOpen.months > 0 && r.investment.cashTrough > 0
+                ? t('stTroughPre')
+                : t('stTrough')}
           </span>
         </div>
         <div className="stat">

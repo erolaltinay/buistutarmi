@@ -1,0 +1,2036 @@
+{
+  "generatedFrom": "scripts/golden-preopen.py (SPEC-calc-engine §5.1; motordan bağımsız)",
+  "tolerance": {
+    "relative": 0.005,
+    "absolute": 0.05
+  },
+  "cases": [
+    {
+      "id": "coffee-ist-default-preopen3",
+      "input": {
+        "lang": "tr",
+        "biz": "coffee",
+        "city": "ist",
+        "cur": "TRY",
+        "fin": {
+          "rampStart": 50,
+          "rampMonths": 6,
+          "priceInc": 30,
+          "inflCost": 30,
+          "rentInc": 30,
+          "wageInc": 30,
+          "ownerSalary": 0,
+          "kdv": 10,
+          "cardShare": 80,
+          "cardFee": 2.5,
+          "platShare": 10,
+          "platFee": 25,
+          "waste": 5,
+          "stopaj": 20,
+          "employer": 20,
+          "profitTax": 25,
+          "loanRate": 45,
+          "loanTerm": 36,
+          "depYears": 5
+        },
+        "contPct": 15,
+        "wcMonths": 2,
+        "days": 30,
+        "scen": [
+          70,
+          130,
+          190
+        ],
+        "cap": null,
+        "capex": [
+          {
+            "k": "espresso",
+            "n": null,
+            "v": 150000
+          },
+          {
+            "k": "grinder",
+            "n": null,
+            "v": 30000
+          },
+          {
+            "k": "fridge",
+            "n": null,
+            "v": 40000
+          },
+          {
+            "k": "furniture",
+            "n": null,
+            "v": 200000
+          },
+          {
+            "k": "buildout",
+            "n": null,
+            "v": 150000
+          },
+          {
+            "k": "pos",
+            "n": null,
+            "v": 30000
+          },
+          {
+            "k": "stock",
+            "n": null,
+            "v": 30000
+          },
+          {
+            "k": "permits",
+            "n": null,
+            "v": 20000
+          }
+        ],
+        "fixed": [
+          {
+            "k": "rent",
+            "n": null,
+            "v": 40000
+          },
+          {
+            "k": "staff2",
+            "n": null,
+            "v": 50000
+          },
+          {
+            "k": "utilities",
+            "n": null,
+            "v": 8000
+          },
+          {
+            "k": "internet",
+            "n": null,
+            "v": 2000
+          },
+          {
+            "k": "accounting",
+            "n": null,
+            "v": 5000
+          },
+          {
+            "k": "otherFixed",
+            "n": null,
+            "v": 5000
+          }
+        ],
+        "items": [
+          {
+            "k": "espresso_d",
+            "n": null,
+            "price": 120,
+            "cost": 35,
+            "mix": 50
+          },
+          {
+            "k": "filter",
+            "n": null,
+            "price": 90,
+            "cost": 25,
+            "mix": 20
+          },
+          {
+            "k": "cold",
+            "n": null,
+            "price": 140,
+            "cost": 45,
+            "mix": 15
+          },
+          {
+            "k": "snack",
+            "n": null,
+            "price": 110,
+            "cost": 45,
+            "mix": 15
+          }
+        ],
+        "area": "Kadıköy, Moda",
+        "pop": 25000,
+        "demo": {
+          "inc": 95000,
+          "incCity": 70000,
+          "a1": 30,
+          "a2": 32,
+          "a3": 25,
+          "hh": 2.3,
+          "day": 8000,
+          "turnout": "",
+          "elec": ""
+        },
+        "loc": {
+          "foot": {
+            "wd": [
+              80,
+              110,
+              70
+            ],
+            "we": [
+              60,
+              90,
+              80
+            ]
+          },
+          "countMin": 15,
+          "openH": 13,
+          "hist": {
+            "turnover": 1,
+            "reason": "grew",
+            "closures": 1,
+            "talked": false
+          },
+          "founder": {
+            "role": "full",
+            "mgr": 30000,
+            "years": 2,
+            "runway": 6,
+            "equity": 70
+          },
+          "chk": {
+            "commuteSide": 1,
+            "anchor": 1,
+            "visible": 1,
+            "access": 0,
+            "futurePlus": null,
+            "noDisrupt": 1,
+            "lowSeason": 1,
+            "weekBalance": 1,
+            "permitOk": null,
+            "outdoor": null,
+            "staffAvail": 1,
+            "wageOk": null
+          }
+        },
+        "comp": [
+          {
+            "k": "c_chain",
+            "n": null,
+            "dist": 250,
+            "price": 135,
+            "rating": 4.1,
+            "reviews": 1850,
+            "s": [
+              "location",
+              "fast"
+            ],
+            "w": [
+              "expensive",
+              "ordinary"
+            ],
+            "note": ""
+          },
+          {
+            "k": "c_local",
+            "n": null,
+            "dist": 400,
+            "price": 85,
+            "rating": 4.4,
+            "reviews": 320,
+            "s": [
+              "cheap",
+              "early"
+            ],
+            "w": [
+              "seating",
+              "digital"
+            ],
+            "note": ""
+          },
+          {
+            "k": "c_third",
+            "n": null,
+            "dist": 700,
+            "price": 150,
+            "rating": 4.7,
+            "reviews": 980,
+            "s": [
+              "specialty",
+              "work"
+            ],
+            "w": [
+              "expensive",
+              "slow"
+            ],
+            "note": ""
+          },
+          {
+            "k": "c_bakery",
+            "n": null,
+            "dist": 900,
+            "price": 95,
+            "rating": 4,
+            "reviews": 410,
+            "s": [
+              "early",
+              "cheap",
+              "menu"
+            ],
+            "w": [
+              "ordinary",
+              "noisy"
+            ],
+            "note": ""
+          }
+        ],
+        "shop": {
+          "name": "Kahve Durağı",
+          "slogan": "",
+          "pal": 0,
+          "style": 0,
+          "awning": 1
+        },
+        "preOpenMonths": 3
+      },
+      "expected": {
+        "unit": {
+          "ticket": 115.5,
+          "ticketNet": 104.99999999999999,
+          "cm": 62.00249999999999
+        },
+        "fixed": {
+          "opFixed": 130000.0,
+          "loan": 374113.443673725,
+          "monthlyLoanPayment": 19106.19989435241
+        },
+        "breakEven": {
+          "perDay": 80.1613912849495,
+          "perMonth": 2404.841738548485
+        },
+        "investment": {
+          "capexTotal": 747500.0,
+          "cashTrough": 239544.4832107135,
+          "troughMonth": 2,
+          "cushion": 260000.0,
+          "total": 1247044.4832107136,
+          "preOpen": {
+            "months": 3,
+            "monthlyCost": 56000.0,
+            "interest": 42087.76241329406,
+            "total": 210087.76241329405
+          }
+        },
+        "projection": {
+          "firstProfitMonth": 3,
+          "sum24NetProfit": 2279216.4493545555,
+          "paybackTotalMonths": 18,
+          "paybackStartupMonths": 14,
+          "month1": {
+            "units": 1950.0,
+            "gross": 225225.0,
+            "ebitda": -9095.12500000003,
+            "netIncome": -34749.379137764714,
+            "cash": -238289.0873076465
+          },
+          "month12": {
+            "units": 3900,
+            "gross": 572920.8983092727,
+            "ebitda": 172116.64163337814,
+            "netIncome": 111747.72511190361,
+            "cash": 674155.0056645663
+          },
+          "month24": {
+            "units": 3900,
+            "gross": 744797.1678020547,
+            "ebitda": 223751.63412339168,
+            "netIncome": 153644.8604086269,
+            "cash": 2155957.7368243393
+          }
+        },
+        "scenarios": [
+          -18900.949894352423,
+          92703.55010564756,
+          204308.05010564753
+        ]
+      }
+    },
+    {
+      "id": "barber-ist-default-preopen2",
+      "input": {
+        "lang": "tr",
+        "biz": "barber",
+        "city": "ist",
+        "cur": "TRY",
+        "fin": {
+          "rampStart": 50,
+          "rampMonths": 6,
+          "priceInc": 30,
+          "inflCost": 30,
+          "rentInc": 30,
+          "wageInc": 30,
+          "ownerSalary": 0,
+          "kdv": 20,
+          "cardShare": 80,
+          "cardFee": 2.5,
+          "platShare": 0,
+          "platFee": 25,
+          "waste": 2,
+          "stopaj": 20,
+          "employer": 20,
+          "profitTax": 25,
+          "loanRate": 45,
+          "loanTerm": 36,
+          "depYears": 5
+        },
+        "contPct": 15,
+        "wcMonths": 2,
+        "days": 26,
+        "scen": [
+          12,
+          22,
+          32
+        ],
+        "cap": [
+          3,
+          10,
+          40
+        ],
+        "capex": [
+          {
+            "k": "chairs",
+            "n": null,
+            "v": 90000
+          },
+          {
+            "k": "mirrors",
+            "n": null,
+            "v": 40000
+          },
+          {
+            "k": "tools",
+            "n": null,
+            "v": 35000
+          },
+          {
+            "k": "furnitureB",
+            "n": null,
+            "v": 80000
+          },
+          {
+            "k": "buildout",
+            "n": null,
+            "v": 100000
+          },
+          {
+            "k": "pos",
+            "n": null,
+            "v": 15000
+          },
+          {
+            "k": "stockB",
+            "n": null,
+            "v": 15000
+          },
+          {
+            "k": "permits",
+            "n": null,
+            "v": 15000
+          }
+        ],
+        "fixed": [
+          {
+            "k": "rent",
+            "n": null,
+            "v": 35000
+          },
+          {
+            "k": "staff3b",
+            "n": null,
+            "v": 90000
+          },
+          {
+            "k": "utilities",
+            "n": null,
+            "v": 6000
+          },
+          {
+            "k": "internet",
+            "n": null,
+            "v": 2000
+          },
+          {
+            "k": "accounting",
+            "n": null,
+            "v": 4000
+          },
+          {
+            "k": "otherFixed",
+            "n": null,
+            "v": 4000
+          }
+        ],
+        "items": [
+          {
+            "k": "cut",
+            "n": null,
+            "price": 600,
+            "cost": 30,
+            "mix": 55
+          },
+          {
+            "k": "beard",
+            "n": null,
+            "price": 350,
+            "cost": 20,
+            "mix": 20
+          },
+          {
+            "k": "combo",
+            "n": null,
+            "price": 850,
+            "cost": 40,
+            "mix": 25
+          }
+        ],
+        "area": "Kadıköy, Moda",
+        "pop": 25000,
+        "demo": {
+          "inc": 95000,
+          "incCity": 70000,
+          "a1": 30,
+          "a2": 32,
+          "a3": 25,
+          "hh": 2.3,
+          "day": 8000,
+          "turnout": "",
+          "elec": ""
+        },
+        "loc": {
+          "foot": {
+            "wd": [
+              60,
+              80,
+              70
+            ],
+            "we": [
+              80,
+              100,
+              80
+            ]
+          },
+          "countMin": 15,
+          "openH": 10,
+          "hist": {
+            "turnover": 1,
+            "reason": "grew",
+            "closures": 1,
+            "talked": false
+          },
+          "founder": {
+            "role": "full",
+            "mgr": 35000,
+            "years": 2,
+            "runway": 6,
+            "equity": 70
+          },
+          "chk": {
+            "commuteSide": 1,
+            "anchor": 1,
+            "visible": 1,
+            "access": 0,
+            "futurePlus": null,
+            "noDisrupt": 1,
+            "lowSeason": 1,
+            "weekBalance": 1,
+            "permitOk": null,
+            "outdoor": null,
+            "staffAvail": 1,
+            "wageOk": null
+          }
+        },
+        "comp": [
+          {
+            "k": "b_chain",
+            "n": null,
+            "dist": 300,
+            "price": 650,
+            "rating": 4,
+            "reviews": 640,
+            "s": [
+              "location",
+              "booking"
+            ],
+            "w": [
+              "inconsistent",
+              "expensive"
+            ],
+            "note": ""
+          },
+          {
+            "k": "b_local",
+            "n": null,
+            "dist": 200,
+            "price": 450,
+            "rating": 4.5,
+            "reviews": 210,
+            "s": [
+              "cheap",
+              "masters"
+            ],
+            "w": [
+              "noAppt",
+              "shabby",
+              "digital"
+            ],
+            "note": ""
+          },
+          {
+            "k": "b_prem",
+            "n": null,
+            "dist": 800,
+            "price": 1100,
+            "rating": 4.8,
+            "reviews": 520,
+            "s": [
+              "premium",
+              "masters",
+              "booking"
+            ],
+            "w": [
+              "expensive"
+            ],
+            "note": ""
+          },
+          {
+            "k": "b_unisex",
+            "n": null,
+            "dist": 600,
+            "price": 700,
+            "rating": 4.1,
+            "reviews": 330,
+            "s": [
+              "location",
+              "kids"
+            ],
+            "w": [
+              "wait",
+              "inconsistent"
+            ],
+            "note": ""
+          }
+        ],
+        "shop": {
+          "name": "Usta Berber",
+          "slogan": "",
+          "pal": 0,
+          "style": 0,
+          "awning": 1
+        },
+        "preOpenMonths": 2
+      },
+      "expected": {
+        "unit": {
+          "ticket": 612.5,
+          "ticketNet": 510.4166666666667,
+          "cm": 467.0566666666667
+        },
+        "fixed": {
+          "opFixed": 167750.0,
+          "loan": 291344.5992732614,
+          "monthlyLoanPayment": 14879.144938479207
+        },
+        "breakEven": {
+          "perDay": 15.03928406028362,
+          "perMonth": 391.0213855673741
+        },
+        "investment": {
+          "capexTotal": 448499.99999999994,
+          "cashTrough": 187147.54392170758,
+          "troughMonth": 2,
+          "cushion": 335500.0,
+          "total": 971147.5439217075,
+          "preOpen": {
+            "months": 2,
+            "monthlyCost": 48550.0,
+            "interest": 21850.844945494602,
+            "total": 118950.84494549461
+          }
+        },
+        "projection": {
+          "firstProfitMonth": 3,
+          "sum24NetProfit": 2177789.430943304,
+          "paybackTotalMonths": 16,
+          "paybackStartupMonths": 11,
+          "month1": {
+            "units": 286.0,
+            "gross": 175175.0,
+            "ebitda": -34171.793333333306,
+            "netIncome": -52072.21580608061,
+            "cash": -168001.78321730712
+          },
+          "month12": {
+            "units": 572,
+            "gross": 445605.1431294343,
+            "ebitda": 167692.24207585378,
+            "netIncome": 113824.23651642902,
+            "cash": 664359.1425000876
+          },
+          "month24": {
+            "units": 572,
+            "gross": 579286.6860682647,
+            "ebitda": 217999.91469860997,
+            "netIncome": 154024.35412115583,
+            "cash": 2076583.5297560852
+          }
+        },
+        "scenarios": [
+          -36907.464938479214,
+          84527.26839485412,
+          205962.00172818746
+        ]
+      }
+    },
+    {
+      "id": "coffee-nyc-default-preopen4",
+      "input": {
+        "lang": "tr",
+        "biz": "coffee",
+        "city": "nyc",
+        "cur": "USD",
+        "fin": {
+          "rampStart": 50,
+          "rampMonths": 6,
+          "priceInc": 3,
+          "inflCost": 3,
+          "rentInc": 3,
+          "wageInc": 4,
+          "ownerSalary": 0,
+          "kdv": 0,
+          "cardShare": 90,
+          "cardFee": 2.9,
+          "platShare": 8,
+          "platFee": 20,
+          "waste": 5,
+          "stopaj": 0,
+          "employer": 10,
+          "profitTax": 25,
+          "loanRate": 10,
+          "loanTerm": 60,
+          "depYears": 5
+        },
+        "contPct": 15,
+        "wcMonths": 2,
+        "days": 30,
+        "scen": [
+          200,
+          320,
+          440
+        ],
+        "cap": null,
+        "capex": [
+          {
+            "k": "espresso",
+            "n": null,
+            "v": 18000
+          },
+          {
+            "k": "grinder",
+            "n": null,
+            "v": 3500
+          },
+          {
+            "k": "fridge",
+            "n": null,
+            "v": 6000
+          },
+          {
+            "k": "furniture",
+            "n": null,
+            "v": 30000
+          },
+          {
+            "k": "buildout",
+            "n": null,
+            "v": 70000
+          },
+          {
+            "k": "pos",
+            "n": null,
+            "v": 3000
+          },
+          {
+            "k": "stock",
+            "n": null,
+            "v": 4000
+          },
+          {
+            "k": "permits",
+            "n": null,
+            "v": 3500
+          }
+        ],
+        "fixed": [
+          {
+            "k": "rent",
+            "n": null,
+            "v": 9500
+          },
+          {
+            "k": "staff2",
+            "n": null,
+            "v": 15000
+          },
+          {
+            "k": "utilities",
+            "n": null,
+            "v": 1500
+          },
+          {
+            "k": "internet",
+            "n": null,
+            "v": 200
+          },
+          {
+            "k": "accounting",
+            "n": null,
+            "v": 600
+          },
+          {
+            "k": "otherFixed",
+            "n": null,
+            "v": 1200
+          }
+        ],
+        "items": [
+          {
+            "k": "espresso_d",
+            "n": null,
+            "price": 5.75,
+            "cost": 1.4,
+            "mix": 50
+          },
+          {
+            "k": "filter",
+            "n": null,
+            "price": 3.5,
+            "cost": 0.6,
+            "mix": 20
+          },
+          {
+            "k": "cold",
+            "n": null,
+            "price": 6.25,
+            "cost": 1.5,
+            "mix": 15
+          },
+          {
+            "k": "snack",
+            "n": null,
+            "price": 4.75,
+            "cost": 1.9,
+            "mix": 15
+          }
+        ],
+        "area": "Brooklyn, Park Slope",
+        "pop": 60000,
+        "demo": {
+          "inc": 160000,
+          "incCity": 76000,
+          "a1": 28,
+          "a2": 33,
+          "a3": 20,
+          "hh": 2.4,
+          "day": 15000,
+          "turnout": "",
+          "elec": ""
+        },
+        "loc": {
+          "foot": {
+            "wd": [
+              260,
+              300,
+              200
+            ],
+            "we": [
+              180,
+              260,
+              220
+            ]
+          },
+          "countMin": 15,
+          "openH": 13,
+          "hist": {
+            "turnover": 1,
+            "reason": "personal",
+            "closures": 1,
+            "talked": false
+          },
+          "founder": {
+            "role": "full",
+            "mgr": 6000,
+            "years": 2,
+            "runway": 6,
+            "equity": 70
+          },
+          "chk": {
+            "commuteSide": 1,
+            "anchor": 1,
+            "visible": 1,
+            "access": 0,
+            "futurePlus": null,
+            "noDisrupt": 1,
+            "lowSeason": 1,
+            "weekBalance": 1,
+            "permitOk": null,
+            "outdoor": null,
+            "staffAvail": 1,
+            "wageOk": null
+          }
+        },
+        "comp": [
+          {
+            "k": "c_chain",
+            "n": null,
+            "dist": 180,
+            "price": 6.25,
+            "rating": 4,
+            "reviews": 2400,
+            "s": [
+              "location",
+              "fast",
+              "loyalty"
+            ],
+            "w": [
+              "ordinary",
+              "noisy"
+            ],
+            "note": ""
+          },
+          {
+            "k": "c_local",
+            "n": null,
+            "dist": 300,
+            "price": 3.5,
+            "rating": 4.3,
+            "reviews": 610,
+            "s": [
+              "cheap",
+              "early"
+            ],
+            "w": [
+              "ordinary",
+              "seating"
+            ],
+            "note": ""
+          },
+          {
+            "k": "c_third",
+            "n": null,
+            "dist": 550,
+            "price": 6.75,
+            "rating": 4.8,
+            "reviews": 1320,
+            "s": [
+              "specialty",
+              "work"
+            ],
+            "w": [
+              "expensive",
+              "slow"
+            ],
+            "note": ""
+          },
+          {
+            "k": "c_bakery",
+            "n": null,
+            "dist": 850,
+            "price": 4.25,
+            "rating": 4.2,
+            "reviews": 540,
+            "s": [
+              "menu",
+              "early"
+            ],
+            "w": [
+              "slow",
+              "digital"
+            ],
+            "note": ""
+          }
+        ],
+        "shop": {
+          "name": "Kahve Durağı",
+          "slogan": "",
+          "pal": 0,
+          "style": 0,
+          "awning": 1
+        },
+        "preOpenMonths": 4
+      },
+      "expected": {
+        "unit": {
+          "ticket": 5.225,
+          "ticketNet": 5.225,
+          "cm": 3.6085274999999997
+        },
+        "fixed": {
+          "opFixed": 29500.0,
+          "loan": 89426.24192474133,
+          "monthlyLoanPayment": 1900.0433605356775
+        },
+        "breakEven": {
+          "perDay": 290.0540766331575,
+          "perMonth": 8701.622298994724
+        },
+        "investment": {
+          "capexTotal": 158700.0,
+          "cashTrough": 80387.50583190961,
+          "troughMonth": 4,
+          "cushion": 59000.0,
+          "total": 298087.5058319096,
+          "preOpen": {
+            "months": 4,
+            "monthlyCost": 10550.0,
+            "interest": 2980.874730824711,
+            "total": 45180.87473082471
+          }
+        },
+        "projection": {
+          "firstProfitMonth": 6,
+          "sum24NetProfit": 5977.630192358353,
+          "paybackTotalMonths": null,
+          "paybackStartupMonths": 47,
+          "month1": {
+            "units": 4800.0,
+            "gross": 25080.0,
+            "ebitda": -12179.068,
+            "netIncome": -15444.286682706177,
+            "cash": -59259.98609136039
+          },
+          "month12": {
+            "units": 9600,
+            "gross": 51537.69414280138,
+            "ebitda": 5997.206177606,
+            "netIncome": 2842.369341568109,
+            "cash": -53302.0275459323
+          },
+          "month24": {
+            "units": 9600,
+            "gross": 53083.82496708542,
+            "ebitda": 6012.122362934177,
+            "netIncome": 2989.7691830231915,
+            "cash": -9264.795054514176
+          }
+        },
+        "scenarios": [
+          -9748.87836053568,
+          3241.8206394643166,
+          16232.519639464317
+        ]
+      }
+    },
+    {
+      "id": "barber-nyc-default-preopen6",
+      "input": {
+        "lang": "tr",
+        "biz": "barber",
+        "city": "nyc",
+        "cur": "USD",
+        "fin": {
+          "rampStart": 50,
+          "rampMonths": 6,
+          "priceInc": 3,
+          "inflCost": 3,
+          "rentInc": 3,
+          "wageInc": 4,
+          "ownerSalary": 0,
+          "kdv": 0,
+          "cardShare": 90,
+          "cardFee": 2.9,
+          "platShare": 0,
+          "platFee": 20,
+          "waste": 2,
+          "stopaj": 0,
+          "employer": 10,
+          "profitTax": 25,
+          "loanRate": 10,
+          "loanTerm": 60,
+          "depYears": 5
+        },
+        "contPct": 15,
+        "wcMonths": 2,
+        "days": 26,
+        "scen": [
+          15,
+          28,
+          40
+        ],
+        "cap": [
+          3,
+          10,
+          40
+        ],
+        "capex": [
+          {
+            "k": "chairs",
+            "n": null,
+            "v": 9000
+          },
+          {
+            "k": "mirrors",
+            "n": null,
+            "v": 4000
+          },
+          {
+            "k": "tools",
+            "n": null,
+            "v": 3500
+          },
+          {
+            "k": "furnitureB",
+            "n": null,
+            "v": 10000
+          },
+          {
+            "k": "buildout",
+            "n": null,
+            "v": 40000
+          },
+          {
+            "k": "pos",
+            "n": null,
+            "v": 1500
+          },
+          {
+            "k": "stockB",
+            "n": null,
+            "v": 1500
+          },
+          {
+            "k": "permits",
+            "n": null,
+            "v": 2000
+          }
+        ],
+        "fixed": [
+          {
+            "k": "rent",
+            "n": null,
+            "v": 6500
+          },
+          {
+            "k": "staff3b",
+            "n": null,
+            "v": 10500
+          },
+          {
+            "k": "utilities",
+            "n": null,
+            "v": 700
+          },
+          {
+            "k": "internet",
+            "n": null,
+            "v": 150
+          },
+          {
+            "k": "accounting",
+            "n": null,
+            "v": 500
+          },
+          {
+            "k": "otherFixed",
+            "n": null,
+            "v": 600
+          }
+        ],
+        "items": [
+          {
+            "k": "cut",
+            "n": null,
+            "price": 45,
+            "cost": 3,
+            "mix": 55
+          },
+          {
+            "k": "beard",
+            "n": null,
+            "price": 25,
+            "cost": 2,
+            "mix": 20
+          },
+          {
+            "k": "combo",
+            "n": null,
+            "price": 65,
+            "cost": 4,
+            "mix": 25
+          }
+        ],
+        "area": "Brooklyn, Park Slope",
+        "pop": 60000,
+        "demo": {
+          "inc": 160000,
+          "incCity": 76000,
+          "a1": 28,
+          "a2": 33,
+          "a3": 20,
+          "hh": 2.4,
+          "day": 15000,
+          "turnout": "",
+          "elec": ""
+        },
+        "loc": {
+          "foot": {
+            "wd": [
+              180,
+              220,
+              200
+            ],
+            "we": [
+              160,
+              200,
+              180
+            ]
+          },
+          "countMin": 15,
+          "openH": 10,
+          "hist": {
+            "turnover": 1,
+            "reason": "personal",
+            "closures": 1,
+            "talked": false
+          },
+          "founder": {
+            "role": "full",
+            "mgr": 5000,
+            "years": 2,
+            "runway": 6,
+            "equity": 70
+          },
+          "chk": {
+            "commuteSide": 1,
+            "anchor": 1,
+            "visible": 1,
+            "access": 0,
+            "futurePlus": null,
+            "noDisrupt": 1,
+            "lowSeason": 1,
+            "weekBalance": 1,
+            "permitOk": null,
+            "outdoor": null,
+            "staffAvail": 1,
+            "wageOk": null
+          }
+        },
+        "comp": [
+          {
+            "k": "b_chain",
+            "n": null,
+            "dist": 350,
+            "price": 35,
+            "rating": 3.9,
+            "reviews": 880,
+            "s": [
+              "location",
+              "booking",
+              "fast"
+            ],
+            "w": [
+              "inconsistent"
+            ],
+            "note": ""
+          },
+          {
+            "k": "b_local",
+            "n": null,
+            "dist": 250,
+            "price": 30,
+            "rating": 4.4,
+            "reviews": 300,
+            "s": [
+              "cheap",
+              "masters"
+            ],
+            "w": [
+              "noAppt",
+              "shabby"
+            ],
+            "note": ""
+          },
+          {
+            "k": "b_prem",
+            "n": null,
+            "dist": 700,
+            "price": 70,
+            "rating": 4.9,
+            "reviews": 610,
+            "s": [
+              "premium",
+              "masters",
+              "booking"
+            ],
+            "w": [
+              "expensive"
+            ],
+            "note": ""
+          },
+          {
+            "k": "b_unisex",
+            "n": null,
+            "dist": 900,
+            "price": 55,
+            "rating": 4,
+            "reviews": 280,
+            "s": [
+              "kids",
+              "location"
+            ],
+            "w": [
+              "wait",
+              "inconsistent"
+            ],
+            "note": ""
+          }
+        ],
+        "shop": {
+          "name": "Usta Berber",
+          "slogan": "",
+          "pal": 0,
+          "style": 0,
+          "awning": 1
+        },
+        "preOpenMonths": 6
+      },
+      "expected": {
+        "unit": {
+          "ticket": 46.0,
+          "ticketNet": 46.0,
+          "cm": 41.6884
+        },
+        "fixed": {
+          "opFixed": 20000.0,
+          "loan": 52860.01804943907,
+          "monthlyLoanPayment": 1123.119166934883
+        },
+        "breakEven": {
+          "perDay": 19.488098854039166,
+          "perMonth": 506.6905702050183
+        },
+        "investment": {
+          "capexTotal": 82225.0,
+          "cashTrough": 53975.06821994689,
+          "troughMonth": 2,
+          "cushion": 40000.0,
+          "total": 176200.06821994687,
+          "preOpen": {
+            "months": 6,
+            "monthlyCost": 7085.0,
+            "interest": 2643.0009024719534,
+            "total": 45153.000902471955
+          }
+        },
+        "projection": {
+          "firstProfitMonth": 4,
+          "sum24NetProfit": 141874.91290251026,
+          "paybackTotalMonths": 31,
+          "paybackStartupMonths": 20,
+          "month1": {
+            "units": 364.0,
+            "gross": 16744.0,
+            "ebitda": -4825.422400000001,
+            "netIncome": -6578.005883745326,
+            "cash": -51101.542469406835
+          },
+          "month12": {
+            "units": 728,
+            "gross": 34407.781129468356,
+            "ebitda": 11129.166160517296,
+            "netIncome": 7081.372193842254,
+            "cash": 20201.80778463913
+          },
+          "month24": {
+            "units": 728,
+            "gross": 35440.0145633524,
+            "ebitda": 11347.541145332809,
+            "netIncome": 7303.886934248732,
+            "cash": 110158.74464347203
+          }
+        },
+        "scenarios": [
+          -4864.643166934884,
+          9226.036033065116,
+          22232.816833065117
+        ]
+      }
+    },
+    {
+      "id": "coffee-ist-all_equity-preopen3",
+      "input": {
+        "lang": "tr",
+        "biz": "coffee",
+        "city": "ist",
+        "cur": "TRY",
+        "fin": {
+          "rampStart": 50,
+          "rampMonths": 6,
+          "priceInc": 30,
+          "inflCost": 30,
+          "rentInc": 30,
+          "wageInc": 30,
+          "ownerSalary": 0,
+          "kdv": 10,
+          "cardShare": 80,
+          "cardFee": 2.5,
+          "platShare": 10,
+          "platFee": 25,
+          "waste": 5,
+          "stopaj": 20,
+          "employer": 20,
+          "profitTax": 25,
+          "loanRate": 45,
+          "loanTerm": 36,
+          "depYears": 5
+        },
+        "contPct": 15,
+        "wcMonths": 2,
+        "days": 30,
+        "scen": [
+          70,
+          130,
+          190
+        ],
+        "cap": null,
+        "capex": [
+          {
+            "k": "espresso",
+            "n": null,
+            "v": 150000
+          },
+          {
+            "k": "grinder",
+            "n": null,
+            "v": 30000
+          },
+          {
+            "k": "fridge",
+            "n": null,
+            "v": 40000
+          },
+          {
+            "k": "furniture",
+            "n": null,
+            "v": 200000
+          },
+          {
+            "k": "buildout",
+            "n": null,
+            "v": 150000
+          },
+          {
+            "k": "pos",
+            "n": null,
+            "v": 30000
+          },
+          {
+            "k": "stock",
+            "n": null,
+            "v": 30000
+          },
+          {
+            "k": "permits",
+            "n": null,
+            "v": 20000
+          }
+        ],
+        "fixed": [
+          {
+            "k": "rent",
+            "n": null,
+            "v": 40000
+          },
+          {
+            "k": "staff2",
+            "n": null,
+            "v": 50000
+          },
+          {
+            "k": "utilities",
+            "n": null,
+            "v": 8000
+          },
+          {
+            "k": "internet",
+            "n": null,
+            "v": 2000
+          },
+          {
+            "k": "accounting",
+            "n": null,
+            "v": 5000
+          },
+          {
+            "k": "otherFixed",
+            "n": null,
+            "v": 5000
+          }
+        ],
+        "items": [
+          {
+            "k": "espresso_d",
+            "n": null,
+            "price": 120,
+            "cost": 35,
+            "mix": 50
+          },
+          {
+            "k": "filter",
+            "n": null,
+            "price": 90,
+            "cost": 25,
+            "mix": 20
+          },
+          {
+            "k": "cold",
+            "n": null,
+            "price": 140,
+            "cost": 45,
+            "mix": 15
+          },
+          {
+            "k": "snack",
+            "n": null,
+            "price": 110,
+            "cost": 45,
+            "mix": 15
+          }
+        ],
+        "area": "Kadıköy, Moda",
+        "pop": 25000,
+        "demo": {
+          "inc": 95000,
+          "incCity": 70000,
+          "a1": 30,
+          "a2": 32,
+          "a3": 25,
+          "hh": 2.3,
+          "day": 8000,
+          "turnout": "",
+          "elec": ""
+        },
+        "loc": {
+          "foot": {
+            "wd": [
+              80,
+              110,
+              70
+            ],
+            "we": [
+              60,
+              90,
+              80
+            ]
+          },
+          "countMin": 15,
+          "openH": 13,
+          "hist": {
+            "turnover": 1,
+            "reason": "grew",
+            "closures": 1,
+            "talked": false
+          },
+          "founder": {
+            "role": "full",
+            "mgr": 30000,
+            "years": 2,
+            "runway": 6,
+            "equity": 100
+          },
+          "chk": {
+            "commuteSide": 1,
+            "anchor": 1,
+            "visible": 1,
+            "access": 0,
+            "futurePlus": null,
+            "noDisrupt": 1,
+            "lowSeason": 1,
+            "weekBalance": 1,
+            "permitOk": null,
+            "outdoor": null,
+            "staffAvail": 1,
+            "wageOk": null
+          }
+        },
+        "comp": [
+          {
+            "k": "c_chain",
+            "n": null,
+            "dist": 250,
+            "price": 135,
+            "rating": 4.1,
+            "reviews": 1850,
+            "s": [
+              "location",
+              "fast"
+            ],
+            "w": [
+              "expensive",
+              "ordinary"
+            ],
+            "note": ""
+          },
+          {
+            "k": "c_local",
+            "n": null,
+            "dist": 400,
+            "price": 85,
+            "rating": 4.4,
+            "reviews": 320,
+            "s": [
+              "cheap",
+              "early"
+            ],
+            "w": [
+              "seating",
+              "digital"
+            ],
+            "note": ""
+          },
+          {
+            "k": "c_third",
+            "n": null,
+            "dist": 700,
+            "price": 150,
+            "rating": 4.7,
+            "reviews": 980,
+            "s": [
+              "specialty",
+              "work"
+            ],
+            "w": [
+              "expensive",
+              "slow"
+            ],
+            "note": ""
+          },
+          {
+            "k": "c_bakery",
+            "n": null,
+            "dist": 900,
+            "price": 95,
+            "rating": 4,
+            "reviews": 410,
+            "s": [
+              "early",
+              "cheap",
+              "menu"
+            ],
+            "w": [
+              "ordinary",
+              "noisy"
+            ],
+            "note": ""
+          }
+        ],
+        "shop": {
+          "name": "Kahve Durağı",
+          "slogan": "",
+          "pal": 0,
+          "style": 0,
+          "awning": 1
+        },
+        "preOpenMonths": 3
+      },
+      "expected": {
+        "unit": {
+          "ticket": 115.5,
+          "ticketNet": 104.99999999999999,
+          "cm": 62.00249999999999
+        },
+        "fixed": {
+          "opFixed": 130000.0,
+          "loan": 0.0,
+          "monthlyLoanPayment": 0
+        },
+        "breakEven": {
+          "perDay": 69.8896549870301,
+          "perMonth": 2096.689649610903
+        },
+        "investment": {
+          "capexTotal": 747500.0,
+          "cashTrough": 177095.12500000003,
+          "troughMonth": 1,
+          "cushion": 260000.0,
+          "total": 1184595.125,
+          "preOpen": {
+            "months": 3,
+            "monthlyCost": 56000.0,
+            "interest": 0,
+            "total": 168000.0
+          }
+        },
+        "projection": {
+          "firstProfitMonth": 2,
+          "sum24NetProfit": 2468477.894261884,
+          "paybackTotalMonths": 17,
+          "paybackStartupMonths": 13,
+          "month1": {
+            "units": 1950.0,
+            "gross": 225225.0,
+            "ebitda": -9095.12500000003,
+            "netIncome": -20720.12500000003,
+            "cash": -177095.12500000003
+          },
+          "month12": {
+            "units": 3900,
+            "gross": 572920.8983092727,
+            "ebitda": 172116.64163337814,
+            "netIncome": 120368.73122503361,
+            "cash": 896476.703261307
+          },
+          "month24": {
+            "units": 3900,
+            "gross": 744797.1678020547,
+            "ebitda": 223751.63412339168,
+            "netIncome": 159094.97559254375,
+            "cash": 2579477.894261884
+          }
+        },
+        "scenarios": [
+          205.24999999998545,
+          111809.74999999997,
+          223414.24999999994
+        ]
+      }
+    },
+    {
+      "id": "coffee-ist-strong_open-preopen2",
+      "input": {
+        "lang": "tr",
+        "biz": "coffee",
+        "city": "ist",
+        "cur": "TRY",
+        "fin": {
+          "rampStart": 100,
+          "rampMonths": 6,
+          "priceInc": 30,
+          "inflCost": 30,
+          "rentInc": 30,
+          "wageInc": 30,
+          "ownerSalary": 0,
+          "kdv": 10,
+          "cardShare": 80,
+          "cardFee": 2.5,
+          "platShare": 10,
+          "platFee": 25,
+          "waste": 5,
+          "stopaj": 20,
+          "employer": 20,
+          "profitTax": 25,
+          "loanRate": 45,
+          "loanTerm": 36,
+          "depYears": 5
+        },
+        "contPct": 15,
+        "wcMonths": 2,
+        "days": 30,
+        "scen": [
+          112,
+          208,
+          304
+        ],
+        "cap": null,
+        "capex": [
+          {
+            "k": "espresso",
+            "n": null,
+            "v": 150000
+          },
+          {
+            "k": "grinder",
+            "n": null,
+            "v": 30000
+          },
+          {
+            "k": "fridge",
+            "n": null,
+            "v": 40000
+          },
+          {
+            "k": "furniture",
+            "n": null,
+            "v": 200000
+          },
+          {
+            "k": "buildout",
+            "n": null,
+            "v": 150000
+          },
+          {
+            "k": "pos",
+            "n": null,
+            "v": 30000
+          },
+          {
+            "k": "stock",
+            "n": null,
+            "v": 30000
+          },
+          {
+            "k": "permits",
+            "n": null,
+            "v": 20000
+          }
+        ],
+        "fixed": [
+          {
+            "k": "rent",
+            "n": null,
+            "v": 40000
+          },
+          {
+            "k": "staff2",
+            "n": null,
+            "v": 50000
+          },
+          {
+            "k": "utilities",
+            "n": null,
+            "v": 8000
+          },
+          {
+            "k": "internet",
+            "n": null,
+            "v": 2000
+          },
+          {
+            "k": "accounting",
+            "n": null,
+            "v": 5000
+          },
+          {
+            "k": "otherFixed",
+            "n": null,
+            "v": 5000
+          }
+        ],
+        "items": [
+          {
+            "k": "espresso_d",
+            "n": null,
+            "price": 120,
+            "cost": 35,
+            "mix": 50
+          },
+          {
+            "k": "filter",
+            "n": null,
+            "price": 90,
+            "cost": 25,
+            "mix": 20
+          },
+          {
+            "k": "cold",
+            "n": null,
+            "price": 140,
+            "cost": 45,
+            "mix": 15
+          },
+          {
+            "k": "snack",
+            "n": null,
+            "price": 110,
+            "cost": 45,
+            "mix": 15
+          }
+        ],
+        "area": "Kadıköy, Moda",
+        "pop": 25000,
+        "demo": {
+          "inc": 95000,
+          "incCity": 70000,
+          "a1": 30,
+          "a2": 32,
+          "a3": 25,
+          "hh": 2.3,
+          "day": 8000,
+          "turnout": "",
+          "elec": ""
+        },
+        "loc": {
+          "foot": {
+            "wd": [
+              80,
+              110,
+              70
+            ],
+            "we": [
+              60,
+              90,
+              80
+            ]
+          },
+          "countMin": 15,
+          "openH": 13,
+          "hist": {
+            "turnover": 1,
+            "reason": "grew",
+            "closures": 1,
+            "talked": false
+          },
+          "founder": {
+            "role": "full",
+            "mgr": 30000,
+            "years": 2,
+            "runway": 6,
+            "equity": 100
+          },
+          "chk": {
+            "commuteSide": 1,
+            "anchor": 1,
+            "visible": 1,
+            "access": 0,
+            "futurePlus": null,
+            "noDisrupt": 1,
+            "lowSeason": 1,
+            "weekBalance": 1,
+            "permitOk": null,
+            "outdoor": null,
+            "staffAvail": 1,
+            "wageOk": null
+          }
+        },
+        "comp": [
+          {
+            "k": "c_chain",
+            "n": null,
+            "dist": 250,
+            "price": 135,
+            "rating": 4.1,
+            "reviews": 1850,
+            "s": [
+              "location",
+              "fast"
+            ],
+            "w": [
+              "expensive",
+              "ordinary"
+            ],
+            "note": ""
+          },
+          {
+            "k": "c_local",
+            "n": null,
+            "dist": 400,
+            "price": 85,
+            "rating": 4.4,
+            "reviews": 320,
+            "s": [
+              "cheap",
+              "early"
+            ],
+            "w": [
+              "seating",
+              "digital"
+            ],
+            "note": ""
+          },
+          {
+            "k": "c_third",
+            "n": null,
+            "dist": 700,
+            "price": 150,
+            "rating": 4.7,
+            "reviews": 980,
+            "s": [
+              "specialty",
+              "work"
+            ],
+            "w": [
+              "expensive",
+              "slow"
+            ],
+            "note": ""
+          },
+          {
+            "k": "c_bakery",
+            "n": null,
+            "dist": 900,
+            "price": 95,
+            "rating": 4,
+            "reviews": 410,
+            "s": [
+              "early",
+              "cheap",
+              "menu"
+            ],
+            "w": [
+              "ordinary",
+              "noisy"
+            ],
+            "note": ""
+          }
+        ],
+        "shop": {
+          "name": "Kahve Durağı",
+          "slogan": "",
+          "pal": 0,
+          "style": 0,
+          "awning": 1
+        },
+        "preOpenMonths": 2
+      },
+      "expected": {
+        "unit": {
+          "ticket": 115.5,
+          "ticketNet": 104.99999999999999,
+          "cm": 62.00249999999999
+        },
+        "fixed": {
+          "opFixed": 130000.0,
+          "loan": 0.0,
+          "monthlyLoanPayment": 0
+        },
+        "breakEven": {
+          "perDay": 69.8896549870301,
+          "perMonth": 2096.689649610903
+        },
+        "investment": {
+          "capexTotal": 747500.0,
+          "cashTrough": 112000.0,
+          "troughMonth": 0,
+          "cushion": 260000.0,
+          "total": 1119500.0,
+          "preOpen": {
+            "months": 2,
+            "monthlyCost": 56000.0,
+            "interest": 0,
+            "total": 112000.0
+          }
+        },
+        "projection": {
+          "firstProfitMonth": 1,
+          "sum24NetProfit": 6131353.8083315985,
+          "paybackTotalMonths": 8,
+          "paybackStartupMonths": 6,
+          "month1": {
+            "units": 6240.0,
+            "gross": 720720.0,
+            "ebitda": 256895.59999999998,
+            "netIncome": 211952.94999999998,
+            "cash": 111577.94999999998
+          },
+          "month12": {
+            "units": 6240,
+            "gross": 916673.4372948363,
+            "ebitda": 356649.254606992,
+            "netIncome": 258768.190955244,
+            "cash": 2695485.351448521
+          },
+          "month24": {
+            "units": 6240,
+            "gross": 1191675.4684832874,
+            "ebitda": 463644.03098908975,
+            "netIncome": 339014.2732418173,
+            "cash": 6298353.8083315985
+          }
+        },
+        "scenarios": [
+          78328.39999999997,
+          256895.59999999992,
+          435462.79999999993
+        ]
+      }
+    }
+  ]
+}

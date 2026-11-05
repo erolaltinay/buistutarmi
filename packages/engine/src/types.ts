@@ -101,6 +101,13 @@ export interface LocationInput {
   chk: Record<string, ChecklistValue | undefined>;
 }
 
+export interface PreOpenCost {
+  months: number;
+  monthlyCost: number;
+  interest: number;
+  total: number;
+}
+
 export interface AnalysisInput {
   biz: string;
   city: string;
@@ -108,6 +115,8 @@ export interface AnalysisInput {
   cur: string;
   contPct: MaybeNumber;
   wcMonths: MaybeNumber;
+  /** §5.1 açılış öncesi bekleme (ay); yoksa 0. */
+  preOpenMonths?: MaybeNumber;
   days: MaybeNumber;
   scen: Triple;
   /** [istasyon, saat, hizmet dakikası]; sadece kapasiteli (hizmet) arketiplerde. */
@@ -333,6 +342,8 @@ export interface AnalysisResult {
     cushion: number;
     workingCapital: number;
     total: number;
+    /** §5.1: `cashTrough` ve `total` bunu içerir, üstüne eklenmez. */
+    preOpen: PreOpenCost;
   };
   projection: {
     rows: ProjectionRow[];

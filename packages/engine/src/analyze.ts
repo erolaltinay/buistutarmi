@@ -3,7 +3,7 @@ import { breakEven, maxDailyCapacity, payback, scenarioNets } from './breakeven'
 import { competition } from './competition';
 import { demandFit } from './demand';
 import { fixedCosts } from './fixed';
-import { capex, solveFinancing } from './investment';
+import { capex, PRE_OPEN_SHARES, preOpenMonthsOf, solveFinancing } from './investment';
 import { location } from './location';
 import { finiteOrNull, n } from './math';
 import { pricing } from './pricing';
@@ -25,6 +25,8 @@ export function analyze(
   const cx = capex(input);
   const days = Math.max(1, n(input.days));
   const base = n(input.scen[1]);
+  const preOpenMonths = preOpenMonthsOf(input);
+  const preOpenMonthly = fixed.rent0 * PRE_OPEN_SHARES.rent + fixed.other0 * PRE_OPEN_SHARES.other;
 
   const financing = solveFinancing(input, cx.capexTotal, fixed.opFixed, {
     fin: input.fin,
@@ -39,13 +41,15 @@ export function analyze(
     managerLoaded: fixed.managerLoaded,
     owner: fixed.owner,
     depBase: cx.depreciableBase,
+    preOpenMonths,
+    preOpenMonthly,
   });
   const proj = financing.projection;
 
   const cashFixed = fixed.opFixed + financing.pmt;
   const be = breakEven(cashFixed, unit.cm, days, fixed.managerLoaded);
   const scenarios = scenarioNets(input.scen, days, unit.cm, cashFixed);
-  const pb = payback(proj.rows, cx.capexTotal, financing.invest);
+  const pb = payback(proj.rows, cx.capexTotal, financing.invest, preOpenMonths);
   const capacity = usesCapacity(archetype, input) && input.cap ? input.cap : null;
   const maxDaily = capacity ? maxDailyCapacity(capacity) : null;
   const svcShare = serviceShare(input.items, archetype.model);
@@ -101,6 +105,12 @@ export function analyze(
       cushion: financing.cushion,
       workingCapital: financing.workingCapital,
       total: financing.invest,
+      preOpen: {
+        months: preOpenMonths,
+        monthlyCost: preOpenMonths ? preOpenMonthly : 0,
+        interest: proj.preOpenInterest,
+        total: preOpenMonths * preOpenMonthly + proj.preOpenInterest,
+      },
     },
     projection: {
       rows: proj.rows,

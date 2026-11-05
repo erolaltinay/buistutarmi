@@ -117,7 +117,13 @@
       "loanRate": "Kredi faizi (yıllık %)",
       "loanTerm": "Kredi vadesi (ay)",
       "depYears": "Amortisman süresi (yıl)"
-    }
+    },
+    "preOpen": "Açılış öncesi bekleme (ay)",
+    "preOpenHint": "Ruhsat beklerken kira tam, diğer sabit giderlerin %{share}'i ve kredi faizi işler. Personel ve satış yok. Toplam yatırıma eklenir.",
+    "preOpenMissing": "Bekleme giderleri şu an hesapta yok, yatırım ihtiyacı düşük görünebilir.",
+    "preOpenSuggest": "Mevzuat listesindeki en uzun yol {days} gün, yani yaklaşık {months} ay. Bu genel bir rehberdir; kendi durumuna göre değiştir.",
+    "preOpenUnknown": "Süresi bilinmeyen {count} madde sayılmadı.",
+    "preOpenApply": "Öneriyi uygula: {months} ay"
   },
   "result": {
     "verdict": "Karar",
@@ -220,7 +226,9 @@
       "days": "aylık çalışma günü",
       "cap": "kapasite (istasyon, saat, hizmet süresi)"
     },
-    "emptyRates": "{count} oran boş; hesapta 0 sayıldı. Finans ekranında kendi oranlarını gir."
+    "emptyRates": "{count} oran boş; hesapta 0 sayıldı. Finans ekranında kendi oranlarını gir.",
+    "preOpenL": "Açılış öncesi {months} ay (açığın içinde)",
+    "stTroughPre": "En derin nakit açığı · açılıştan önce"
   },
   "area": {
     "area": "Bölge",

@@ -11,6 +11,7 @@ import {
   permitStatus,
   setPermit,
   type Permits,
+  preOpenSuggestion,
 } from './permits';
 import { projectFromSample } from './project';
 
@@ -154,5 +155,34 @@ describe('kontrol tarihi', () => {
     expect(oldestReview([])).toBeNull();
     expect(isStale(old, new Date('2026-11-04'))).toBe(true);
     expect(isStale(item('b', null), new Date('2026-11-04'))).toBe(false);
+  });
+});
+
+describe('açılış öncesi bekleme önerisi', () => {
+  const tr = () => projectFromSample('coffee', 'ist', 'p1');
+
+  it('kritik yolun üst sınırından gelir, en fazla 6 ay', () => {
+    const s = preOpenSuggestion(tr(), false);
+    expect(s).not.toBeNull();
+    expect(s!.months).toBe(Math.min(6, Math.ceil(s!.days / 30)));
+    expect(s!.months).toBeGreaterThan(0);
+  });
+
+  it('hesaba kendiliğinden girmez', () => {
+    expect(tr().input.preOpenMonths).toBeUndefined();
+  });
+
+  it('mevzuat listesi olmayan ülkede öneri yok', () => {
+    const d = tr();
+    d.country = 'FR';
+    expect(preOpenSuggestion(d, false)).toBeNull();
+  });
+
+  it('bütün maddeler tamamlanınca öneri kalkar', () => {
+    const d = tr();
+    d.permits = Object.fromEntries(
+      legalItems(d, false).map((i) => [i.id, { status: 'done' as const, updatedAt: '2026-11-05' }]),
+    );
+    expect(preOpenSuggestion(d, false)).toBeNull();
   });
 });

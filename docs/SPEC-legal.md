@@ -81,11 +81,13 @@ const LegalItem = z.object({
 Ruhsat beklerken kira ödenir, satış olmaz. Motora yeni girdi:
 
 ```
-preOpenMonths = kullanıcı girdisi; varsayılan = ceil(kritik yol üst sınırı (gün) / 30), en fazla 6
+preOpenMonths = kullanıcı girdisi; öneri = ceil(kritik yol üst sınırı (gün) / 30), en fazla 6
 preOpenRentShare = 1.0 (kira tamamen), preOpenOtherShare = 0.3 (diğer sabitlerin bir kısmı), personel 0
 ```
 
 Projeksiyondan önce `preOpenMonths` kadar "0. aylar" eklenir: ciro 0, gider = rent0 + other0 · preOpenOtherShare, kredi faizi işler. Bu aylar nakit açığına (`trough`) girer, dolayısıyla işletme sermayesine ve toplam yatırıma yansır.
+
+Öneri kendiliğinden hesaba girmez, kullanıcı "Uygula" der veya elle yazar. Süreler genel rehber bilgisidir, bir kısmı doğrulanmamış taslak olabilir (kural 11); durum işaretlemek kararı sessizce değiştirmemelidir. Öneri varken alan boşsa ekran bekleme giderinin hesaba girmediğini söyler. Süresi bilinmeyen madde öneriye 0 gün girer ve ekranda belirtilir. Mevzuat listesi olmayan genel modda öneri çıkmaz, alan elle doldurulur. Tam formül: `SPEC-calc-engine.md` §5.1.
 
 Bu bir formül değişikliğidir. `CLAUDE.md` kural 2 uygulanır: önce `SPEC-calc-engine.md`'ye yeni bölüm yazılır, `preOpenMonths = 0` iken mevcut 30 golden vakanın değişmediği doğrulanır, sonra `preOpenMonths > 0` için yeni golden vakalar eklenir.
 

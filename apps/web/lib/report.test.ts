@@ -150,6 +150,14 @@ describe('PDF rapor (İP-1.6)', () => {
     });
   });
 
+  it('açılış öncesi bekleme varsa raporda görünür, yoksa çıkmaz', async () => {
+    expect(has((await read(coffee(), NONE)).text, 'Açılış öncesi')).toBe(false);
+    const d = coffee();
+    d.input.preOpenMonths = 3;
+    expect(has((await read(d, NONE)).text, 'Açılış öncesi 3 ay (açığın içinde)')).toBe(true);
+    expect(has((await read(d, NONE)).text, 'Motor sürümü 1.3.0')).toBe(true);
+  });
+
   it('24 ay tablosu isteğe bağlı', async () => {
     expect(has((await read(coffee(), { ...NONE, monthly: true })).text, '24 aylık projeksiyon')).toBe(true);
     expect(has((await read(coffee(), NONE)).text, '24 aylık projeksiyon')).toBe(false);

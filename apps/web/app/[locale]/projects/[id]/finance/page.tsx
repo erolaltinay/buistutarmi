@@ -1,11 +1,12 @@
 'use client';
 // Prototip "Finans" sekmesi: yatırım, sabit giderler, ürünler, senaryolar, rampa ve vergiler.
 import { useTranslations } from 'next-intl';
-import type { FinParams, FixedType } from '@bitm/engine';
+import { PRE_OPEN_SHARES, type FinParams, type FixedType } from '@bitm/engine';
 import { FinanceResults } from '../../../../../components/finance-results';
 import { DelButton, NumberField, NumberInput, Panel } from '../../../../../components/ui';
 import { useWorkbench } from '../../../../../components/workbench';
 import { rowLabel } from '../../../../../lib/labels';
+import { preOpenSuggestion } from '../../../../../lib/permits';
 
 const FIN_RAMP = [
   'rampStart',
@@ -107,6 +108,7 @@ export default function FinancePage() {
               onValue={(v) => update((d) => void (d.input.wcMonths = v))}
             />
           </div>
+          <PreOpenField />
         </Panel>
 
         <Panel
@@ -280,5 +282,51 @@ export default function FinancePage() {
       </section>
       <FinanceResults />
     </main>
+  );
+}
+
+/** Ruhsat beklerken giden para (SPEC-calc-engine §5.1). Öneri ancak "Uygula" ile hesaba girer. */
+function PreOpenField() {
+  const t = useTranslations('finance');
+  const { doc, update } = useWorkbench();
+  const value = doc.input.preOpenMonths;
+  const suggestion = preOpenSuggestion(doc);
+  return (
+    <div style={{ marginTop: 14 }}>
+      <div className="fields">
+        <NumberField
+          id="preOpenMonths"
+          label={t('preOpen')}
+          value={value}
+          onValue={(v) => update((d) => void (d.input.preOpenMonths = v))}
+        />
+      </div>
+      <p className="note" style={{ marginTop: 8 }}>
+        {t('preOpenHint', { share: PRE_OPEN_SHARES.other * 100 })}
+      </p>
+      {suggestion && (
+        <>
+          {!value && (
+            <div className="warn" data-testid="preopen-missing">
+              {t('preOpenMissing')}
+            </div>
+          )}
+          <p className="note" style={{ marginTop: 8 }} data-testid="preopen-suggestion">
+            {t('preOpenSuggest', { days: suggestion.days, months: suggestion.months })}
+            {suggestion.unknownDays > 0 && ` ${t('preOpenUnknown', { count: suggestion.unknownDays })}`}
+          </p>
+          {value !== suggestion.months && (
+            <button
+              type="button"
+              className="ghost"
+              data-testid="preopen-apply"
+              onClick={() => update((d) => void (d.input.preOpenMonths = suggestion.months))}
+            >
+              {t('preOpenApply', { months: suggestion.months })}
+            </button>
+          )}
+        </>
+      )}
+    </div>
   );
 }
