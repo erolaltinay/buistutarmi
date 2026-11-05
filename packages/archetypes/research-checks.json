@@ -1,0 +1,170 @@
+[
+  {
+    "k": "fieldDate",
+    "group": "field",
+    "label": {
+      "tr": "Kapı veya vitrin listesinde tarih var mı?",
+      "en": "Does the door or window list show a date?"
+    }
+  },
+  {
+    "k": "fieldBusy",
+    "group": "field",
+    "label": {
+      "tr": "Farklı saatlerde gerçek doluluğa bak",
+      "en": "Check how busy it really is at different hours"
+    }
+  },
+  {
+    "k": "menuItems",
+    "group": "menu",
+    "label": {
+      "tr": "Sepet kalemlerinin fiyatını ve boyunu gör",
+      "en": "Find the price and size of your basket items"
+    }
+  },
+  {
+    "k": "menuLadder",
+    "group": "menu",
+    "label": {
+      "tr": "Giriş, öne çıkarılan ve en pahalı ürüne bak",
+      "en": "Look at the entry, featured and most expensive items"
+    }
+  },
+  {
+    "k": "menuFees",
+    "group": "menu",
+    "label": {
+      "tr": "Servis veya kuver ücreti var mı?",
+      "en": "Is there a service or cover charge?"
+    }
+  },
+  {
+    "k": "menuRange",
+    "group": "menu",
+    "label": {
+      "tr": "Kategori ve ürün sayısına bak",
+      "en": "Note the number of categories and items"
+    }
+  },
+  {
+    "k": "webPrices",
+    "group": "website",
+    "label": {
+      "tr": "Fiyat sayfası veya PDF menü var mı, tarihi görünüyor mu?",
+      "en": "Is there a price page or PDF menu, and is it dated?"
+    }
+  },
+  {
+    "k": "webOrder",
+    "group": "website",
+    "label": {
+      "tr": "Online sipariş veya randevu var mı?",
+      "en": "Can people order or book online?"
+    }
+  },
+  {
+    "k": "webPackages",
+    "group": "website",
+    "label": {
+      "tr": "Paket, üyelik veya hediye kartı var mı?",
+      "en": "Are there bundles, memberships or gift cards?"
+    }
+  },
+  {
+    "k": "webSocial",
+    "group": "website",
+    "label": {
+      "tr": "Rakibin doğru hesabını sitedeki bağlantılardan bul",
+      "en": "Use the links on its site to find the right social account"
+    }
+  },
+  {
+    "k": "socialLinks",
+    "group": "social",
+    "label": {
+      "tr": "Bio'da menü, fiyat veya randevu bağlantısı var mı?",
+      "en": "Does the bio link to a menu, prices or booking?"
+    }
+  },
+  {
+    "k": "socialHighlights",
+    "group": "social",
+    "label": {
+      "tr": "Sabit gönderilere ve \"Fiyat\", \"Menü\", \"Kampanya\" öne çıkanlarına bak",
+      "en": "Check pinned posts and highlights named Prices, Menu or Offers"
+    }
+  },
+  {
+    "k": "socialActive",
+    "group": "social",
+    "label": {
+      "tr": "Son 30 günde paylaşım var mı?",
+      "en": "Has it posted in the last 30 days?"
+    }
+  },
+  {
+    "k": "socialDated",
+    "group": "social",
+    "label": {
+      "tr": "Fiyat yazan paylaşımın tarihine bak",
+      "en": "Check the date of any post that shows prices"
+    }
+  },
+  {
+    "k": "socialOffers",
+    "group": "social",
+    "label": {
+      "tr": "Kampanya türüne ve sıklığına bak",
+      "en": "Note the type and frequency of offers"
+    }
+  },
+  {
+    "k": "socialDm",
+    "group": "social",
+    "label": {
+      "tr": "\"Fiyat için DM\" yazıyor mu?",
+      "en": "Does it say \"DM for prices\"?"
+    }
+  },
+  {
+    "k": "socialComplaints",
+    "group": "social",
+    "label": {
+      "tr": "Yorumlarda tekrar eden şikâyeti gör; kişi adı ve yorum metni yazma",
+      "en": "Look for repeated complaints; do not copy names or comment text"
+    }
+  },
+  {
+    "k": "deliveryGap",
+    "group": "delivery",
+    "label": {
+      "tr": "Dükkân fiyatıyla farkına bak",
+      "en": "Compare the price with the in-store price"
+    }
+  },
+  {
+    "k": "deliveryFees",
+    "group": "delivery",
+    "label": {
+      "tr": "Asgari sepet, teslimat ücreti ve kampanyaya bak",
+      "en": "Check the minimum order, delivery fee and offers"
+    }
+  },
+  {
+    "k": "bookingList",
+    "group": "booking",
+    "label": {
+      "tr": "Hizmet listesi, süre ve fiyata bak",
+      "en": "Check the service list, durations and prices"
+    }
+  },
+  {
+    "k": "bookingPeak",
+    "group": "booking",
+    "label": {
+      "tr": "Yoğun saatlere ve boş randevulara bak",
+      "en": "Check busy hours and open slots"
+    }
+  }
+]

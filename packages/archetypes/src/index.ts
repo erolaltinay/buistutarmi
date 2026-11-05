@@ -10,12 +10,15 @@ import coffeeJson from '../sectors/coffee.json';
 import {
   AnalysisDefaultsSchema,
   commonChecklist,
+  commonResearchChecks,
   CountrySchema,
   FinSchema,
   SectorSchema,
   type ChecklistItem,
   type Country,
   type Fin,
+  type ResearchCheck,
+  type ResearchGroup,
   type Sector,
 } from './schema';
 
@@ -45,6 +48,12 @@ export function getSector(id: string): Sector {
 /** Listede olmayan her ülke GENERIC şablonunu kullanır. */
 export function getCountry(code: string): Country {
   return countries[code] ?? genericCountry;
+}
+
+/** Rakip kartındaki kontrol listesi: sektörün grupları sırasıyla, ortak maddeler ve sektörün eklediği maddeler. */
+export function researchChecks(sector: Sector): { group: ResearchGroup; checks: ResearchCheck[] }[] {
+  const all = [...commonResearchChecks, ...sector.research.checks];
+  return sector.research.groups.map((group) => ({ group, checks: all.filter((c) => c.group === group) }));
 }
 
 /** Para biriminin ondalık hanesi yoksa 1, varsa 0,25 (generic ülkeler için). */

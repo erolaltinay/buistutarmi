@@ -3,6 +3,7 @@
 import { z } from 'zod';
 import { parseExpr } from '@bitm/engine';
 import checklistJson from '../checklist.json';
+import researchChecksJson from '../research-checks.json';
 
 export const Localized = z.object({ tr: z.string().min(1), en: z.string().min(1) });
 const Pair = z.tuple([z.number(), z.number()]);
@@ -117,6 +118,45 @@ export const PriceFloorsSchema = z.object({
 });
 export type PriceFloors = z.infer<typeof PriceFloorsSchema>;
 
+// ---------- Rakip inceleme (SPEC-competitor-research §3, §4, §6) ----------
+
+/** Fiyat gözleminin kaynağı. Ülkedeki sıra `countries/*.json` → `research.sources` içindedir. */
+export const RESEARCH_SOURCES = [
+  'door',
+  'in_store_note',
+  'menu_photo',
+  'digital_menu',
+  'website',
+  'social',
+  'booking',
+  'delivery',
+  'asked',
+  'manual',
+] as const;
+export type ResearchSource = (typeof RESEARCH_SOURCES)[number];
+
+export const RESEARCH_GROUPS = ['field', 'menu', 'website', 'social', 'delivery', 'booking'] as const;
+export type ResearchGroup = (typeof RESEARCH_GROUPS)[number];
+
+const ResearchCheckSchema = z.object({ k: Key, group: z.enum(RESEARCH_GROUPS), label: Localized });
+export type ResearchCheck = z.infer<typeof ResearchCheckSchema>;
+
+/** Her sektörde kullanılabilen ortak maddeler; sektör hangi grupların çıkacağını seçer. */
+export const commonResearchChecks: ResearchCheck[] = z.array(ResearchCheckSchema).parse(researchChecksJson);
+
+const SectorResearchSchema = z.object({
+  groups: z.array(z.enum(RESEARCH_GROUPS)).min(1),
+  items: z.record(
+    Key,
+    z.object({
+      aliases: z.object({ tr: z.array(z.string().min(1)), en: z.array(z.string().min(1)) }),
+      sizeNote: Localized.optional(),
+    }),
+  ),
+  offers: z.record(Key, Localized),
+  checks: z.array(ResearchCheckSchema).default([]),
+});
+
 export const SectorSchema = z
   .object({
     id: Key,
@@ -211,6 +251,8 @@ export const SectorSchema = z
       }),
     }),
     samples: z.record(z.string(), Sample),
+    /** Rakip kartındaki kalem eş anlamlıları, boy notu, kampanya türleri, kontrol maddeleri. */
+    research: SectorResearchSchema,
     ai: z.object({ businessNoun: Localized, promptHints: z.string().optional() }),
     storefront: z.object({
       sampleName: z.string(),
@@ -260,6 +302,22 @@ export const SectorSchema = z
     for (const k of [...s.competition.qualityWeaknessKeys, s.competition.overpricedWeaknessKey])
       if (!weak.includes(k)) issue(`zayıflık etiketi tanımlı değil: ${k}`);
     const itemKeys = s.itemTemplate.map((t) => t.k);
+
+    // Rakip inceleme: sepet itemTemplate'tir, yeni liste açılmaz; kontrol maddeleri tekrarlanmaz.
+    const researchItems = Object.keys(s.research.items).sort().join(',');
+    if (researchItems !== [...itemKeys].sort().join(','))
+      issue('research.items şablondaki kalemlerle aynı anahtarlara sahip olmalı');
+    const researchKeys = s.research.checks.map((c) => c.k);
+    for (const c of s.research.checks) {
+      if (!s.research.groups.includes(c.group)) issue(`research.checks.${c.k}: grup sektörde yok`);
+      if (
+        commonResearchChecks.some((x) => x.k === c.k) ||
+        researchKeys.indexOf(c.k) !== researchKeys.lastIndexOf(c.k)
+      )
+        issue(`research.checks: anahtar ortak listede veya tekrarlı: ${c.k}`);
+    }
+    if (new Set(s.research.groups).size !== s.research.groups.length) issue('research.groups tekrarlı');
+
     for (const [country, d] of Object.entries(s.defaults)) {
       if (d.sample !== null && s.samples[d.sample]?.country !== country)
         issue(`defaults.${country}.sample bu ülkeye ait bir örnek değil`);
@@ -304,10 +362,16 @@ export const CountrySchema = z
     fin: FinSchema.partial(),
     taxNote: Localized,
     dataSources: z.record(z.string(), z.string().nullable()),
+    /** Rakip fiyatına bakılacak kaynak sırası ve gözlemin eski sayılacağı gün (SPEC-competitor-research §3, §7). */
+    research: z.object({
+      sources: z.array(z.enum(RESEARCH_SOURCES)).min(1),
+      staleAfterDays: z.number().int().positive(),
+    }),
     lastReviewed: z.iso.date(),
   })
   .superRefine((c, ctx) => {
     const issue = (message: string) => ctx.addIssue({ code: 'custom', message: `${c.code}: ${message}` });
+    if (new Set(c.research.sources).size !== c.research.sources.length) issue('research.sources tekrarlı');
     if (c.supportLevel === 'full') {
       if (!c.currency || !c.locale || c.priceRounding === null)
         issue('full ülkede para birimi, locale ve yuvarlama dolu olmalı');

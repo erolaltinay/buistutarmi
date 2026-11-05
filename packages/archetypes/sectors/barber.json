@@ -644,6 +644,89 @@
       }
     }
   },
+  "research": {
+    "groups": ["field", "booking", "website", "social"],
+    "items": {
+      "cut": {
+        "aliases": {
+          "tr": ["saç kesimi", "kesim", "saç tıraşı"],
+          "en": ["haircut", "cut", "men's cut"]
+        },
+        "sizeNote": {
+          "tr": "Usta farkı varsa",
+          "en": "Barber level, if any"
+        }
+      },
+      "beard": {
+        "aliases": {
+          "tr": ["sakal", "sakal tıraşı"],
+          "en": ["beard", "beard trim", "shave"]
+        },
+        "sizeNote": {
+          "tr": "Usta farkı varsa",
+          "en": "Barber level, if any"
+        }
+      },
+      "combo": {
+        "aliases": {
+          "tr": ["saç sakal", "saç + sakal", "komple"],
+          "en": ["cut and beard", "cut + beard", "full service"]
+        },
+        "sizeNote": {
+          "tr": "Neler dahil",
+          "en": "What is included"
+        }
+      }
+    },
+    "offers": {
+      "student": {
+        "tr": "Öğrenci indirimi",
+        "en": "Student discount"
+      },
+      "weekday": {
+        "tr": "Hafta içi veya saatlik indirim",
+        "en": "Weekday or off-peak discount"
+      },
+      "loyalty": {
+        "tr": "Sadakat kartı",
+        "en": "Loyalty card"
+      },
+      "bundle": {
+        "tr": "Paket",
+        "en": "Bundle"
+      },
+      "opening": {
+        "tr": "Açılış kampanyası",
+        "en": "Opening offer"
+      },
+      "subscription": {
+        "tr": "Abonelik",
+        "en": "Membership"
+      },
+      "other": {
+        "tr": "Diğer",
+        "en": "Other"
+      }
+    },
+    "checks": [
+      {
+        "k": "fieldInside",
+        "group": "field",
+        "label": {
+          "tr": "Fiyat listesi içerideyse fotoğraf yerine not al",
+          "en": "If the price list is inside, take notes instead of photos"
+        }
+      },
+      {
+        "k": "fieldTier",
+        "group": "field",
+        "label": {
+          "tr": "Usta ve çırak fiyatı farklı mı?",
+          "en": "Do senior and junior barbers charge differently?"
+        }
+      }
+    ]
+  },
   "ai": {
     "businessNoun": {
       "tr": "berber",

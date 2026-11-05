@@ -37,5 +37,9 @@
     "income": "CENSUS_ACS",
     "elections": null
   },
+  "research": {
+    "sources": ["digital_menu", "website", "door", "in_store_note", "asked", "booking", "delivery", "social"],
+    "staleAfterDays": 180
+  },
   "lastReviewed": "2026-10-25"
 }

@@ -14,6 +14,7 @@ Hangi işte hangi doküman:
 | Claude çağrıları, promptlar, şemalar | `docs/SPEC-ai.md` |
 | İzin ve belge listesi | `docs/SPEC-legal.md` |
 | "Bu dükkânda ne tutar?", "en iyi semtler" | `docs/SPEC-alternatives.md` |
+| Rakip inceleme, fiyat haritası | `docs/SPEC-competitor-research.md` |
 | Pazar sırası, genel mod, fiyat, dağıtım | `docs/STRATEGY.md` |
 | Rakipler ve ayrışma | `docs/COMPETITION.md` |
 

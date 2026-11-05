@@ -33,5 +33,9 @@
     "en": "Local data and permit guidance are not available for this country yet. Enter your own numbers; the method is the same."
   },
   "dataSources": {},
+  "research": {
+    "sources": ["digital_menu", "website", "asked", "social"],
+    "staleAfterDays": 180
+  },
   "lastReviewed": "2026-11-02"
 }

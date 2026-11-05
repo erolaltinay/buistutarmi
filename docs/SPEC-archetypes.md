@@ -94,6 +94,19 @@ Berber (`service`) için ek alan:
 "location": { "captureRatePct": [0.6, 1.5], "rentToSalesPct": [15, 22] }
 ```
 
+Rakip inceleme ayarları (`SPEC-competitor-research.md` §6):
+
+```jsonc
+"research": {
+  "groups": ["field", "menu", "delivery", "website", "social"],   // kontrol listesinde çıkacak gruplar ve sırası
+  "items": {                                                       // itemTemplate ile aynı anahtarlar
+    "filter": { "aliases": { "tr": ["filtre"], "en": ["drip"] }, "sizeNote": { "tr": "Küçük, büyük", "en": "Small, large" } }
+  },
+  "offers": { "student": { "tr": "Öğrenci indirimi", "en": "Student discount" } },
+  "checks": [ { "k": "fieldSizes", "group": "field", "label": { "tr": "…", "en": "…" } } ]   // ortak listede olmayan maddeler
+}
+```
+
 Prototipteki kahve ve berber ayarlarının tamamı (etiketler, taktikler, örnek veriler) `prototype/bu-is-tutar-mi-mvp.html` içindeki `TAGS`, `TACTIC`, `P`, `LOCP`, `QUALITY_GAP`, `SAT_T`, `CHK` sabitlerinden bu şemaya taşınır.
 
 ### 2.1 Düzenlemeli meslekler (diş hekimi, veteriner)
@@ -152,6 +165,8 @@ Kurallar:
            "profitTax": 25, "loanRate": 45, "loanTerm": 36, "depYears": 5 },
   "taxNote": { "tr": "Oranlar sık değişir; muhasebecine teyit ettir.", "en": "Rates change often; confirm with your accountant." },
   "dataSources": { "demographics": "TUIK_ADNKS", "income": "PROXY", "elections": "YSK" },
+  "research": { "sources": ["door", "in_store_note", "digital_menu", "website", "asked", "booking", "delivery", "social"],
+                "staleAfterDays": 90 },                        // rakip fiyatı kaynak sırası ve eskime süresi (SPEC-competitor-research §3, §7)
   "lastReviewed": "YYYY-MM-DD"
 }
 ```
@@ -173,8 +188,9 @@ Birleştirme sırası: `ülke.fin` → `sektör.defaults[ülke].fin` → kullan�
 5. `googlePlaceTypes`, `osmTags`, `siteRequirements` ve gerekiyorsa `requiresCertificate` dolu.
 6. `full` destekli her ülke için `legal/<ÜLKE>/<id>.json` mevzuat dosyası; maddeler doğrulanmadan sektör o ülkede yayına çıkmaz (`SPEC-legal.md` §4).
 7. Motor testleri: yeni sektör için en az 2 golden vaka eklenir.
-8. Düzenlemeli meslekte (§2.1): `regulated`, `footTraffic`, kontrol listesi farkı ve (varsa) doğrulanmış `priceFloors`; taktikler reklam kısıtına uygun; mevzuat ve taban fiyat doğrulaması meslek alanını bilen bir uzmanla (sağlık hukukçusu veya bu alanda çalışan mali müşavir) yapılır.
-9. Videosu yayımlanınca sektör sayfası açılır (`/[locale]/sektor/<id>`), video gömülür, "Kendi rakamlarınla hesapla" butonu sihirbazı bu arketiple başlatır. Özet ve YouTube kimliği sektör dosyasındaki `page` alanındadır (`page.summary`, `page.video.{tr,en}`); video boşken sayfa oynatıcısız çalışır.
+8. `research`: kontrol grupları, her kalem için eş anlamlılar, kampanya türleri (`SPEC-competitor-research.md` §6).
+9. Düzenlemeli meslekte (§2.1): `regulated`, `footTraffic`, kontrol listesi farkı ve (varsa) doğrulanmış `priceFloors`; taktikler reklam kısıtına uygun; mevzuat ve taban fiyat doğrulaması meslek alanını bilen bir uzmanla (sağlık hukukçusu veya bu alanda çalışan mali müşavir) yapılır.
+10. Videosu yayımlanınca sektör sayfası açılır (`/[locale]/sektor/<id>`), video gömülür, "Kendi rakamlarınla hesapla" butonu sihirbazı bu arketiple başlatır. Özet ve YouTube kimliği sektör dosyasındaki `page` alanındadır (`page.summary`, `page.video.{tr,en}`); video boşken sayfa oynatıcısız çalışır.
 
 ## 5. İlk yıl sektör sırası (öneri)
 

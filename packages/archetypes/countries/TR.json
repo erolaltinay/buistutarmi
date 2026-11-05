@@ -37,5 +37,9 @@
     "income": "PROXY",
     "elections": "YSK"
   },
+  "research": {
+    "sources": ["door", "in_store_note", "digital_menu", "website", "asked", "booking", "delivery", "social"],
+    "staleAfterDays": 90
+  },
   "lastReviewed": "2026-10-25"
 }

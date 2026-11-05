@@ -2,6 +2,7 @@
 // Prototip "Bölge ve rakipler" sekmesi: bölge, demografi (seçim verisi sadece bağlam), rakip kartları.
 import { useTranslations } from 'next-intl';
 import type { Demographics } from '@bitm/engine';
+import { CompetitorResearchCard } from '../../../../../components/competitor-research';
 import { DelButton, NumberField, NumberInput, Panel, Pill, TextField } from '../../../../../components/ui';
 import { useWorkbench } from '../../../../../components/workbench';
 import { competitorLabel, letter } from '../../../../../lib/labels';
@@ -150,6 +151,7 @@ export default function AreaPage() {
                   value={c.note ?? ''}
                   onChange={(e) => update((d) => void (d.input.comp[i]!.note = e.target.value))}
                 />
+                <CompetitorResearchCard index={i} />
               </div>
             ))}
           </div>

@@ -4,6 +4,7 @@ import {
   buildSampleInput,
   checklist,
   countries,
+  CountrySchema,
   engineArchetype,
   engineCountry,
   genericCountry,
@@ -11,6 +12,7 @@ import {
   mergeFin,
   missingFinFields,
   priceFloors,
+  researchChecks,
   sectorChecklist,
   sectors,
   SectorSchema,
@@ -44,6 +46,47 @@ describe('sektör dosyaları', () => {
     );
     for (const s of Object.values(sectors))
       expect(Object.keys(s.location.checklistOverrides).sort()).toEqual([...sectorSpecific].sort());
+  });
+});
+
+describe('rakip inceleme ayarları', () => {
+  it('kaynak sırası ülke dosyasından gelir; generic sıra dijital menüyle başlar', () => {
+    expect(genericCountry.research.sources).toEqual(['digital_menu', 'website', 'asked', 'social']);
+    expect(getCountry('TR').research.sources[0]).toBe('door');
+    expect(getCountry('FR').research).toEqual(genericCountry.research);
+  });
+
+  it('tekrarlı kaynağı şema reddeder', () => {
+    const bad = {
+      ...structuredClone(genericCountry),
+      research: { sources: ['website', 'website'], staleAfterDays: 90 },
+    };
+    expect(CountrySchema.safeParse(bad).success).toBe(false);
+  });
+
+  it.each(Object.keys(sectors))('%s: sepet şablonla aynı, kontrol grupları sektörden', (id) => {
+    const s = sectors[id]!;
+    expect(Object.keys(s.research.items).sort()).toEqual(s.itemTemplate.map((t) => t.k).sort());
+    const groups = researchChecks(s);
+    expect(groups.map((g) => g.group)).toEqual(s.research.groups);
+    for (const g of groups) expect(g.checks.length).toBeGreaterThan(0);
+  });
+
+  it('berberde dijital menü ve teslimat grubu, kahvede randevu grubu çıkmaz', () => {
+    const groups = (id: string) => researchChecks(sectors[id]!).map((g) => g.group);
+    expect(groups('barber')).not.toContain('menu');
+    expect(groups('barber')).not.toContain('delivery');
+    expect(groups('coffee')).not.toContain('booking');
+  });
+
+  it('şablonda olmayan kalemi ve ortak listedeki anahtarı şema reddeder', () => {
+    const extraItem = structuredClone(sectors.coffee!);
+    extraItem.research.items.ghost = { aliases: { tr: [], en: [] } };
+    expect(SectorSchema.safeParse(extraItem).success).toBe(false);
+
+    const dupCheck = structuredClone(sectors.coffee!);
+    dupCheck.research.checks.push({ k: 'fieldBusy', group: 'field', label: { tr: 'a', en: 'b' } });
+    expect(SectorSchema.safeParse(dupCheck).success).toBe(false);
   });
 });
 

@@ -84,6 +84,25 @@ Kabul: son 30 günde analiz başına ortalama maliyet (USD) ve TL geliri yan yan
 **İP-2.7 Ruhsat süresi finansa** — `SPEC-legal.md` §6: `preOpenMonths`; önce `SPEC-calc-engine.md` güncellenir.
 Kabul: `preOpenMonths = 0` iken 30 golden vaka değişmeden geçiyor; `preOpenMonths > 0` için en az 4 yeni golden vaka eklendi; nakit açığı ve toplam yatırım ruhsat süresiyle artıyor.
 
+### Rakip inceleme ve fiyat haritası (`SPEC-competitor-research.md`)
+
+Sıra bilerek böyledir: İP-2.8 ve İP-2.9 API anahtarı, ödeme ve Supabase beklemez; kalanlar ayrı ayrı açılır.
+
+**İP-2.8 Rakip inceleme kartı (≈3–4 gün)** — Rakip kartında kaynak bağlantıları, sektöre göre kontrol listesi, sepet kalemi başına elle fiyat girişi; kaynak ve gözlem tarihi zorunlu; servis ücreti, fiyat görünürlüğü, kampanya. Arketip ve ülke dosyasına `research`; şema ve `archetypes:check` güncellenir.
+Kabul: dış çağrı olmadan çalışıyor; tarihsiz gözlem kaydedilmiyor; bağlantı kartta tıklanıp açılıyor; `generic` ülkede kaynak sırası ülke dosyasından geliyor; kodda ülke kontrolü yok; imza kalemi gözlemi yalnız "Uygula" ile `Competitor.price` oluyor; TR/EN anahtarları eşit; 30 golden vaka değişmedi.
+
+**İP-2.9 Fiyat haritası (≈3–4 gün)** — `SPEC-calc-engine.md`'ye formül eklenir; test önce yazılır; `packages/engine` içinde `analyze()`'dan ayrı saf fonksiyon; Fiyat ekranında tablo, kendi yerin, paket indirimi, kanal farkı; PDF'e kaynak ve tarihle bölüm.
+Kabul: aynı girdi ve `asOf` aynı sonucu veriyor; motor saat okumuyor; eski gözlem medyana girmiyor ama görünüyor; teslimat ve dükkân fiyatı karışmıyor; 3 rakip ve rakip başına 2 kalem altında "veri yetersiz" çıkıyor; tek gözlemden zam ritmi çıkmıyor; 30 golden vaka değişmedi; PDF'te yatırım uyarısı duruyor.
+
+**İP-2.10 Görselden fiyat okuma (≈1 hafta)** — Önce `SPEC-ai.md`; kapı listesi, menü, web, randevu, teslimat ve sosyal medya görüntüsü için tek çağrı; öneriler kalem eşleşmesiyle gösterilir, kullanıcı satır satır onaylar. İP-2.4a'daki yüz kapatma ve elle alan kapatma kullanılır. Kullanıcı başına limit (İP-1.1) ve açık rıza (İP-1.11) gelmeden yayın derlemesinde kapalıdır. Görseldeki metin yalnız veridir.
+Kabul: görselde olmayan fiyat `null` dönüyor; onaysız hiçbir değer yazılmıyor; geçersiz AI yanıtı hata gösteriyor ve kısmi veri yazılmıyor; yorum sahibi adı, kullanıcı adı ve kişi bilgisi çıktıda yok; görsele gömülü talimat testi sonucu değiştirmiyor; görsel saklanmıyor; yüz kapatılamazsa görsel gitmiyor; görsel başına gerçek maliyet ölçüldü ve `usage_events`'e yazıldı.
+
+**İP-2.11 Bağlantıdan okuma (≈1 hafta, avukat görüşü şart)** — Kullanıcının yapıştırdığı işletme sitesi veya dijital menü için kullanıcı isteğiyle tek sayfa (HTML veya PDF). Sosyal medya, teslimat ve randevu alan adları engelli listededir; bu uygulamalar ekran görüntüsüyle ilerler. Toplu çekim, zamanlanmış çekim ve tarayıcı otomasyonu yok; okunamayan sayfada ekran görüntüsü önerilir.
+Kabul: `robots.txt` izni yoksa çekim yapılmıyor; iç ağ ve yerel adresler reddediliyor (yönlendirme sonrası da); boyut, süre ve yönlendirme sınırı var; engelli alan adı reddediliyor; ham sayfa saklanmıyor; sayfadaki talimat testi sonucu değiştirmiyor; kullanıcı başına limit çalışıyor.
+
+**İP-2.12 Kaynak keşfi (≈3 gün, İP-2.1'den sonra)** — OSM `website` ve `contact:*` etiketleri, Places `websiteUri` canlı gösterim, işletme sitesindeki sosyal bağlantılar. İsimden tahminle hesap eşleştirilmez.
+Kabul: önerilen bağlantı kullanıcı onaylamadan rakibe bağlanmıyor; Places'ten gelen ad, puan ve site projeye yazılmıyor; atıf görünüyor; Places sonucu Google dışı haritada gösterilmiyor.
+
 ## Faz 3 — Ölçek, gelir ve ikinci pazar (≈7–8 hafta)
 
 - **İP-3.1** Arketip motoru genişletme: +8 sektör (SPEC-archetypes bölüm 5), her biri için golden vaka, `siteRequirements` ve `requiresCertificate` alanları, TR mevzuat dosyası. **İlk ikisi diş hekimi (`dentist`) ve veteriner kliniği (`vet`)**; İP-1.12'deki alanları kullanır.
@@ -97,6 +116,10 @@ Kabul: `preOpenMonths = 0` iken 30 golden vaka değişmeden geçiyor; `preOpenMo
 - **İP-3.8** Mal sahibi / emlakçı raporu (`SPEC-alternatives.md` §3.5), ücretli.
 - **İP-3.9** Almanya diaspora paketi: `DE` ülke dosyası (`full`), Türkçe arayüzle; `packages/archetypes/legal/DE/*` hazırlanıp doğrulanır (Gewerbeanmeldung, Meisterpflicht, gıda kayıtları); KfW kredi varsayılanları.
   Kabul: Türkçe arayüzle Berlin'de kahve ve berber analizi baştan sona çalışıyor; DE mevzuat maddeleri doğrulanmış.
+- **İP-3.10** Rakip fiyat takibi (`SPEC-competitor-research.md`): gözlem yenileme hatırlatması, tarihli iki gözlemden zam ritmi, kendi fiyatının farkı.
+  Kabul: hatırlatma kullanıcının açtığı rakiplerle sınırlı; hatırlatma otomatik veri çekmiyor; tarihi 30 günden yakın iki gözlemden ritim çıkmıyor.
+- **İP-3.11** Dış veri kapıları (karar işi; kod yalnız karar çıkarsa): Fiyat Etiketi Yönetmeliği md. 8/5'teki Bakanlık fiyat sistemi yayımlanır ve erişim şartları uygunsa kaynak olarak değerlendirilir; Meta Business Discovery API yalnız aktiflik verisi için ve Meta incelemesi gerekliliğiyle yeniden tartılır (varsayılan: yapma).
+  Kabul: her kapı için güncel şartlar okunmuş, karar ve gerekçe spesifikasyona yazılmış.
 
 ## Faz 4 — Genişleme
 

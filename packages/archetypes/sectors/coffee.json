@@ -675,6 +675,91 @@
       }
     }
   },
+  "research": {
+    "groups": ["field", "menu", "delivery", "website", "social"],
+    "items": {
+      "espresso_d": {
+        "aliases": {
+          "tr": ["latte", "cappuccino", "flat white", "americano", "espresso"],
+          "en": ["latte", "cappuccino", "flat white", "americano", "espresso"]
+        },
+        "sizeNote": {
+          "tr": "Küçük, orta, büyük",
+          "en": "Small, medium, large"
+        }
+      },
+      "filter": {
+        "aliases": {
+          "tr": ["filtre", "demleme"],
+          "en": ["drip", "filter", "batch brew"]
+        },
+        "sizeNote": {
+          "tr": "Küçük, orta, büyük",
+          "en": "Small, medium, large"
+        }
+      },
+      "cold": {
+        "aliases": {
+          "tr": ["soğuk kahve", "ice latte", "cold brew"],
+          "en": ["iced coffee", "iced latte", "cold brew"]
+        },
+        "sizeNote": {
+          "tr": "Küçük, orta, büyük",
+          "en": "Small, medium, large"
+        }
+      },
+      "snack": {
+        "aliases": {
+          "tr": ["kurabiye", "kek", "sandviç", "tatlı"],
+          "en": ["cookie", "cake", "sandwich", "muffin"]
+        },
+        "sizeNote": {
+          "tr": "Hangi ürün",
+          "en": "Which item"
+        }
+      }
+    },
+    "offers": {
+      "student": {
+        "tr": "Öğrenci indirimi",
+        "en": "Student discount"
+      },
+      "happyHour": {
+        "tr": "Saatlik indirim",
+        "en": "Happy hour"
+      },
+      "loyalty": {
+        "tr": "Sadakat kartı",
+        "en": "Loyalty card"
+      },
+      "bundle": {
+        "tr": "Paket veya menü",
+        "en": "Bundle or combo"
+      },
+      "opening": {
+        "tr": "Açılış kampanyası",
+        "en": "Opening offer"
+      },
+      "subscription": {
+        "tr": "Abonelik",
+        "en": "Subscription"
+      },
+      "other": {
+        "tr": "Diğer",
+        "en": "Other"
+      }
+    },
+    "checks": [
+      {
+        "k": "fieldSizes",
+        "group": "field",
+        "label": {
+          "tr": "Kapıdaki listede boy seçeneklerine bak",
+          "en": "Check the sizes on the door list"
+        }
+      }
+    ]
+  },
   "ai": {
     "businessNoun": {
       "tr": "kahve dükkânı",
