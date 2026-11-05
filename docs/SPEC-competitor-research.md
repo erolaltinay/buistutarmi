@@ -147,7 +147,7 @@ Saklanmayanlar: ekran görüntüleri ve fotoğraflar (dış cephe incelemesindek
 
 Arketipe `research` eklenir: çıkacak kontrol grupları (`groups`), kalem eş anlamlıları ve boy notu (`items`), kampanya türleri (`offers`), sektöre özel kontrol maddeleri (`checks`). Ortak maddeler `packages/archetypes/research-checks.json` içindedir. Sepet olarak mevcut `itemTemplate` kullanılır, yeni liste açılmaz. Ülke dosyasına `research.sources` ve `research.staleAfterDays` eklenir. Ülkenin sırasında olmayan kaynak da seçilebilir, "Diğer" altında çıkar. `staleAfterDays` başlangıç önerisidir: TR 90, US ve `GENERIC` 180. Düzenlemeli mesleklerde kampanya önerisi çıkmaz (`SPEC-ai.md` §1).
 
-Kaynağa göre önerilen kanal, kullanıcı değiştirebilir: `delivery` teslimat; `door`, `in_store_note`, `menu_photo`, `digital_menu`, `website`, `asked` dükkân; `social`, `booking`, `manual` belli değil. Kanallar karşılaştırmada karışmadığı için işletmenin kendi söylediği fiyat dükkân sayılır; yoksa kapı listesi ile web sitesi aynı tabloya girmez.
+Kaynağa göre önerilen kanal, kullanıcı değiştirebilir: `delivery` teslimat; `door`, `in_store_note`, `menu_photo`, `digital_menu`, `website`, `asked`, `booking` dükkân; `social`, `manual` belli değil. Kanallar karşılaştırmada karışmadığı için işletmenin kendi söylediği fiyat dükkân sayılır; yoksa kapı listesi ile web sitesi aynı tabloya girmez.
 
 Yalnız imza kaleminin, proje para birimindeki, teslimat kanalı dışındaki gözlemi "Uygula" ile `Competitor.price` olur.
 

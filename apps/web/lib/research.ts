@@ -185,7 +185,8 @@ export function defaultChannel(source: ResearchSource | ''): Channel {
     source === 'menu_photo' ||
     source === 'digital_menu' ||
     source === 'website' ||
-    source === 'asked'
+    source === 'asked' ||
+    source === 'booking'
   )
     return 'in_store';
   return 'unknown';

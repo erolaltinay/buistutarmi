@@ -1,6 +1,6 @@
 // İP-2.3: sayım süresi, dokunuş, Lokasyon'a yazma ve kaynak etiketi.
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { changedGroups } from './confidence';
+import { changedGroups, confidence, GROUPS } from './confidence';
 import {
   applyCount,
   canWrite,
@@ -131,16 +131,26 @@ describe("Lokasyon'a yazma", () => {
     expect(isCounted(e.input.loc, 'wd', 0)).toBe(false);
   });
 
-  it('altı dilim bitene kadar kaynak user, sonra measured', () => {
+  it('altı dilim bitene kadar yaya verisi güvenilir sayılmaz, sonra measured', () => {
     const d = doc();
-    (['wd', 'we'] as const).forEach((day, di) =>
-      [0, 1, 2].forEach((slot, si) => {
-        expect(d.sources?.foot ?? 'sample').toBe(di + si === 0 ? 'sample' : 'user');
+    const before = confidence(d.sources);
+    (['wd', 'we'] as const).forEach((day) =>
+      [0, 1, 2].forEach((slot) => {
+        expect(d.sources?.foot).toBeUndefined();
+        expect(confidence(d.sources)).toBe(before);
         applyCount(d, { ...finished(20), day, slot }, 'a');
       }),
     );
     expect(countedSlotCount(d.input.loc)).toBe(6);
     expect(d.sources?.foot).toBe('measured');
+    expect(confidence(d.sources)).toBe(before + GROUPS.foot);
+  });
+
+  it('elle girilmiş veri kısmi sayımla geriye gitmez', () => {
+    const d = doc();
+    d.sources = { ...d.sources, foot: 'user' };
+    applyCount(d, finished(20), 'a');
+    expect(d.sources.foot).toBe('user');
   });
 
   it('sıradaki dilim sayılmamış ilk dilimdir', () => {

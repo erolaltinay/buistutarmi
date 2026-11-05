@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import { createTranslator } from 'next-intl';
 import { renderReport } from '@bitm/pdf';
-import { pdfText } from '@bitm/pdf/test-utils';
+import { pdfLines, pdfText } from '@bitm/pdf/test-utils';
 import { addCandidate } from './compare';
 import { setPermit } from './permits';
 import { emptyResearch, withResearch, type Observation } from './research';
@@ -103,6 +103,39 @@ describe('PDF rapor (İP-1.6)', () => {
         [seen('cut', 600), seen('beard', 300), seen('combo', 720)],
         [seen('cut', 800), seen('beard', 400), seen('cut', 450, '2026-01-01')],
       ]);
+
+    it('tablo ve hemen önündeki başlık sayfa sonunda satırsız kalmaz', async () => {
+      const onDelivery = (o: Observation): Observation => ({ ...o, channel: 'delivery', source: 'delivery' });
+      const rows = [
+        [seen('cut', 500), seen('beard', 200)],
+        [seen('cut', 600), seen('beard', 300), seen('combo', 720)],
+        [seen('cut', 800), seen('beard', 400)],
+      ].map((r) => [...r, ...r.map(onDelivery)]);
+      const model = build(withPrices(rows), NONE);
+      const heads = model.blocks.flatMap((b, i) => {
+        if (b.kind === 'table') return [squash(b.columns.map((c) => c.head).join(''))];
+        const next = model.blocks[i + 1];
+        return (b.kind === 'h2' || b.kind === 'h3') && next?.kind === 'table' ? [squash(b.text)] : [];
+      });
+      // Dolgu içeriği kaydırır; iki dolgu türünün yüksekliği farklı olduğu için başlıklar sayfa sonuna denk gelir.
+      const para = { kind: 'para' as const, text: 'dolgu' };
+      const h3 = { kind: 'h3' as const, text: 'dolgu' };
+      for (let paras = 0; paras < 8; paras++) {
+        for (const extra of [[], [h3], [h3, h3]]) {
+          const shifted = {
+            ...model,
+            blocks: [...Array.from({ length: paras }, () => para), ...extra, ...model.blocks],
+          };
+          const pages = await pdfLines(await renderReport(shifted, { fontDir }), 74);
+          pages.forEach((lines, i) => {
+            const last = squash(lines.at(-1) ?? '');
+            expect(heads.includes(last), `dolgu ${paras}+${extra.length}, sayfa ${i + 1}: ${last}`).toBe(
+              false,
+            );
+          });
+        }
+      }
+    }, 240_000);
 
     it('gözlem yoksa bölüm çıkmaz', async () => {
       const { text } = await read(projectFromSample('barber', 'ist', 'p1'), NONE);

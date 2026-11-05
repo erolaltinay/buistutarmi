@@ -122,7 +122,7 @@ Motor çıktısı istemcide anlık hesaplanır (motor saf ve hızlı). Sunucu ka
 - Faz 2: **saha sayacı**. Telefonda büyük tek tuş; zamanlayıcı (varsayılan 15 dk); sabah/öğle/akşam × hafta içi/sonu dilimleri. Sonuç `foot_counts`'a yazılır, Lokasyon sekmesi bunu kullanır. İP-1.1'e kadar kayıt cihazdadır (`input.loc.counts`); `foot_counts` eşitlemesi İP-1.1'le gelir.
   - **Kayıp olmaması:** açık sayım her dokunuşta cihaza yazılır. Süre duvar saatinden hesaplanır, sayfa kapansa da işler. Yarım kalan sayım açılışta geri gelir ve "sayfa kapandı" uyarısı gösterir; yazıp yazmamaya kullanıcı karar verir.
   - **Süre:** motorda altı dilim tek sayım süresini (`countMin`) paylaşır (`SPEC-calc-engine.md` §10.1). Tabloya `round(sayım / geçen dakika × countMin)` yazılır. `countMin` boşsa sayımın süresi olur. 1 dakikadan kısa sayım yazılamaz.
-  - **Kaynak etiketi:** yazılan her sayım grubu `user` yapar; altı dilim de sayıldıysa `measured` olur (§7). Değeri veya sayım süresi sonradan elle değişen dilim "sayıldı" gösterilmez. Sayılmamış dilimlerde önceki değer durur ve ekran bunu söyler.
+  - **Kaynak etiketi:** altı dilim de sayılınca grup `measured` olur (§7). Daha azında grubun etiketi değişmez: kalan dilimlerde örnek rakamlar dururken güven göstergesi yaya verisini ölçülmüş saymamalı. Değeri veya sayım süresi sonradan elle değişen dilim "sayıldı" gösterilmez. Sayılmamış dilimlerde önceki değer durur ve ekran bunu söyler.
   - **İnternetsiz açılış:** sayaç açılınca bulunduğu sayfa ve dosyaları tarayıcı önbelleğine alınır. `public/sw.js` yalnız ağ hatasında bu kopyayı verir, bağlantı varken her şey ağdan gelir. Bu kurulabilir PWA değildir; manifest ve "son analiz okunur" kapsamı ayrı iştir.
 - Faz 4: mobil konum veri sağlayıcısıyla ortaklık değerlendirilir (maliyet yüksek).
 
@@ -175,7 +175,7 @@ Etiket alan grubu düzeyinde tutulur (`ProjectDoc.sources`); toplam ağırlık 1
 | `fin` | vergi, komisyon, rampa, kredi | 2 | estimate (ülke varsayılanı) |
 | `founder` | girişimci profili | 2 | sample |
 
-`güven = Σ ağırlık (user, api, measured) / 100`; ekranda gösterilen oran `100 − güven`. Bir gruptaki herhangi bir değer değiştiğinde grup `user` olur; değeri değiştirmeden "Doğru" diyen kullanıcı da grubu `user` yapar. Hızlı modda cevaplanan gruplar (`area`, `rent`, `staff`, `founder`, `price`, `cost`, `base`, `capex`) `user` olarak başlar. "Örneğe dön" tüm etiketleri başlangıca döndürür.
+`güven = Σ ağırlık (user, api, measured) / 100`; ekranda gösterilen oran `100 − güven`. Bir gruptaki herhangi bir değer elle değiştiğinde grup `user` olur (saha sayacının kuralı §5.4); değeri değiştirmeden "Doğru" diyen kullanıcı da grubu `user` yapar. Hızlı modda cevaplanan gruplar (`area`, `rent`, `staff`, `founder`, `price`, `cost`, `base`, `capex`) `user` olarak başlar. "Örneğe dön" tüm etiketleri başlangıca döndürür.
 
 ## 8. Güvenlik ve KVKK
 - Kişisel veri: e-posta, adres/konum, fotoğraflar (yüz içerebilir), girişimcinin finansal bilgileri.

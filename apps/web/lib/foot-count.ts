@@ -115,8 +115,8 @@ export const nextSlot = (loc: LocationInput): { day: CountDay; slot: number } =>
   allSlots().find(({ day, slot }) => !isCounted(loc, day, slot)) ?? { day: 'wd', slot: 0 };
 
 /**
- * Biten sayımı Lokasyon'a yazar. Altı dilim de sayıldıysa grup `measured`, aksi `user` olur
- * (SPEC-architecture §7: gruptaki bir değer değişince grup `user`).
+ * Biten sayımı Lokasyon'a yazar. Altı dilim de sayılınca grup `measured` olur; daha azında etiket değişmez,
+ * çünkü kalan dilimlerde örnek rakamlar durabilir (SPEC-architecture §5.4).
  */
 export function applyCount(doc: ProjectDoc, s: CountSession, countedAt: string): void {
   const loc = doc.input.loc;
@@ -137,7 +137,7 @@ export function applyCount(doc: ProjectDoc, s: CountSession, countedAt: string):
       interrupted: s.interrupted,
     },
   ];
-  doc.sources = { ...doc.sources, foot: countedSlotCount(loc) === totalSlots ? 'measured' : 'user' };
+  if (countedSlotCount(loc) === totalSlots) doc.sources = { ...doc.sources, foot: 'measured' };
 }
 
 export function loadSession(projectId: string): CountSession | null {

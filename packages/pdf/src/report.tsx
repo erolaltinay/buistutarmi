@@ -1,6 +1,7 @@
 // Rapor yerleşimi (SPEC-architecture §5.6); renk ve ölçüler prototipteki PDF'ten.
 // lineHeight sayfa veya kapsayıcıda verilmez: çocuklara mutlak değer olarak geçer ve dinamik sayfa
 // numarasını yok eder (react-pdf 4.9); yalnız kendi fontSize'ı olan metin stillerinde kullanılır.
+import { Fragment } from 'react';
 import { Document, Image, Link, Page, Rect, Line, StyleSheet, Svg, Text, View } from '@react-pdf/renderer';
 import type { Block, Cell, ReportModel, Tone } from './model';
 
@@ -16,6 +17,8 @@ const TONE: Record<Tone, string> = { good: '#1D7A4C', mid: '#A86200', bad: '#B32
 const FONT = 'DejaVu';
 const MM = 2.8346;
 const MARGIN = 16 * MM;
+/** Tablo başlığı ve iki satırlı ilk satır için gereken yer (pt); önündeki her bölüm başlığı için de aynısı. */
+const MIN_START = 40;
 
 /** Fontta olmayan karakterleri (emoji vb.) atar; eksi ve bölünmez boşlukları sadeleştirir (prototip). */
 export const clean = (s: string): string =>
@@ -237,6 +240,19 @@ function BlockView({ block }: { block: Block }) {
   }
 }
 
+const isHeading = (b: Block | undefined) => b?.kind === 'h2' || b?.kind === 'h3';
+
+/**
+ * Tablonun sabit başlığı kendi başına kaydırılamaz. Tablonun, varsa hemen önündeki bölüm başlıklarıyla birlikte
+ * sayfa sonunda satırsız kalmaması için önüne konan boş kutunun istediği yer; gerek yoksa null.
+ */
+function keepTogether(blocks: Block[], i: number): number | null {
+  if (isHeading(blocks[i - 1])) return null;
+  let headings = 0;
+  while (isHeading(blocks[i + headings])) headings++;
+  return blocks[i + headings]?.kind === 'table' ? MIN_START * (headings + 1) : null;
+}
+
 export function Report({ model: m }: { model: ReportModel }) {
   const color = TONE[m.verdict.tone];
   return (
@@ -283,9 +299,15 @@ export function Report({ model: m }: { model: ReportModel }) {
           </View>
           <BarChart values={m.chart.values} />
         </View>
-        {m.blocks.map((b, i) => (
-          <BlockView key={i} block={b} />
-        ))}
+        {m.blocks.map((b, i) => {
+          const ahead = keepTogether(m.blocks, i);
+          return (
+            <Fragment key={i}>
+              {ahead !== null && <View minPresenceAhead={ahead} />}
+              <BlockView block={b} />
+            </Fragment>
+          );
+        })}
       </Page>
     </Document>
   );

@@ -72,7 +72,8 @@ test('tek tuşla sayar, süre dolunca biter, seçilen dilime yazar', async ({ pa
 
   const doc = await stored(page);
   expect(doc.input.loc.foot.we[1]).toBe(2);
-  expect(doc.sources.foot).toBe('user');
+  // Tek dilim sayıldı; kalan dilimler örnek olduğu için yaya verisi güvenilir sayılmaz.
+  expect(doc.sources?.foot).toBeUndefined();
   expect(doc.input.loc.counts).toHaveLength(1);
   expect(doc.input.loc.counts[0]).toMatchObject({ day: 'we', slot: 1, count: 2, value: 2, minutes: 15 });
   expect(await page.evaluate(() => Object.keys(localStorage).some((k) => k.startsWith('bitm:count:')))).toBe(

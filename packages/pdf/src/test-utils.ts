@@ -10,3 +10,20 @@ export async function pdfText(pdf: Uint8Array): Promise<string[]> {
   }
   return pages;
 }
+
+/** Sayfa sayfa satırlar, yukarıdan aşağıya; `minY` altındaki (sayfa altı) metin atılır. */
+export async function pdfLines(pdf: Uint8Array, minY = 0): Promise<string[][]> {
+  const doc = await getDocument({ data: new Uint8Array(pdf) }).promise;
+  const pages: string[][] = [];
+  for (let i = 1; i <= doc.numPages; i++) {
+    const content = await (await doc.getPage(i)).getTextContent();
+    const rows = new Map<number, string>();
+    for (const x of content.items) {
+      if (!('str' in x) || !x.str.trim()) continue;
+      const y = Math.round(x.transform[5] as number);
+      if (y >= minY) rows.set(y, (rows.get(y) ?? '') + x.str);
+    }
+    pages.push([...rows.entries()].sort((a, b) => b[0] - a[0]).map(([, line]) => line));
+  }
+  return pages;
+}
