@@ -179,7 +179,14 @@ export function buildObservations(
 /** Kaynağa göre önerilen kanal; kullanıcı değiştirebilir. */
 export function defaultChannel(source: ResearchSource | ''): Channel {
   if (source === 'delivery') return 'delivery';
-  if (source === 'door' || source === 'in_store_note' || source === 'menu_photo' || source === 'digital_menu')
+  if (
+    source === 'door' ||
+    source === 'in_store_note' ||
+    source === 'menu_photo' ||
+    source === 'digital_menu' ||
+    source === 'website' ||
+    source === 'asked'
+  )
     return 'in_store';
   return 'unknown';
 }

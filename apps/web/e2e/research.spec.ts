@@ -185,6 +185,7 @@ test('genel mod: kaynak sırası GENERIC dosyasından, para birimi seçilen', as
     'Sosyal medya',
   ]);
   await card.getByTestId('research-source').selectOption('website');
+  await expect(card.getByTestId('research-channel')).toHaveValue('in_store');
   await card.getByTestId('research-price-espresso_d').fill('4,5');
   await card.getByTestId('research-save').click();
   await expect(card.getByTestId('research-observation')).toContainText('€');

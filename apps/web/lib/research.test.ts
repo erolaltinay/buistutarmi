@@ -118,6 +118,14 @@ describe('gözlem', () => {
     expect(defaultChannel('door')).toBe('in_store');
     expect(defaultChannel('social')).toBe('unknown');
   });
+
+  it('web sitesi ve sorarak öğrenilen fiyat dükkân sayılır, kapı listesiyle aynı tabloya girer', () => {
+    expect(defaultChannel('website')).toBe('in_store');
+    expect(defaultChannel('asked')).toBe('in_store');
+    expect(defaultChannel('booking')).toBe('unknown');
+    expect(defaultChannel('manual')).toBe('unknown');
+    expect(defaultChannel('')).toBe('unknown');
+  });
 });
 
 describe('Uygula', () => {
