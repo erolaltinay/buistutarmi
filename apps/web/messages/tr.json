@@ -480,6 +480,47 @@
     "confirmT": "Açmadan önce teyit et",
     "talk": "Komşu esnafla dükkânın geçmişini konuş."
   },
+  "counter": {
+    "open": "Sahada say",
+    "openHint": "Dükkânın önünde dur, geçen her kişi için tuşa bas. Sonuç aşağıdaki tabloya yazılır. Sayım telefonda kalır, internet gerekmez.",
+    "progress": "{count} / {total} dilim sayıldı.",
+    "progressRest": "Kalan dilimlerdeki rakamlar sayımdan gelmiyor.",
+    "title": "Saha sayacı",
+    "lDay": "Gün",
+    "lSlot": "Dilim",
+    "lMinutes": "Süre (dk)",
+    "day": {
+      "wd": "Hafta içi",
+      "we": "Hafta sonu"
+    },
+    "slot": {
+      "morning": "Sabah",
+      "midday": "Öğle",
+      "evening": "Akşam"
+    },
+    "minutesError": "Süreyi {min} ile {max} dakika arasında gir.",
+    "overwrite": "Bu dilim daha önce sayıldı. Yeni sayım eskisinin yerine geçer.",
+    "offlineReady": "Bu ekran internetsiz de açılır.",
+    "offlineNow": "İnternet yok. Sayım telefonda saklanıyor, kaybolmaz.",
+    "start": "Saymaya başla",
+    "close": "Kapat",
+    "remaining": "Kalan süre",
+    "tap": "Biri geçince dokun",
+    "tapLabel": "Bir kişi geçti. Şu ana kadar {count}.",
+    "undo": "Geri al (−1)",
+    "stop": "Bitir",
+    "keepAwake": "Ekranı açık tut: kapanırsa süre işler ama dokunamazsın.",
+    "interrupted": "Sayım sırasında sayfa kapandı. O aralıkta geçenler sayılmamış olabilir; şüphen varsa bu sayımı sil.",
+    "doneTitle": "Sayım bitti",
+    "summary": "{day}, {slot}: {minutes} dakika",
+    "direct": "Tabloya {value} olarak yazılacak.",
+    "scaled": "{from} dakikalık sayım {to} dakikaya çevrilip tabloya {value} olarak yazılacak.",
+    "tooShort": "Süre çok kısa: yazmak için en az {min} dakika say.",
+    "write": "Lokasyona yaz",
+    "discard": "Sil",
+    "discardConfirm": "Bu sayım silinsin mi?",
+    "saved": "{day}, {slot} dilimine {value} yazıldı."
+  },
   "pricing": {
     "bandTitle": "Fiyat haritası: imza ürün",
     "bandHint": "Rakiplerin 1 km içindeki fiyatları ve senin fiyatın ({price}). Kesikli çizgi ortalama.",

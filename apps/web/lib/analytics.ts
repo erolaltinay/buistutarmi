@@ -17,7 +17,8 @@ export type EventName =
   | 'compare_viewed'
   | 'pdf_downloaded'
   | 'ai_called'
-  | 'media_uploaded';
+  | 'media_uploaded'
+  | 'foot_count_saved';
 
 type Props = Record<string, string | number | boolean>;
 

@@ -480,6 +480,47 @@
     "confirmT": "Confirm before you open",
     "talk": "Talk to neighboring shops about the space’s history."
   },
+  "counter": {
+    "open": "Count on site",
+    "openHint": "Stand in front of the shop and tap once for each person who walks past. The result goes into the table below. The count stays on your phone; no internet needed.",
+    "progress": "{count} of {total} slots counted.",
+    "progressRest": "The numbers in the other slots did not come from a count.",
+    "title": "Foot traffic counter",
+    "lDay": "Day",
+    "lSlot": "Time slot",
+    "lMinutes": "Length (min)",
+    "day": {
+      "wd": "Weekday",
+      "we": "Weekend"
+    },
+    "slot": {
+      "morning": "Morning",
+      "midday": "Midday",
+      "evening": "Evening"
+    },
+    "minutesError": "Enter a length between {min} and {max} minutes.",
+    "overwrite": "This slot was counted before. The new count replaces it.",
+    "offlineReady": "This screen also opens without internet.",
+    "offlineNow": "No internet. The count is stored on your phone and will not be lost.",
+    "start": "Start counting",
+    "close": "Close",
+    "remaining": "Time left",
+    "tap": "Tap when someone passes",
+    "tapLabel": "One person passed. Count so far: {count}.",
+    "undo": "Undo (−1)",
+    "stop": "Finish",
+    "keepAwake": "Keep the screen on: if it turns off, the timer keeps running but you cannot tap.",
+    "interrupted": "The page closed during this count, so some people may have been missed. If in doubt, delete this count.",
+    "doneTitle": "Count finished",
+    "summary": "{day}, {slot}: {minutes} minutes",
+    "direct": "{value} will go into the table.",
+    "scaled": "This {from}-minute count will be converted to {to} minutes and go into the table as {value}.",
+    "tooShort": "Too short: count for at least {min} minutes to save it.",
+    "write": "Save to Location",
+    "discard": "Delete",
+    "discardConfirm": "Delete this count?",
+    "saved": "{value} saved to {day}, {slot}."
+  },
   "pricing": {
     "bandTitle": "Price map: signature item",
     "bandHint": "Rival prices within 1 km and yours ({price}). The dashed line is the average.",

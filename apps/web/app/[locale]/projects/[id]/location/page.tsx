@@ -4,8 +4,10 @@ import { useTranslations } from 'next-intl';
 import type { FounderRole, HistoryReason, Status } from '@bitm/engine';
 import { commonChecklist, type ChecklistItem, type Sector } from '@bitm/archetypes';
 import { FlagsPanel } from '../../../../../components/flags-panel';
+import { FootCounter } from '../../../../../components/foot-counter';
 import { NumberField, NumberInput, Panel, Pill } from '../../../../../components/ui';
 import { useWorkbench } from '../../../../../components/workbench';
+import { isCounted } from '../../../../../lib/foot-count';
 import { locationScore } from '../../../../../lib/incomplete';
 import type { Lang } from '../../../../../lib/labels';
 
@@ -39,6 +41,7 @@ export default function LocationPage() {
     <main className="bench">
       <section className="col">
         <Panel title={t('foot')} hint={t('footHint')}>
+          <FootCounter />
           <div className="ftable">
             <span />
             {SLOTS.map((s) => (
@@ -53,6 +56,7 @@ export default function LocationPage() {
                   <NumberInput
                     key={i}
                     id={`foot-${day}-${i}`}
+                    className={isCounted(loc, day, i) ? 'num counted' : 'num'}
                     aria-label={`${t(day)} ${t(`slots.${SLOTS[i]!}`)}`}
                     value={v}
                     onValue={(x) => update((d) => void (d.input.loc.foot[day][i] = x ?? 0))}

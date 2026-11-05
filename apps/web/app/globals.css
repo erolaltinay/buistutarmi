@@ -1185,6 +1185,98 @@ details.pt summary {
     grid-column: auto;
   }
 }
+/* saha sayacı */
+.counter-entry {
+  margin-bottom: 14px;
+}
+.counter-entry .note {
+  margin-top: 8px;
+}
+.num.counted {
+  border-color: var(--good);
+  background: var(--good-soft);
+}
+.counter {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: 100dvh;
+  padding: 16px;
+  overflow-y: auto;
+  background: var(--bg);
+}
+.counter-setup {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+}
+.counter-setup h2 {
+  margin: 0;
+}
+.counter-setup p {
+  margin: 0;
+}
+.counter-setup .ok {
+  color: var(--good);
+  font-weight: 600;
+}
+.counter-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  font-weight: 600;
+}
+.counter-clock {
+  font-family: var(--mono);
+  font-size: 1.6rem;
+}
+.counter-tap {
+  flex: 1;
+  min-height: 55dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 0;
+  border-radius: 20px;
+  background: var(--amber);
+  color: #1b1e3b;
+  font-family: var(--display);
+  font-size: clamp(4.5rem, 24vw, 9rem);
+  line-height: 1;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.counter-tap small {
+  font-family: var(--body);
+  font-size: 1rem;
+  font-weight: 600;
+}
+.counter-tap:active {
+  filter: brightness(0.92);
+}
+.counter-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.counter-actions button {
+  min-height: 48px;
+}
+.counter-result {
+  font-family: var(--display);
+  font-size: 4rem;
+  line-height: 1;
+}
 @media (prefers-reduced-motion: no-preference) {
   .fill,
   .meter i {
