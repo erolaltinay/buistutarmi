@@ -4,12 +4,14 @@
 import { useState, type ChangeEvent } from 'react';
 import { useFormatter, useTranslations } from 'next-intl';
 import { FRAME_SLOTS, PALETTE_KEYS, STYLE_KEYS, StorefrontInspection, type FrameSlot } from '@bitm/ai/schema';
+import { FrameMask } from '../../../../../components/frame-mask';
 import { Panel } from '../../../../../components/ui';
 import { useWorkbench } from '../../../../../components/workbench';
 import { Link } from '../../../../../i18n/navigation';
 import { track } from '../../../../../lib/analytics';
 import { loadDetector } from '../../../../../lib/faces';
-import { prepareFrame, type PreparedFrame } from '../../../../../lib/frames';
+import { coverAreas, prepareFrame, type PreparedFrame } from '../../../../../lib/frames';
+import type { Box } from '../../../../../lib/faces';
 import { hasLegalList } from '../../../../../lib/permits';
 import {
   applySuggestion,
@@ -30,6 +32,8 @@ export default function SitePage() {
   const [frames, setFrames] = useState<Partial<Record<FrameSlot, PreparedFrame>>>({});
   const [working, setWorking] = useState<FrameSlot | null>(null);
   const [frameError, setFrameError] = useState<FrameSlot | null>(null);
+  const [masking, setMasking] = useState<FrameSlot | null>(null);
+  const [maskFailed, setMaskFailed] = useState(false);
   const [geo, setGeo] = useState<'idle' | 'busy' | 'denied' | 'failed'>('idle');
   const [consent, setConsent] = useState(false);
   const [sending, setSending] = useState(false);
@@ -72,6 +76,23 @@ export default function SitePage() {
       console.error('kare hazırlanamadı', err);
       setFrames((f) => ({ ...f, [slot]: undefined }));
       setFrameError(slot);
+    } finally {
+      setWorking(null);
+    }
+  }
+
+  async function changeMasks(slot: FrameSlot, masks: Box[]) {
+    const frame = frames[slot];
+    if (!frame) return;
+    setWorking(slot);
+    setMaskFailed(false);
+    try {
+      const dataUrl = await coverAreas(frame.base, masks);
+      setFrames((f) => ({ ...f, [slot]: { ...frame, masks, dataUrl } }));
+    } catch (err) {
+      // Kare olduğu gibi kalır; önizleme de değişmediği için kullanıcı alanın kapanmadığını görür.
+      console.error('alan kapatılamadı', err);
+      setMaskFailed(true);
     } finally {
       setWorking(null);
     }
@@ -212,6 +233,25 @@ export default function SitePage() {
                       {frame.faces ? t('facesHidden', { count: frame.faces }) : t('facesNone')}
                     </span>
                   )}
+                  {frame && frame.masks.length > 0 && (
+                    <span className="note" data-testid={`masks-${slot}`}>
+                      {t('masksHidden', { count: frame.masks.length })}
+                    </span>
+                  )}
+                  {frame && (
+                    <button
+                      className="ghost"
+                      type="button"
+                      disabled={working !== null}
+                      data-testid={`mask-open-${slot}`}
+                      onClick={() => {
+                        setMaskFailed(false);
+                        setMasking(slot);
+                      }}
+                    >
+                      {t('maskOpen')}
+                    </button>
+                  )}
                   <label className="add">
                     <input
                       type="file"
@@ -232,6 +272,16 @@ export default function SitePage() {
             <p className="warn" role="alert" data-testid="frame-error" style={{ marginTop: 8 }}>
               {t('frameError')}
             </p>
+          )}
+          {masking && frames[masking] && (
+            <FrameMask
+              src={frames[masking]!.dataUrl}
+              masks={frames[masking]!.masks}
+              busy={working !== null}
+              failed={maskFailed}
+              onChange={(masks) => changeMasks(masking, masks)}
+              onClose={() => setMasking(null)}
+            />
           )}
           <p className="note" style={{ marginTop: 10 }}>
             {t('faceNote')}

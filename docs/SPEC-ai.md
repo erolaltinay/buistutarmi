@@ -144,6 +144,7 @@ z.object({
 - Düzenlemeli mesleklerde bölüm 1'deki reklam kuralı eklenir.
 - Kareler saklanmaz: yalnız ekran açıkken bellekte durur. Sonuç ve konum okuması projede (`ProjectDoc.site`, adayda da) tutulur.
 - Yüzler kapatılamazsa kare gönderilmez (sunucuda tekrar deneme yok, bkz. `SPEC-architecture.md` §8). Bu akışta kullanıcı notu alınmaz.
+- Plaka otomatik algılanmaz. Kullanıcı önizlemede "Alan kapat" ile plakayı ve görünmesini istemediği her şeyi işaretler; işaretli alan gönderilen karede düz renge döner.
 - Model `AI_MODEL_VISION`, anahtar `ANTHROPIC_API_KEY` ortam değişkeninden gelir; biri yoksa uç `not_configured` döner. Kullanıcı başına limit (İP-1.1) gelene kadar uç yayın derlemesinde kapalıdır. Reddedilen istek için `fallbacks: "default"` açıktır.
 
 ## 4. Mağaza görseli promptu

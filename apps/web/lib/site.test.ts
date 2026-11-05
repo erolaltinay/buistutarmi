@@ -4,7 +4,7 @@ import { PALETTE_KEYS, type StorefrontInspection } from '@bitm/ai/schema';
 import { PALETTES } from '../components/storefront-svg';
 import { addCandidate, loadCandidate } from './compare';
 import { dedupe, expandBox, tilesFor } from './faces';
-import { scaledSize } from './frames';
+import { areaFromDrag, scaledSize } from './frames';
 import { projectFromSample } from './project';
 import { applySuggestion, isApplied, isPoorAccuracy, SiteCheck, suggestionsFrom } from './site';
 
@@ -129,6 +129,37 @@ describe('kare hazırlama', () => {
     expect(b.y).toBe(0);
     expect(b.x + b.w).toBe(28);
     expect(b.y + b.h).toBe(28);
+  });
+
+  it('sürükleme kutu olur, ters yön ve taşma düzelir', () => {
+    const box = { x: 100, y: 50, w: 200, h: 100 };
+    expect(areaFromDrag({ x: 100, y: 50 }, { x: 300, y: 150 }, 1600, 1200)).toEqual(box);
+    expect(areaFromDrag({ x: 300, y: 150 }, { x: 100, y: 50 }, 1600, 1200)).toEqual(box);
+    expect(areaFromDrag({ x: 1500, y: 1100 }, { x: 1900, y: 1400 }, 1600, 1200)).toEqual({
+      x: 1500,
+      y: 1100,
+      w: 100,
+      h: 100,
+    });
+  });
+
+  it('dokunuş plaka boyunda kutu bırakır, kutu görüntüde kalır', () => {
+    const tap = areaFromDrag({ x: 800, y: 600 }, { x: 803, y: 602 }, 1600, 1200, 12);
+    expect(tap.w).toBeCloseTo(128);
+    expect(tap.h).toBeCloseTo(128 / 3);
+    expect(tap.x + tap.w / 2).toBeCloseTo(800);
+    expect(tap.y + tap.h / 2).toBeCloseTo(600);
+    const edge = areaFromDrag({ x: 1595, y: 2 }, { x: 1595, y: 2 }, 1600, 1200, 12);
+    expect(edge.x + edge.w).toBeCloseTo(1600);
+    expect(edge.y).toBe(0);
+    // Dik karede de boy uzun kenardan gelir.
+    expect(areaFromDrag({ x: 50, y: 50 }, { x: 50, y: 50 }, 1200, 1600, 12).w).toBeCloseTo(128);
+  });
+
+  it('ince sürükleme de geçerli kutu verir', () => {
+    const thin = areaFromDrag({ x: 100, y: 100 }, { x: 200, y: 100 }, 1600, 1200);
+    expect(thin.w).toBe(100);
+    expect(thin.h).toBeGreaterThanOrEqual(1);
   });
 
   it('aynı yüz teke iner, ayrı yüzler kalır', () => {

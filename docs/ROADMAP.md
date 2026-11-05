@@ -72,8 +72,8 @@ Kabul: çevrimdışıyken sayılan veri bağlantı gelince kaydediliyor.
 **İP-2.4 Medya ve AI inceleme** — Supabase Storage, yüz bulanıklaştırma, SPEC-ai bölüm 3; "uygula" akışları.
 Kabul: yüz içeren bir sokak fotoğrafı yüklendiğinde saklanan dosyada yüzler bulanık; menü fotoğrafından fiyat okuma onayla rakibe yazılıyor.
 
-**İP-2.4a Dış cephe incelemesi ve konum teyidi** — SPEC-ai §3.1, SPEC-architecture §5.8: telefonda rehberli 1–4 kare, yüz bulanıklaştırma, Claude incelemesi (köşe, komşular, tabela yeri, cephe önerisi), tek okumalık konum kaydı. Kareler sunucuda saklanmaz, bu yüzden Supabase beklemez; herkese açılmadan önce kullanıcı başına limit (İP-1.1) ve açık rıza metni (İP-1.11) gerekir.
-Kabul: yüz içeren kare sunucuya bulanık gidiyor; görselde görünmeyen bilgi `null` ve "görünmüyor" olarak çıkıyor, tahmin yapılmıyor; hiçbir öneri "Uygula" denmeden kaydedilmiyor; geçersiz AI yanıtı hata gösteriyor; konum izni reddedilince inceleme çalışıyor ve "konum teyidi yok" görünüyor; koordinat Claude isteğinde yok; ekran izin konusunda kesin ifade kurmuyor.
+**İP-2.4a Dış cephe incelemesi ve konum teyidi** — SPEC-ai §3.1, SPEC-architecture §5.8: telefonda rehberli 1–4 kare, yüz bulanıklaştırma, plaka gibi alanları elle kapatma, Claude incelemesi (köşe, komşular, tabela yeri, cephe önerisi), tek okumalık konum kaydı. Kareler sunucuda saklanmaz, bu yüzden Supabase beklemez; herkese açılmadan önce kullanıcı başına limit (İP-1.1) ve açık rıza metni (İP-1.11) gerekir.
+Kabul: yüz içeren kare sunucuya bulanık gidiyor; elle işaretlenen alan sunucuya düz renk gidiyor, geri alınınca kare eski haline dönüyor; görselde görünmeyen bilgi `null` ve "görünmüyor" olarak çıkıyor, tahmin yapılmıyor; hiçbir öneri "Uygula" denmeden kaydedilmiyor; geçersiz AI yanıtı hata gösteriyor; konum izni reddedilince inceleme çalışıyor ve "konum teyidi yok" görünüyor; koordinat Claude isteğinde yok; ekran izin konusunda kesin ifade kurmuyor.
 
 **İP-2.5 Rakip analizi** — SPEC-ai bölüm 2; yapılandırılmış çıktı; PDF'e ekleme.
 Kabul: geçersiz AI yanıtı kullanıcıya hata olarak gösteriliyor, kısmi veri yazılmıyor.

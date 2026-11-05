@@ -1,4 +1,4 @@
-// İP-2.4a kabul: yüz bulanık gider, koordinat gitmez, öneri onaysız yazılmaz, izin reddi akışı durdurmaz.
+// İP-2.4a kabul: yüz bulanık gider, elle işaretlenen alan düz renk gider, koordinat gitmez, öneri onaysız yazılmaz, izin reddi akışı durdurmaz.
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { expect, test, type Page } from '@playwright/test';
@@ -150,6 +150,78 @@ test('yüz bölgesi geri döndürülemez şekilde kapanır, uzaktaki yüz de bul
   const plain = await sharpness(page, original, faceBox);
   expect(hidden).toBeLessThanOrEqual(1);
   expect(plain).toBeGreaterThan(hidden);
+});
+
+test('plaka gibi alan elle kapanır, geri alınır, gönderilen karede düz renktir', async ({
+  page,
+  context,
+}) => {
+  let sent = '';
+  await page.route('**/api/inspect', async (route) => {
+    sent = route.request().postData() ?? '';
+    await route.fulfill({ json: { result: RESULT } });
+  });
+  await openSite(page);
+  await page.getByTestId('file-front').setInputFiles(FACE);
+  await expect(page.getByTestId('faces-front')).toHaveText('1 yüz kapatıldı', { timeout: 60_000 });
+  const plain = (await page.getByTestId('preview-front').getAttribute('src'))!;
+  const area: [number, number, number, number] = [120, 330, 90, 90];
+  expect(await sharpness(page, plain, area)).toBeGreaterThan(1);
+
+  await page.getByTestId('mask-open-front').click();
+  const image = page.getByTestId('mask-image');
+  const box = (await image.boundingBox())!;
+  const at = (x: number, y: number) => {
+    const scale = box.width / 512;
+    return { x: box.x + x * scale, y: box.y + y * scale };
+  };
+  const touch = await context.newCDPSession(page);
+  const swipe = async (a: { x: number; y: number }, b: { x: number; y: number }) => {
+    const send = (type: 'touchStart' | 'touchMove' | 'touchEnd', points: { x: number; y: number }[]) =>
+      touch.send('Input.dispatchTouchEvent', { type, touchPoints: points });
+    await send('touchStart', [a]);
+    await send('touchMove', [{ x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 }]);
+    await send('touchMove', [b]);
+    await send('touchEnd', []);
+  };
+  const from = at(110, 320);
+  const to = at(220, 430);
+
+  // Parmakla sürükleme: seçilen bölge düz renge döner.
+  await swipe(from, to);
+  await expect(page.getByTestId('mask-count')).toHaveText('1 alan kapatıldı');
+  await expect
+    .poll(async () => sharpness(page, (await image.getAttribute('src'))!, area))
+    .toBeLessThanOrEqual(1);
+
+  // Dokunuş plaka boyunda alan bırakır; geri al yalnız sonuncuyu kaldırır.
+  const spot = at(400, 450);
+  await page.touchscreen.tap(spot.x, spot.y);
+  await expect(page.getByTestId('mask-count')).toHaveText('2 alan kapatıldı');
+  await page.getByTestId('mask-undo').click();
+  await expect(page.getByTestId('mask-count')).toHaveText('1 alan kapatıldı');
+  await page.getByTestId('mask-undo').click();
+  await expect(page.getByTestId('mask-count')).toHaveCount(0);
+  await expect(image).toHaveAttribute('src', plain);
+  await expect(page.getByTestId('mask-undo')).toBeDisabled();
+
+  await swipe(from, to);
+  await expect(page.getByTestId('mask-count')).toHaveText('1 alan kapatıldı');
+  await page.getByTestId('mask-done').click();
+  await expect(page.getByTestId('masks-front')).toHaveText('1 alan kapatıldı');
+
+  // Gönderilen kare kapatılmış olandır; yüz kapalı kalır, yeniden çekince işaret sıfırlanır.
+  await page.getByTestId('consent').check();
+  await page.getByTestId('inspect').click();
+  await expect(page.getByTestId('res-summary')).toHaveText(RESULT.summary);
+  const data = JSON.parse(sent).frames[0].data as string;
+  expect(data).not.toBe(plain);
+  expect(await sharpness(page, data, area)).toBeLessThanOrEqual(1);
+  expect(await sharpness(page, data, [185, 95, 70, 70])).toBeLessThanOrEqual(1);
+
+  await page.getByTestId('file-front').setInputFiles(BLANK);
+  await expect(page.getByTestId('faces-front')).toHaveText('Yüz bulunamadı', { timeout: 60_000 });
+  await expect(page.getByTestId('masks-front')).toHaveCount(0);
 });
 
 test('yüzsüz kare sayılır, konum reddi akışı durdurmaz, hata kaydedilmez', async ({ page }) => {

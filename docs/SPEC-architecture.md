@@ -175,7 +175,7 @@ Etiket alan grubu düzeyinde tutulur (`ProjectDoc.sources`); toplam ağırlık 1
 
 ## 8. Güvenlik ve KVKK
 - Kişisel veri: e-posta, adres/konum, fotoğraflar (yüz içerebilir), girişimcinin finansal bilgileri.
-- Yüz bulanıklaştırma: yüklemeden önce istemcide yüz algılama (ör. MediaPipe) ile; başarısız olursa sunucuda tekrar. Orijinal bulanıklaştırılmamış dosya saklanmaz. Saklanmayan tek seferlik dış cephe incelemesinde (SPEC-ai §3.1) sunucuda tekrar yoktur: algılama çalışmazsa kare gönderilmez. Algılama: MediaPipe, küçük yüzler için kare örtüşen parçalarda da taranır; bölge geri döndürülemez iri piksele çevrilir. Dosyalar kendi alan adımızdan sunulur.
+- Yüz bulanıklaştırma: yüklemeden önce istemcide yüz algılama (ör. MediaPipe) ile; başarısız olursa sunucuda tekrar. Orijinal bulanıklaştırılmamış dosya saklanmaz. Saklanmayan tek seferlik dış cephe incelemesinde (SPEC-ai §3.1) sunucuda tekrar yoktur: algılama çalışmazsa kare gönderilmez. Algılama: MediaPipe, küçük yüzler için kare örtüşen parçalarda da taranır; bölge geri döndürülemez iri piksele çevrilir. Dosyalar kendi alan adımızdan sunulur. Plaka ve telefon numarası gibi bilgiler otomatik algılanmaz: kullanıcı göndermeden önce alanı elle işaretler, alan düz renge döner (mozaik metinde karakter başına iz bırakabilir) ve kapatılmamış kopya yalnız ekran açıkken bellekte durur.
 - Aydınlatma metni, açık rıza (AI'ya görsel gönderimi ve dükkân önü konum kaydı ayrı ayrı), çerez bildirimi, hesap ve tüm veriyi silme akışı (30 gün içinde kalıcı silme).
 - Veri yurt dışına aktarımı (Supabase/Vercel/Anthropic/Google bölgeleri) için hukuki değerlendirme; Supabase projesi AB bölgesinde açılır.
 - Yayın öncesi avukat görüşü: KVKK, kullanım şartları, "yatırım tavsiyesi değildir" çerçevesi, ödeme ve iade şartları.
