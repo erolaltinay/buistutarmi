@@ -16,10 +16,20 @@ import { CMP_ROWS, cmpCell } from './compare';
 import { confidence, PRELIMINARY_BELOW } from './confidence';
 import { isGeneric } from './generic';
 import { incompleteFields, locationScore } from './incomplete';
-import { makeFormat, numberLocale } from './format';
+import { makeFormat, numberLocale, type Format } from './format';
 import { competitorLabel, langOf, letter, type Lang } from './labels';
 import { hasLegalList, legalItems, oldestReview, openCritical, permitStatus } from './permits';
+import {
+  incompleteRivals,
+  insufficientText,
+  itemName,
+  priceMapLines,
+  projectPriceMap,
+  rivalName,
+  showDay,
+} from './price-map';
 import type { ProjectDoc } from './project';
+import { localDate } from './research';
 import { makeFlagLabel, makeVerdictText, type Translate } from './verdict-text';
 
 export interface ReportOptions {
@@ -139,6 +149,112 @@ function siteBlocks(doc: ProjectDoc, locale: string, t: Translate): Block[] {
       { kind: 'bullets', muted: true, items: r.notVisible },
     );
   blocks.push({ kind: 'para', muted: true, text: t('site.signLegal') });
+  return blocks;
+}
+
+/** Fiyat haritası: yalnız gözlem girildiyse çıkar; her fiyat kaynağı ve tarihiyle yazılır. */
+function priceMapBlocks(args: BuildReportArgs, fmt: Format, lang: Lang): Block[] {
+  const { doc, locale, t, today } = args;
+  const input = doc.input;
+  const sector = getSector(doc.sector);
+  const map = projectPriceMap(input, sector, getCountry(doc.country), localDate(today));
+  if (!map.channels.length) return [];
+  const index = (v: number | null) => (v === null ? '—' : fmt.num(v, 2));
+  const money = (v: number | null) => (v === null ? '—' : fmt.money(v));
+  const blocks: Block[] = [{ kind: 'h2', text: t('priceMap.title') }];
+  for (const ch of map.channels) {
+    blocks.push({ kind: 'h3', text: t(`research.channel.${ch.channel}`) });
+    if (!ch.sufficient) {
+      const missing = incompleteRivals(ch.rivals, ch.items.length).map((r) =>
+        t('priceMap.missingRow', {
+          who: rivalName(input, r.rival, sector, lang),
+          items: r.missing.map((k) => itemName(sector, k, lang)).join(', '),
+        }),
+      );
+      blocks.push({ kind: 'notice', text: insufficientText(t, ch.qualifiedRivals) });
+      if (missing.length) blocks.push({ kind: 'bullets', muted: true, items: missing });
+    }
+    if (ch.own?.index != null && ch.own.level)
+      blocks.push({
+        kind: 'para',
+        text: t('priceMap.ownLine', {
+          index: index(ch.own.index),
+          level: t(`priceMap.level.${ch.own.level}`),
+        }),
+      });
+    blocks.push({
+      kind: 'table',
+      small: true,
+      columns: [
+        { head: t('priceMap.cols.item'), width: 0.28, bold: true },
+        { head: t('priceMap.cols.min'), width: 0.13, right: true },
+        { head: t('priceMap.cols.median'), width: 0.13, right: true },
+        { head: t('priceMap.cols.max'), width: 0.13, right: true },
+        { head: t('priceMap.cols.count'), width: 0.07, right: true },
+        { head: t('priceMap.cols.you'), width: 0.13, right: true },
+        { head: t('priceMap.cols.ratio'), width: 0.13, right: true },
+      ],
+      rows: ch.items.map((it) => [
+        cell(itemName(sector, it.key, lang)),
+        cell(money(it.min)),
+        cell(money(it.median)),
+        cell(money(it.max)),
+        cell(fmt.num(it.count)),
+        cell(money(it.own)),
+        cell(index(it.ownRatio)),
+      ]),
+    });
+    const priced = ch.rivals.filter((r) => Object.keys(r.cells).length > 0);
+    blocks.push({
+      kind: 'table',
+      small: true,
+      columns: [
+        { head: t('priceMap.cols.rival'), width: 0.4, bold: true },
+        { head: t('priceMap.cols.fee'), width: 0.2, right: true },
+        { head: t('priceMap.cols.index'), width: 0.2, right: true },
+        { head: t('priceMap.cols.level'), width: 0.2 },
+      ],
+      rows: priced.map((r) => [
+        cell(rivalName(input, r.rival, sector, lang)),
+        cell(money(r.serviceFee)),
+        cell(index(r.index)),
+        cell(r.level ? t(`priceMap.level.${r.level}`) : '—'),
+      ]),
+    });
+    blocks.push({
+      kind: 'table',
+      small: true,
+      columns: [
+        { head: t('priceMap.cols.rival'), width: 0.27, bold: true },
+        { head: t('priceMap.cols.item'), width: 0.2 },
+        { head: t('priceMap.cols.price'), width: 0.13, right: true },
+        { head: t('priceMap.cols.source'), width: 0.22 },
+        { head: t('priceMap.cols.date'), width: 0.18 },
+      ],
+      rows: priced.flatMap((r) =>
+        ch.items.flatMap((it) => {
+          const c = r.cells[it.key];
+          if (!c) return [];
+          const date = showDay(c.observedOn, locale);
+          return [
+            [
+              cell(rivalName(input, r.rival, sector, lang)),
+              cell(itemName(sector, it.key, lang)),
+              cell(fmt.money(c.price)),
+              cell(t(`research.source.${c.source}`)),
+              cell(c.stale ? `${date} (${t('priceMap.stale')})` : date),
+            ],
+          ];
+        }),
+      ),
+    });
+  }
+  const lines = priceMapLines({ map, input, sector, lang, locale, fmt, t });
+  for (const group of ['bundles', 'gaps', 'changes', 'policies'] as const) {
+    if (lines[group].length)
+      blocks.push({ kind: 'h3', text: t(`priceMap.${group}T`) }, { kind: 'bullets', items: lines[group] });
+  }
+  blocks.push({ kind: 'para', muted: true, text: t('priceMap.info') });
   return blocks;
 }
 
@@ -439,6 +555,8 @@ export function buildReport(args: BuildReportArgs): ReportModel {
       cell(fmt.money(x.baseNet)),
     ]),
   });
+
+  blocks.push(...priceMapBlocks(args, fmt, lang));
 
   // Mevzuat: seçenek değil, uyarı ve son kontrol tarihiyle her zaman var.
   blocks.push(...legalBlocks(legal, args, lang));

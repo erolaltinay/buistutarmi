@@ -102,6 +102,8 @@ Rakip inceleme ayarları (`SPEC-competitor-research.md` §6):
   "items": {                                                       // itemTemplate ile aynı anahtarlar
     "filter": { "aliases": { "tr": ["filtre"], "en": ["drip"] }, "sizeNote": { "tr": "Küçük, büyük", "en": "Small, large" } }
   },
+  "levels": { "low": 0.9, "high": 1.1 },                           // fiyat seviyesi eşikleri, başlangıç önerisi (SPEC-calc-engine §12.2)
+  "bundles": [ { "k": "combo", "parts": ["cut", "beard"] } ],      // paket indirimi; paketi olmayan sektörde []
   "offers": { "student": { "tr": "Öğrenci indirimi", "en": "Student discount" } },
   "checks": [ { "k": "fieldSizes", "group": "field", "label": { "tr": "…", "en": "…" } } ]   // ortak listede olmayan maddeler
 }

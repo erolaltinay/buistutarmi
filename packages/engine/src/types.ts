@@ -352,3 +352,113 @@ export interface AnalysisResult {
   verdict: Verdict;
   verdictReason: FinalReason;
 }
+
+// ---------- §12.2 Fiyat haritası ----------
+
+export type PriceChannel = 'in_store' | 'online' | 'unknown' | 'delivery';
+
+export interface PriceObservation {
+  /** Sepetteki kalem; eşleşmeyen gözlemde null ve karşılaştırmaya girmez. */
+  itemKey: string | null;
+  price: number;
+  currency: string;
+  channel: PriceChannel;
+  /** Kaynak anahtarı; motor anlamını bilmez, gösterim için aynen geçirir. */
+  source: string;
+  /** ISO gün (YYYY-MM-DD). */
+  observedOn: string;
+  sizeNote: string;
+}
+
+export interface PriceMapRival {
+  serviceFee: number | null;
+  observations: PriceObservation[];
+}
+
+export interface PriceMapInput {
+  /** Bugün; motor saat okumaz. */
+  asOf: string;
+  staleAfterDays: number;
+  currency: string;
+  levels: { low: number; high: number };
+  /** Sepet: kullanıcının kendi fiyatı girilmemişse null. */
+  items: { key: string; price: number | null }[];
+  bundles: { key: string; parts: string[] }[];
+  rivals: PriceMapRival[];
+}
+
+export interface PriceMapCell {
+  price: number;
+  source: string;
+  observedOn: string;
+  sizeNote: string;
+  stale: boolean;
+}
+
+export interface BundleDiscount {
+  key: string;
+  discount: number;
+}
+
+export interface PriceMapRivalRow {
+  /** Girdideki sıra. */
+  rival: number;
+  serviceFee: number | null;
+  cells: Partial<Record<string, PriceMapCell>>;
+  index: number | null;
+  level: Level | null;
+  /** Taze hücresi olmayan kalemler. */
+  missing: string[];
+  bundles: BundleDiscount[];
+}
+
+export interface PriceMapItemRow {
+  key: string;
+  count: number;
+  staleCount: number;
+  min: number | null;
+  median: number | null;
+  max: number | null;
+  own: number | null;
+  ownRatio: number | null;
+}
+
+export interface PriceMapChannel {
+  channel: PriceChannel;
+  sufficient: boolean;
+  qualifiedRivals: number;
+  rivalsNeeded: number;
+  items: PriceMapItemRow[];
+  rivals: PriceMapRivalRow[];
+  /** Teslimat kanalında null: teslimat fiyatı dükkân fiyatıyla kıyaslanmaz. */
+  own: { index: number | null; level: Level | null } | null;
+}
+
+export interface ChannelGap {
+  rival: number;
+  itemKey: string;
+  inStore: number;
+  delivery: number;
+  ratio: number;
+}
+
+export interface PriceChange {
+  rival: number;
+  itemKey: string;
+  channel: PriceChannel;
+  fromPrice: number;
+  fromOn: string;
+  toPrice: number;
+  toOn: string;
+  days: number;
+  pct: number;
+}
+
+export interface PriceMapResult {
+  asOf: string;
+  channels: PriceMapChannel[];
+  ownBundles: BundleDiscount[];
+  channelGaps: ChannelGap[];
+  changes: PriceChange[];
+  ignored: { otherCurrency: number; unmatched: number };
+}

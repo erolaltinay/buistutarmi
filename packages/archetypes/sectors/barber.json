@@ -678,6 +678,8 @@
         }
       }
     },
+    "levels": { "low": 0.9, "high": 1.1 },
+    "bundles": [{ "k": "combo", "parts": ["cut", "beard"] }],
     "offers": {
       "student": {
         "tr": "Öğrenci indirimi",

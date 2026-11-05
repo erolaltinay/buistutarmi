@@ -81,6 +81,13 @@ describe('rakip inceleme ayarları', () => {
 
   it('şablonda olmayan kalemi ve ortak listedeki anahtarı şema reddeder', () => {
     const extraItem = structuredClone(sectors.coffee!);
+    const badBundle = structuredClone(sectors.coffee!);
+    badBundle.research.bundles = [{ k: 'filter', parts: ['filter', 'ghost'] }];
+    expect(SectorSchema.safeParse(badBundle).success).toBe(false);
+    const badLevels = structuredClone(sectors.coffee!);
+    badLevels.research.levels = { low: 1.1, high: 0.9 };
+    expect(SectorSchema.safeParse(badLevels).success).toBe(false);
+
     extraItem.research.items.ghost = { aliases: { tr: [], en: [] } };
     expect(SectorSchema.safeParse(extraItem).success).toBe(false);
 

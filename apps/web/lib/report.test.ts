@@ -8,6 +8,7 @@ import { renderReport } from '@bitm/pdf';
 import { pdfText } from '@bitm/pdf/test-utils';
 import { addCandidate } from './compare';
 import { setPermit } from './permits';
+import { emptyResearch, withResearch, type Observation } from './research';
 import { projectFromSample, type ProjectDoc } from './project';
 import { buildReport, reportFilename, type ReportOptions } from './report';
 import type { Translate } from './verdict-text';
@@ -73,6 +74,80 @@ describe('PDF rapor (İP-1.6)', () => {
       'Mevzuat yol haritası',
       'Aday karşılaştırması',
     ]);
+  });
+
+  describe('fiyat haritası (İP-2.9)', () => {
+    const seen = (itemKey: string, price: number, observedOn = '2026-10-20'): Observation => ({
+      itemKey,
+      rawName: 'kalem',
+      price,
+      currency: 'TRY',
+      sizeNote: '',
+      channel: 'in_store',
+      source: 'door',
+      sourceUrl: null,
+      observedOn,
+      sourceDatedOn: null,
+    });
+    const withPrices = (rows: Observation[][]) => {
+      const d = projectFromSample('barber', 'ist', 'p1');
+      rows.forEach((observations, i) => {
+        d.input.comp[i] ??= structuredClone(d.input.comp[0]!);
+        withResearch(d.input.comp[i]!, { ...emptyResearch(), observations });
+      });
+      return d;
+    };
+    const full = () =>
+      withPrices([
+        [seen('cut', 500), seen('beard', 200)],
+        [seen('cut', 600), seen('beard', 300), seen('combo', 720)],
+        [seen('cut', 800), seen('beard', 400), seen('cut', 450, '2026-01-01')],
+      ]);
+
+    it('gözlem yoksa bölüm çıkmaz', async () => {
+      const { text } = await read(projectFromSample('barber', 'ist', 'p1'), NONE);
+      expect(has(text, 'Fiyat haritası: tüm sepet')).toBe(false);
+    });
+
+    it('fiyatlar kaynak ve tarihle yazılır, yatırım uyarısı her sayfada durur', async () => {
+      const { pages, text } = await read(full(), NONE);
+      for (const s of [
+        'Fiyat haritası: tüm sepet',
+        'Kapıdaki liste',
+        '20.10.2026',
+        'Medyan',
+        'Paket indirimi',
+      ])
+        expect(has(text, s), s).toBe(true);
+      expect(has(text, 'bilgi amaçlıdır')).toBe(true);
+      pages.forEach((p, i) => expect(has(p, 'yatırım tavsiyesi değildir'), `sayfa ${i + 1}`).toBe(true));
+    });
+
+    it('fiyat haritası fiyat stratejisinden sonra, mevzuattan önce', () => {
+      const heads = build(full(), NONE)
+        .blocks.filter((b) => b.kind === 'h2')
+        .map((b) => (b as { text: string }).text);
+      const at = heads.indexOf('Fiyat haritası: tüm sepet');
+      expect(heads[at - 1]).toBe('Fiyat stratejisi');
+      expect(heads[at + 1]).toBe('Mevzuat yol haritası');
+    });
+
+    it('veri azsa veri yetersiz yazar, seviye yazmaz', async () => {
+      const { text } = await read(withPrices([[seen('cut', 500), seen('beard', 200)]]), NONE);
+      expect(has(text, 'Veri yetersiz.')).toBe(true);
+      expect(has(text, 'Senin fiyat endeksin')).toBe(false);
+    });
+
+    it('eski gözlem raporda işaretlenir', async () => {
+      const d = withPrices([[seen('cut', 500, '2026-01-01')]]);
+      expect(has((await read(d, NONE)).text, '01.01.2026 (eski)')).toBe(true);
+    });
+
+    it('İngilizce rapor da kurulur', async () => {
+      const { text } = await read(full(), NONE, 'en');
+      expect(has(text, 'Price map: full basket')).toBe(true);
+      expect(has(text, 'Door list') || has(text, 'Observed on')).toBe(true);
+    });
   });
 
   it('24 ay tablosu isteğe bağlı', async () => {

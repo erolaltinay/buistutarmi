@@ -158,7 +158,9 @@ Fiyat haritası `packages/engine` içinde ayrı saf fonksiyondur ve `analyze()` 
 - Kullanılan gözlem: rakip + kalem + kanal başına en yeni gözlem. `staleAfterDays`'i geçen gözlem "eski" işaretlenir, medyana girmez, ekranda görünür.
 - `kalemMedyan` = aynı kanaldaki taze rakip fiyatlarının medyanı.
 - `fiyatEndeksi(rakip)` = rakibin `fiyat / kalemMedyan` oranlarının ortalaması; en az 2 kalem gerekir.
-- Seviye: endeks < 0,90 düşük; 0,90–1,10 orta; > 1,10 yüksek. Bu eşikler başlangıç önerisidir, arketip dosyasında tutulur, gerçek veriyle gözden geçirilir.
+- Seviye: endeks < 0,90 düşük; 0,90–1,10 orta; > 1,10 yüksek. Bu eşikler başlangıç önerisidir, arketip dosyasında (`research.levels`) tutulur, gerçek veriyle gözden geçirilir.
+- Paket indirimi tanımı arketiptedir (`research.bundles`); kod kalem anahtarı bilmez.
+- Tam formüller ve uç durumlar: `SPEC-calc-engine.md` §12.2.
 - Fiyatlar kullanıcıya servis ücreti ayrı gösterilerek verilir; ücret fiyata gizlice eklenmez.
 - Dolar veya başka kurla çevirme yapılmaz; farklı para birimindeki gözlem karşılaştırmaya girmez.
 

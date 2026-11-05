@@ -153,6 +153,10 @@ const SectorResearchSchema = z.object({
       sizeNote: Localized.optional(),
     }),
   ),
+  /** Fiyat seviyesi eşikleri (SPEC-calc-engine §12.2); başlangıç önerisi. */
+  levels: z.object({ low: z.number().positive(), high: z.number().positive() }),
+  /** Paket indirimi: `1 − k / Σ parts`. Paketi olmayan sektörde boş. */
+  bundles: z.array(z.object({ k: Key, parts: z.array(Key).min(2) })),
   offers: z.record(Key, Localized),
   checks: z.array(ResearchCheckSchema).default([]),
 });
@@ -317,6 +321,15 @@ export const SectorSchema = z
         issue(`research.checks: anahtar ortak listede veya tekrarlı: ${c.k}`);
     }
     if (new Set(s.research.groups).size !== s.research.groups.length) issue('research.groups tekrarlı');
+    if (s.research.levels.low >= s.research.levels.high)
+      issue('research.levels: low, high değerinden küçük olmalı');
+    for (const b of s.research.bundles) {
+      if (!itemKeys.includes(b.k)) issue(`research.bundles.${b.k}: kalem şablonda yok`);
+      for (const part of b.parts) {
+        if (!itemKeys.includes(part) || part === b.k)
+          issue(`research.bundles.${b.k}: geçersiz parça ${part}`);
+      }
+    }
 
     for (const [country, d] of Object.entries(s.defaults)) {
       if (d.sample !== null && s.samples[d.sample]?.country !== country)

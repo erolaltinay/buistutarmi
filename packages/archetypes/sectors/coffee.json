@@ -719,6 +719,8 @@
         }
       }
     },
+    "levels": { "low": 0.9, "high": 1.1 },
+    "bundles": [],
     "offers": {
       "student": {
         "tr": "Öğrenci indirimi",

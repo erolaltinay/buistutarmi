@@ -1,6 +1,7 @@
 'use client';
 // Prototip "Fiyat stratejisi" sekmesi: fiyat haritası, 4 strateji kartı, öneri ve taktikler.
 import { useTranslations } from 'next-intl';
+import { PriceMapPanel } from '../../../../../components/price-map';
 import { Panel, Pill } from '../../../../../components/ui';
 import { useWorkbench } from '../../../../../components/workbench';
 import { competitorLabel, letter, rowLabel } from '../../../../../lib/labels';
@@ -38,6 +39,8 @@ export default function PricingPage() {
           />
         )}
       </div>
+
+      <PriceMapPanel />
 
       <div className="panel">
         <h2>{t('stratTitle')}</h2>

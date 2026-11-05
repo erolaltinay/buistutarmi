@@ -1,7 +1,7 @@
 // Rakip inceleme kaydı (SPEC-competitor-research §6). İP-1.1'e kadar `input.comp[i].research` içinde durur;
 // motor bu alanı okumaz. Rakibin fiyatına gözlemden yalnız kullanıcı "Uygula" deyince değer geçer.
 import { z } from 'zod';
-import type { Competitor } from '@bitm/engine';
+import { daysBetween, type Competitor } from '@bitm/engine';
 import { RESEARCH_SOURCES, type ResearchSource } from '@bitm/archetypes';
 
 export const LINK_KINDS = [
@@ -221,10 +221,9 @@ export function orderedSources(countrySources: readonly ResearchSource[]): {
   };
 }
 
-const DAY_MS = 86_400_000;
-
+/** Eskime kuralı motordakiyle aynıdır (SPEC-calc-engine §12.2). */
 export const isStale = (observedOn: string, asOf: string, staleAfterDays: number): boolean =>
-  (Date.parse(asOf) - Date.parse(observedOn)) / DAY_MS > staleAfterDays;
+  daysBetween(observedOn, asOf) > staleAfterDays;
 
 /** Kullanıcının yerel günü; `toISOString` gece yarısına yakın bir önceki güne kayar. */
 export function localDate(d: Date): string {

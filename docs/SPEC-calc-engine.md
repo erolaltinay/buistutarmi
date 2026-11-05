@@ -291,6 +291,43 @@ belowFloor = kullanıcının fiyatı minPrice_i altında olan kalemlerin anahtar
 
 Öneri kuralları değişmez. Taban değerleri ülke × sektör için doğrulanmış kaynaktan gelir (`SPEC-archetypes.md` §2.1); motor kaynağı bilmez, sadece `minPrice` alanını uygular. Kahve ve berberde `minPrice` yoktur, sonuçları değişmez.
 
+### 12.2 Fiyat haritası (rakip inceleme gözlemleri)
+
+`priceMap(input)`, `analyze()`'dan ayrı saf bir fonksiyondur. `analyze()` çıktısını değiştirmez, karara ve puana girmez; golden vakalar bu yüzden etkilenmez. Motor saat okumaz: bugün `asOf` olarak dışarıdan gelir. Bağlam: `SPEC-competitor-research.md` §2, §7.
+
+```
+girdi: asOf, staleAfterDays, currency, levels{low, high}, items[{key, price}], bundles[{key, parts[]}],
+       rivals[{serviceFee, observations[{itemKey, price, currency, channel, source, observedOn, sizeNote}]}]
+kanallar: in_store, online, unknown, delivery; karışmaz, her biri ayrı hesaplanır. Sıra budur; gözlemi olmayan kanal çıkmaz.
+
+elenen gözlem: currency ≠ proje para birimi (kur çevrilmez) · itemKey null veya sepette yok · price ≤ 0
+  (ilk ikisi `ignored` içinde sayılır)
+yaş(o) = gün(asOf) − gün(o.observedOn); eski(o) = yaş(o) > staleAfterDays
+hücre(rakip, kalem, kanal) = en yeni observedOn; aynı günde sonra girilen. Eskiyse görünür, hesaba girmez.
+
+kalem başına (kanal içinde): taze rakip fiyatlarından count, min, median, max; staleCount = eski hücre sayısı
+  median: çift sayıda eleman varsa ortadaki ikisinin ortalaması
+yeterli(rakip) = taze hücre sayısı ≥ 2
+sufficient(kanal) = yeterli rakip sayısı ≥ 3;  rivalsNeeded = max(0, 3 − yeterli rakip sayısı)
+
+karşılaştırılabilir kalem: count ≥ 2  (tek rakipte görülen kalemin oranı kendine bölünür, hep 1 çıkar)
+index(rakip) = fiyat/median oranlarının ortalaması, karşılaştırılabilir taze hücrelerinde;
+               oran sayısı < 2 veya sufficient = false ise null
+level(x) = x < levels.low → lo;  x > levels.high → hi;  aksi mid (sınırlar mid). Eşikler arketipte.
+kendi yerin (delivery dışındaki kanallar; teslimat fiyatı dükkân fiyatıyla kıyaslanmaz):
+  ownRatio(kalem) = own / median, kalem karşılaştırılabilir ve own > 0 ise; sufficient = false ise null
+  own.index = ownRatio'ların ortalaması, oran sayısı < 2 ise null; own.level = level(own.index)
+  delivery kanalında own null; kalemlerde own ve ownRatio null
+
+paket indirimi(rakip, kanal, paket) = 1 − fiyat(key) / Σ fiyat(parts), hepsi taze ise. Kendi fiyatlarında kanal yoktur.
+kanal farkı(rakip, kalem) = taze delivery / taze in_store, ikisi de varsa. online ve unknown girmez.
+zam(rakip, kalem, kanal) = farklı günlü en yeni iki gözlem: from → to; pct = to/from − 1; days = aradaki gün.
+  Eski gözlem de sayılır. Tek gözlemden veya aynı günlü gözlemlerden çıkmaz.
+serviceFee aynen geçer, fiyata eklenmez.
+```
+
+Yeterlilik eşiğinin altında fiyat aralığı ve hücreler görünür, ama endeks, seviye ve kendi yerin hesaplanmaz; ekran eksik rakipleri ve kalemleri gösterir (`missing`: taze hücresi olmayan kalemler).
+
 ## 13. Bilinen basitleştirmeler (bilinçli)
 
 - Mevsimsellik yok (kontrol listesinde soru olarak var). Faz 3'te aylık mevsim profili eklenebilir; eklenirse golden fixture yeniden üretilir.
@@ -331,4 +368,5 @@ Kurallar: Türkçe etiketler (iyi/dikkat/risk, yüksek/orta/düşük) sadece ara
 - Bu şartname, prototipe bakmadan yalnızca bu dokümandan yazılan bağımsız bir motorla test edildi; ilk 18 vakanın tamamı geçti, uç durumlar bu sürümde netleştirildi.
 - Ek birim testleri: `annuity` sınır durumları, `mix` toplamı 0, `cm ≤ 0`, kapasite aşımı, sayım yokken lokasyon puanı, `equity = 100` iken kredi = 0.
 - Düzenlemeli meslek eklemeleri (§6 `svcShare`, §10.1 yaya modu, §10.5 sektöre özel liste, §12.1 taban fiyat) mevcut 30 vakayı değiştirmez; bu, eklemeler yapılırken golden testlerle kanıtlanır. Ek birim testleri: `footTraffic = 'info'` iken yaya bayrağı ve "say" teyidi oluşmaz; hiçbir kart `minPrice` altına düşmez, `now` kartı değişmez; hibrit arketipte kapasite yalnızca hizmet payına uygulanır.
+- Fiyat haritası (§12.2) golden fixture'a girmez; birim testleri `packages/engine/test/price-map.test.ts` içindedir: aynı girdi ve `asOf` aynı sonuç; eski gözlem medyana girmez ama görünür; kanallar karışmaz; eşik altında endeks çıkmaz; tek gözlemden zam çıkmaz; artık yıl içeren gün farkı.
 - Yeni sektörlerin golden vakaları prototipten üretilemez: her vaka için temel sayılar (cm, başabaş, toplam yatırım, karar) motordan bağımsız bir hesap tablosuyla elle doğrulanır ve PR'da gösterilir.
